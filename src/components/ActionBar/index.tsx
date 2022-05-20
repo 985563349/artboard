@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { ActionIcon, Card, Divider, Group } from '@mantine/core';
 import {
   ArrowBackUp,
@@ -13,52 +14,42 @@ import {
   Shape,
   Timeline,
 } from 'tabler-icons-react';
+
+import { ActionTypes } from '../../constants/action-types';
+import { toggleActionType } from '../../store';
+import type { AppDispatch, RootState } from '../../store';
 import './index.css';
 
+const columns = [
+  { type: ActionTypes.line, icon: Scribble },
+  { type: ActionTypes.text, icon: LetterT },
+  { type: ActionTypes.simpleLine, icon: Timeline },
+  { type: ActionTypes.area, icon: Shape },
+  { type: ActionTypes.image, icon: Photo },
+  { type: ActionTypes.capture, icon: Crop },
+  { type: ActionTypes.rule, icon: Ruler2 },
+  { type: ActionTypes.eraser, icon: Eraser },
+  { type: ActionTypes.colorPicker, icon: ColorPicker },
+  { type: ActionTypes.move, icon: HandMove },
+];
+
 const ActionBar = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const actionType = useSelector((state: RootState) => state.app.actionType);
+
+  const handleClick = (type: ActionTypes) => {
+    dispatch(toggleActionType(type));
+  };
+
   return (
     <div className="action-bar">
       <Card shadow="sm" p="lg" radius="lg" style={{ display: 'flex' }}>
         <Group>
-          <ActionIcon variant="hover">
-            <Scribble size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <LetterT size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <Timeline size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <Shape size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <Photo size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <Crop size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <Ruler2 size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <Eraser size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <ColorPicker size={24} />
-          </ActionIcon>
-
-          <ActionIcon variant="hover">
-            <HandMove size={24} />
-          </ActionIcon>
+          {columns.map(({ type, icon: Icon }) => (
+            <ActionIcon key={type} onClick={() => handleClick(type)}>
+              <Icon color={actionType === type ? '#f40' : '#495057'} />
+            </ActionIcon>
+          ))}
         </Group>
 
         <Divider style={{ margin: '0 16px', borderRadius: 10 }} size={2} orientation="vertical" />
