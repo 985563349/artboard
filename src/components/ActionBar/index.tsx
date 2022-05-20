@@ -15,9 +15,9 @@ import {
   Timeline,
 } from 'tabler-icons-react';
 
-import { ActionTypes } from '../../constants/action-types';
-import { toggleActionType } from '../../store';
-import type { AppDispatch, RootState } from '../../store';
+import { ActionTypes } from '@/constants/action-types';
+import { toggleActionType } from '@/store';
+import type { AppDispatch, RootState } from '@/store';
 import './index.css';
 
 const columns = [

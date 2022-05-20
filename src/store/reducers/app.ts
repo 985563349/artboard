@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { ActionTypes } from '../../constants/action-types';
+import { ActionTypes } from '@/constants/action-types';
 
 export interface AppState {
   actionType: ActionTypes;
