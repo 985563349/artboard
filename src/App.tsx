@@ -1,10 +1,14 @@
-import { Button } from '@mantine/core';
+import ToolBar from './components/ToolBar';
+import ActionBar from './components/ActionBar';
+import Artboard from './components/Artboard';
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <h1>Artboard</h1>
-      <Button>Hello Artboard!</Button>
+      <ToolBar />
+      <Artboard />
+      <ActionBar />
     </div>
   );
 }
