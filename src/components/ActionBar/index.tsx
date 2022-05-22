@@ -38,7 +38,12 @@ const ActionBar = () => {
   const actionType = useSelector((state: RootState) => state.app.actionType);
 
   const handleClick = (type: ActionTypes) => {
-    dispatch(toggleActionType(type));
+    if (type === ActionTypes.image) {
+      // TODO: open image
+      console.log('open image');
+    } else {
+      dispatch(toggleActionType(type !== actionType ? type : undefined));
+    }
   };
 
   return (

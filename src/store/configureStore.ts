@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import appReducer from './reducers/app';
+import shapeReducer from './reducers/shape';
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
+    shape: shapeReducer,
   },
   devTools: true,
 });
