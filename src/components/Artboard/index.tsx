@@ -23,7 +23,7 @@ const Artboard: FC = () => {
   const lock = useSelector((state: RootState) => state.app.lock);
   const isDrawing = useSelector((state: RootState) => state.app.isDrawing);
   const actionType = useSelector((state: RootState) => state.app.actionType);
-  const shapes = useSelector((state: RootState) => state.shape);
+  const shapes = useSelector((state: RootState) => state.shape.present);
 
   const clickExecuteCommands: Partial<
     Record<ActionTypes, (e: KonvaEventObject<MouseEvent>) => void>

@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { ActionCreators } from 'redux-undo';
 import { ActionIcon, Card, Divider, Group } from '@mantine/core';
 import {
   ArrowBackUp,
@@ -36,6 +37,8 @@ const columns = [
 const ActionBar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const actionType = useSelector((state: RootState) => state.app.actionType);
+  const canUndo = useSelector((state: RootState) => state.shape.past.length > 0);
+  const canRedo = useSelector((state: RootState) => state.shape.future.length > 0);
 
   const handleClick = (type: ActionTypes) => {
     if (type === ActionTypes.image) {
@@ -60,11 +63,23 @@ const ActionBar = () => {
         <Divider style={{ margin: '0 16px', borderRadius: 10 }} size={2} orientation="vertical" />
 
         <Group>
-          <ActionIcon variant="hover">
+          <ActionIcon
+            variant="hover"
+            disabled={!canUndo}
+            onClick={() => {
+              dispatch(ActionCreators.undo());
+            }}
+          >
             <ArrowBackUp size={24} />
           </ActionIcon>
 
-          <ActionIcon variant="hover">
+          <ActionIcon
+            variant="hover"
+            disabled={!canRedo}
+            onClick={() => {
+              dispatch(ActionCreators.redo());
+            }}
+          >
             <ArrowForwardUp size={24} />
           </ActionIcon>
         </Group>

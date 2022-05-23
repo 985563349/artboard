@@ -17,6 +17,7 @@ specifiers:
   react-konva: ^18.1.0
   react-redux: ^8.0.1
   react-use: ^17.3.2
+  redux-undo: ^1.0.1
   tabler-icons-react: ^1.48.0
   typescript: ^4.6.3
   uuid: ^8.3.2
@@ -33,6 +34,7 @@ dependencies:
   react-konva: 18.1.0_nllsg7g5bwqjvkgvjookhlda5y
   react-redux: 8.0.1_wgqxz3kjpz4ixw4iz4mbg2tk4i
   react-use: 17.3.2_ef5jwxihqo6n7gxfmzogljlgcm
+  redux-undo: 1.0.1
   tabler-icons-react: 1.48.0_react@18.1.0
   uuid: 8.3.2
 
@@ -1318,6 +1320,10 @@ packages:
       redux: ^4
     dependencies:
       redux: 4.2.0
+    dev: false
+
+  /redux-undo/1.0.1:
+    resolution: {integrity: sha512-0yFPT+FUgwxCEiS0Mg5T1S4tkgjR8h6sJRY9CW4EMsbJOf1SxO289TbJmlzhRouCHacdDF+powPjrjLHoJYxWQ==}
     dev: false
 
   /redux/4.2.0:

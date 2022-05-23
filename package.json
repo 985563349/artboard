@@ -19,6 +19,7 @@
     "react-konva": "^18.1.0",
     "react-redux": "^8.0.1",
     "react-use": "^17.3.2",
+    "redux-undo": "^1.0.1",
     "tabler-icons-react": "^1.48.0",
     "uuid": "^8.3.2"
   },
