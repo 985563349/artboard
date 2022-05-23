@@ -20,6 +20,16 @@ export const createTextShape = (x: number, y: number): Shape.Text => ({
   fontSize: 32,
 });
 
+export const createSimpleLineShape = (points: number[]): Shape.SimpleLine => ({
+  id: uuidv4(),
+  type: 'simpleLine',
+  points,
+  stroke: '#f40',
+  strokeWidth: 10,
+  lineCap: 'round',
+  lineJoin: 'round',
+});
+
 export const createRuleShape = (x: number, y: number): Shape.Rule => ({
   id: uuidv4(),
   type: 'rule',

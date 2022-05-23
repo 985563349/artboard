@@ -21,8 +21,8 @@ export const shapeSlice = createSlice({
     },
     toggleShape: (state, action: PayloadAction<{ id: string; shape: ShapeState }>) => {
       const { id, shape } = action.payload;
-      const index = state.findIndex((item) => item.id === id);
-      state[index] = shape;
+      const i = state.findIndex((item) => item.id === id);
+      state[i] = shape;
     },
   },
 });

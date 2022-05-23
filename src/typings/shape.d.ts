@@ -22,6 +22,11 @@ declare namespace Shape {
   export type SimpleLine = {
     id: string;
     type: 'simpleLine';
+    points: number[];
+    stroke: string;
+    strokeWidth: number;
+    lineCap: 'butt' | 'round' | 'square';
+    lineJoin: 'round' | 'bevel' | 'miter';
   };
 
   export type Area = {

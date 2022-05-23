@@ -1,3 +1,4 @@
+import { FC, KeyboardEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Stage, Layer } from 'react-konva';
 import { useWindowSize } from 'react-use';
@@ -7,10 +8,15 @@ import './index.css';
 import { ActionTypes } from '@/constants/action-types';
 import { addShape, toggleShape, toggleIsDrawing } from '@/store';
 import type { RootState } from '@/store';
-import { createLineShape, createRuleShape, createTextShape } from './helpers';
-import { Line, Text } from './components';
+import {
+  createLineShape,
+  createTextShape,
+  createSimpleLineShape,
+  createRuleShape,
+} from './helpers';
+import { Line, SimpleLine, Text } from './components';
 
-const Artboard = () => {
+const Artboard: FC = () => {
   const { width, height } = useWindowSize();
 
   const dispatch = useDispatch();
@@ -29,8 +35,25 @@ const Artboard = () => {
         dispatch(addShape(createTextShape(x, y)));
       }
     },
-    [ActionTypes.simpleLine]: () => {
-      console.log('add simple line');
+    [ActionTypes.simpleLine]: (e) => {
+      const point = e.target.getStage()?.getPointerPosition();
+      if (point) {
+        const { x, y } = point;
+        if (isDrawing === false) {
+          dispatch(toggleIsDrawing(true));
+          dispatch(addShape(createSimpleLineShape([x, y])));
+        } else {
+          let shape = shapes.at(-1);
+          if (shape?.type === 'simpleLine') {
+            dispatch(
+              toggleShape({
+                id: shape.id,
+                shape: { ...shape, points: shape.points.concat([x, y]) },
+              })
+            );
+          }
+        }
+      }
     },
     [ActionTypes.area]: () => {
       console.log('add area');
@@ -61,7 +84,7 @@ const Artboard = () => {
     Record<ActionTypes, (e: KonvaEventObject<MouseEvent>) => void>
   > = {
     [ActionTypes.line]: (e) => {
-      if (!isDrawing) return;
+      if (isDrawing === false) return;
       const stage = e.target.getStage();
       const point = stage?.getPointerPosition();
       if (point) {
@@ -86,8 +109,26 @@ const Artboard = () => {
     },
   };
 
+  const keydownExecuteCommands: Partial<
+    Record<ActionTypes, (e: KeyboardEvent<HTMLDivElement>) => void>
+  > = {
+    [ActionTypes.simpleLine]: (e) => {
+      if (['Enter', 'Escape'].includes(e.key)) {
+        dispatch(toggleIsDrawing(false));
+      }
+    },
+  };
+
   return (
-    <div className="artboard">
+    <div
+      className="artboard"
+      tabIndex={1}
+      onKeyDown={(e) => {
+        if (lock === false && actionType) {
+          keydownExecuteCommands[actionType]?.(e);
+        }
+      }}
+    >
       <Stage
         width={width}
         height={height}
@@ -127,13 +168,23 @@ const Artboard = () => {
                 <Text
                   key={shape.id}
                   {...shape}
-                  draggable
-                  onDragStart={() => {
-                    console.log('drag start');
-                  }}
                   onDragEnd={(e) => {
                     const { x, y } = e.target.getPosition();
                     dispatch(toggleShape({ id: shape.id, shape: { ...shape, x, y } }));
+                  }}
+                />
+              );
+            }
+
+            if (shape.type === 'simpleLine') {
+              return (
+                <SimpleLine
+                  key={shape.id}
+                  {...shape}
+                  onAnchorDragMove={(point, i) => {
+                    const points = [...shape.points];
+                    points.splice(i * 2, 2, ...point);
+                    dispatch(toggleShape({ id: shape.id, shape: { ...shape, points } }));
                   }}
                 />
               );
