@@ -1,5 +1,13 @@
 declare namespace Shape {
-  export type Line = { type: 'line' };
+  export type Line = {
+    id: string;
+    type: 'line';
+    points: number[];
+    stroke: string;
+    strokeWidth: number;
+    tension: number;
+    lineCap: 'butt' | 'round' | 'square';
+  };
 
   export type Text = {
     id: string;
@@ -11,13 +19,30 @@ declare namespace Shape {
     fontSize: number;
   };
 
-  export type SimpleLine = { type: 'simpleLine' };
+  export type SimpleLine = {
+    id: string;
+    type: 'simpleLine';
+  };
 
-  export type Area = { type: 'area' };
+  export type Area = {
+    id: string;
+    type: 'area';
+  };
 
-  export type Image = { type: 'image' };
+  export type Image = {
+    id: string;
+    type: 'image';
+  };
 
-  export type Rule = { id: string; type: 'rule'; x: number; y: number };
+  export type Rule = {
+    id: string;
+    type: 'rule';
+    x: number;
+    y: number;
+  };
 
-  export type Eraser = { type: 'eraser' };
+  export type Eraser = {
+    id: string;
+    type: 'eraser';
+  };
 }

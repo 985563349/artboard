@@ -1,8 +1,7 @@
-import type { FC } from 'react';
+import type { ComponentProps, FC } from 'react';
 import { Text as KonvaText } from 'react-konva';
-import type { TextConfig } from 'konva/lib/shapes/Text';
 
-export type TextProps = TextConfig;
+export type TextProps = ComponentProps<typeof KonvaText>;
 
 const Text: FC<TextProps> = (props) => {
   return <KonvaText {...props} />;
