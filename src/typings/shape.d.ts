@@ -32,6 +32,11 @@ declare namespace Shape {
   export type Area = {
     id: string;
     type: 'area';
+    points: number[];
+    fill: string;
+    stroke: string;
+    strokeWidth: number;
+    closed: boolean;
   };
 
   export type Image = {
