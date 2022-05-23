@@ -24,7 +24,7 @@ jobs:
       - name: Install and Build
         run: |
           pnpm install
-          pnpm run build
+          pnpm run build --base=/artboard/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
