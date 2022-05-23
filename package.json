@@ -2,6 +2,7 @@
   "name": "artboard",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://github.com/985563349/artboard",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
