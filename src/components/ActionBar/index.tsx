@@ -28,7 +28,7 @@ const columns = [
   { type: ActionTypes.area, icon: Shape },
   { type: ActionTypes.image, icon: Photo },
   { type: ActionTypes.capture, icon: Crop },
-  { type: ActionTypes.rule, icon: Ruler2 },
+  { type: ActionTypes.ruler, icon: Ruler2 },
   { type: ActionTypes.eraser, icon: Eraser },
   { type: ActionTypes.colorPicker, icon: ColorPicker },
   { type: ActionTypes.move, icon: HandMove },

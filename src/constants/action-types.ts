@@ -5,7 +5,7 @@ export enum ActionTypes {
   area = 'area',
   image = 'image',
   capture = 'capture',
-  rule = 'rule',
+  ruler = 'ruler',
   eraser = 'eraser',
   colorPicker = 'color-picker',
   move = 'move',

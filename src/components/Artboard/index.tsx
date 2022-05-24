@@ -13,9 +13,9 @@ import {
   createTextShape,
   createSimpleLineShape,
   createAreaShape,
-  createRuleShape,
+  createRulerShape,
 } from './helpers';
-import { Line, Text, SimpleLine, Area } from './components';
+import { Line, Text, SimpleLine, Area, Ruler } from './components';
 
 const Artboard: FC = () => {
   const { width, height } = useWindowSize();
@@ -76,11 +76,13 @@ const Artboard: FC = () => {
         }
       }
     },
-    [ActionTypes.rule]: (e) => {
+    [ActionTypes.ruler]: (e) => {
       const point = e.target.getStage()?.getPointerPosition();
       if (point) {
         const { x, y } = point;
-        dispatch(addShape(createRuleShape(x, y)));
+        // Create an anchor
+        const points = [x - 60, y, x + 60, y];
+        dispatch(addShape(createRulerShape(points)));
       }
     },
   };
@@ -211,6 +213,20 @@ const Artboard: FC = () => {
             if (shape.type === 'area') {
               return (
                 <Area
+                  key={shape.id}
+                  {...shape}
+                  onAnchorDragMove={(point, i) => {
+                    const points = [...shape.points];
+                    points.splice(i * 2, 2, ...point);
+                    dispatch(toggleShape({ id: shape.id, shape: { ...shape, points } }));
+                  }}
+                />
+              );
+            }
+
+            if (shape.type === 'ruler') {
+              return (
+                <Ruler
                   key={shape.id}
                   {...shape}
                   onAnchorDragMove={(point, i) => {
