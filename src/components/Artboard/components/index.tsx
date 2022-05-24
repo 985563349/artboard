@@ -13,4 +13,7 @@ export type { AreaProps } from './Area';
 import Ruler from './Ruler';
 export type { RulerProps } from './Ruler';
 
-export { Line, Text, SimpleLine, Area, Ruler };
+import Eraser from './Eraser';
+export type { EraserProps } from './Eraser';
+
+export { Line, Text, SimpleLine, Area, Ruler, Eraser };

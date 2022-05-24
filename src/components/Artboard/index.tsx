@@ -14,8 +14,9 @@ import {
   createSimpleLineShape,
   createAreaShape,
   createRulerShape,
+  createEraserShape,
 } from './helpers';
-import { Line, Text, SimpleLine, Area, Ruler } from './components';
+import { Line, Text, SimpleLine, Area, Ruler, Eraser } from './components';
 
 const Artboard: FC = () => {
   const { width, height } = useWindowSize();
@@ -98,6 +99,14 @@ const Artboard: FC = () => {
         dispatch(addShape(createLineShape([x, y])));
       }
     },
+    [ActionTypes.eraser]: (e) => {
+      dispatch(toggleIsDrawing(true));
+      const point = e.target?.getStage()?.getPointerPosition();
+      if (point) {
+        const { x, y } = point;
+        dispatch(addShape(createEraserShape([x, y])));
+      }
+    },
   };
 
   const mouseMoveExecuteCommands: Partial<
@@ -119,12 +128,31 @@ const Artboard: FC = () => {
         }
       }
     },
+    [ActionTypes.eraser]: (e) => {
+      if (isDrawing === false) return;
+      const stage = e.target.getStage();
+      const point = stage?.getPointerPosition();
+      if (point) {
+        let shape = shapes.at(-1);
+        if (shape?.type === 'eraser') {
+          dispatch(
+            toggleShape({
+              id: shape.id,
+              shape: { ...shape, points: shape.points.concat([point.x, point.y]) },
+            })
+          );
+        }
+      }
+    },
   };
 
   const mouseUpExecuteCommands: Partial<
     Record<ActionTypes, (e: KonvaEventObject<MouseEvent>) => void>
   > = {
     [ActionTypes.line]: (e) => {
+      dispatch(toggleIsDrawing(false));
+    },
+    [ActionTypes.eraser]: (e) => {
       dispatch(toggleIsDrawing(false));
     },
   };
@@ -236,6 +264,10 @@ const Artboard: FC = () => {
                   }}
                 />
               );
+            }
+
+            if (shape.type === 'eraser') {
+              return <Eraser key={shape.id} {...shape} />;
             }
           })}
         </Layer>

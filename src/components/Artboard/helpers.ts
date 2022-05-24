@@ -49,3 +49,14 @@ export const createRulerShape = (points: number[]): Shape.Rule => ({
   lineCap: 'round',
   lineJoin: 'round',
 });
+
+export const createEraserShape = (points: number[]): Shape.Eraser => ({
+  id: uuidv4(),
+  type: 'eraser',
+  points,
+  stroke: '#df4b26',
+  strokeWidth: 10,
+  tension: 0.5,
+  lineCap: 'round',
+  globalCompositeOperation: 'destination-out',
+});

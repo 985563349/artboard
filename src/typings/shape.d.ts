@@ -57,5 +57,11 @@ declare namespace Shape {
   export type Eraser = {
     id: string;
     type: 'eraser';
+    points: number[];
+    stroke: string;
+    strokeWidth: number;
+    tension: number;
+    lineCap: 'butt' | 'round' | 'square';
+    globalCompositeOperation: 'destination-out';
   };
 }
