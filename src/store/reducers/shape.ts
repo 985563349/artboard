@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../configureStore';
 
 export type ShapeState =
   | Shape.Text
@@ -19,14 +20,23 @@ export const shapeSlice = createSlice({
     addShape: (state, action: PayloadAction<ShapeState>) => {
       state.push(action.payload);
     },
-    toggleShape: (state, action: PayloadAction<{ id: string; shape: ShapeState }>) => {
+    INCOGNITO_addShape(state, action: PayloadAction<ShapeState>) {
+      state.push(action.payload);
+    },
+    updateShape: (state, action: PayloadAction<{ id: string; shape: ShapeState }>) => {
       const { id, shape } = action.payload;
-      const i = state.findIndex((item) => item.id === id);
-      state[i] = shape;
+      state.splice(state.findIndex((item) => item.id === id) >>> 0, 1, shape);
+    },
+    INCOGNITO_updateShape: (state, action: PayloadAction<{ id: string; shape: ShapeState }>) => {
+      const { id, shape } = action.payload;
+      state.splice(state.findIndex((item) => item.id === id) >>> 0, 1, shape);
     },
   },
 });
 
-export const { addShape, toggleShape } = shapeSlice.actions;
+export const { addShape, INCOGNITO_addShape, updateShape, INCOGNITO_updateShape } =
+  shapeSlice.actions;
+
+export const selectShapes = (state: RootState) => state.shape.present;
 
 export default shapeSlice.reducer;

@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import undoable from 'redux-undo';
+import undoable, { excludeAction } from 'redux-undo';
 import appReducer from './reducers/app';
-import shapeReducer from './reducers/shape';
+import shapeReducer, { INCOGNITO_addShape, INCOGNITO_updateShape } from './reducers/shape';
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
-    shape: undoable(shapeReducer),
+    shape: undoable(shapeReducer, {
+      filter: excludeAction([INCOGNITO_addShape.type, INCOGNITO_updateShape.type]),
+    }),
   },
   devTools: true,
 });

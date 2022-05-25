@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { ActionTypes } from '@/constants/action-types';
+import type { RootState } from '../configureStore';
 
 export interface AppState {
   actionType?: ActionTypes;
@@ -31,5 +32,9 @@ export const appSlice = createSlice({
 });
 
 export const { toggleLock, toggleIsDrawing, toggleActionType } = appSlice.actions;
+
+export const selectActionType = (state: RootState) => state.app.actionType;
+export const selectLock = (state: RootState) => state.app.lock;
+export const selectIsDrawing = (state: RootState) => state.app.isDrawing;
 
 export default appSlice.reducer;

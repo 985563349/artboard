@@ -36,7 +36,7 @@ export const createAreaShape = (points: number[]): Shape.Area => ({
   points,
   fill: '#00D2FF',
   stroke: 'black',
-  strokeWidth: 5,
+  strokeWidth: 10,
   closed: true,
 });
 

@@ -6,8 +6,17 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 import './index.css';
 
 import { ActionTypes } from '@/constants/action-types';
-import { addShape, toggleShape, toggleIsDrawing } from '@/store';
-import type { RootState } from '@/store';
+import {
+  selectLock,
+  selectIsDrawing,
+  selectActionType,
+  selectShapes,
+  toggleIsDrawing,
+  addShape,
+  INCOGNITO_addShape,
+  updateShape,
+  INCOGNITO_updateShape,
+} from '@/store';
 import {
   createLineShape,
   createTextShape,
@@ -22,10 +31,10 @@ const Artboard: FC = () => {
   const { width, height } = useWindowSize();
 
   const dispatch = useDispatch();
-  const lock = useSelector((state: RootState) => state.app.lock);
-  const isDrawing = useSelector((state: RootState) => state.app.isDrawing);
-  const actionType = useSelector((state: RootState) => state.app.actionType);
-  const shapes = useSelector((state: RootState) => state.shape.present);
+  const lock = useSelector(selectLock);
+  const isDrawing = useSelector(selectIsDrawing);
+  const actionType = useSelector(selectActionType);
+  const shapes = useSelector(selectShapes);
 
   const clickExecuteCommands: Partial<
     Record<ActionTypes, (e: KonvaEventObject<MouseEvent>) => void>
@@ -41,19 +50,17 @@ const Artboard: FC = () => {
       const point = e.target.getStage()?.getPointerPosition();
       if (point) {
         const { x, y } = point;
-        if (isDrawing === false) {
+        let shape = shapes.at(-1);
+        if (isDrawing === false || shape?.type !== 'simpleLine') {
           dispatch(toggleIsDrawing(true));
           dispatch(addShape(createSimpleLineShape([x, y])));
         } else {
-          let shape = shapes.at(-1);
-          if (shape?.type === 'simpleLine') {
-            dispatch(
-              toggleShape({
-                id: shape.id,
-                shape: { ...shape, points: shape.points.concat([x, y]) },
-              })
-            );
-          }
+          dispatch(
+            updateShape({
+              id: shape.id,
+              shape: { ...shape, points: shape.points.concat([x, y]) },
+            })
+          );
         }
       }
     },
@@ -61,19 +68,17 @@ const Artboard: FC = () => {
       const point = e.target.getStage()?.getPointerPosition();
       if (point) {
         const { x, y } = point;
-        if (isDrawing === false) {
+        let shape = shapes.at(-1);
+        if (isDrawing === false || shape?.type !== 'area') {
           dispatch(toggleIsDrawing(true));
           dispatch(addShape(createAreaShape([x, y])));
         } else {
-          let shape = shapes.at(-1);
-          if (shape?.type === 'area') {
-            dispatch(
-              toggleShape({
-                id: shape.id,
-                shape: { ...shape, points: shape.points.concat([x, y]) },
-              })
-            );
-          }
+          dispatch(
+            updateShape({
+              id: shape.id,
+              shape: { ...shape, points: shape.points.concat([x, y]) },
+            })
+          );
         }
       }
     },
@@ -92,19 +97,19 @@ const Artboard: FC = () => {
     Record<ActionTypes, (e: KonvaEventObject<MouseEvent>) => void>
   > = {
     [ActionTypes.line]: (e) => {
-      dispatch(toggleIsDrawing(true));
       const point = e.target?.getStage()?.getPointerPosition();
       if (point) {
         const { x, y } = point;
-        dispatch(addShape(createLineShape([x, y])));
+        dispatch(toggleIsDrawing(true));
+        dispatch(INCOGNITO_addShape(createLineShape([x, y])));
       }
     },
     [ActionTypes.eraser]: (e) => {
-      dispatch(toggleIsDrawing(true));
       const point = e.target?.getStage()?.getPointerPosition();
       if (point) {
         const { x, y } = point;
-        dispatch(addShape(createEraserShape([x, y])));
+        dispatch(toggleIsDrawing(true));
+        dispatch(INCOGNITO_addShape(createEraserShape([x, y])));
       }
     },
   };
@@ -114,13 +119,12 @@ const Artboard: FC = () => {
   > = {
     [ActionTypes.line]: (e) => {
       if (isDrawing === false) return;
-      const stage = e.target.getStage();
-      const point = stage?.getPointerPosition();
+      const point = e.target.getStage()?.getPointerPosition();
       if (point) {
         let shape = shapes.at(-1);
         if (shape?.type === 'line') {
           dispatch(
-            toggleShape({
+            INCOGNITO_updateShape({
               id: shape.id,
               shape: { ...shape, points: shape.points.concat([point.x, point.y]) },
             })
@@ -130,13 +134,12 @@ const Artboard: FC = () => {
     },
     [ActionTypes.eraser]: (e) => {
       if (isDrawing === false) return;
-      const stage = e.target.getStage();
-      const point = stage?.getPointerPosition();
+      const point = e.target.getStage()?.getPointerPosition();
       if (point) {
         let shape = shapes.at(-1);
         if (shape?.type === 'eraser') {
           dispatch(
-            toggleShape({
+            INCOGNITO_updateShape({
               id: shape.id,
               shape: { ...shape, points: shape.points.concat([point.x, point.y]) },
             })
@@ -150,9 +153,19 @@ const Artboard: FC = () => {
     Record<ActionTypes, (e: KonvaEventObject<MouseEvent>) => void>
   > = {
     [ActionTypes.line]: (e) => {
+      let shape = shapes.at(-1);
+      // draw end generation history
+      if (shape?.type === 'line') {
+        dispatch(updateShape({ id: shape.id, shape: { ...shape } }));
+      }
       dispatch(toggleIsDrawing(false));
     },
     [ActionTypes.eraser]: (e) => {
+      let shape = shapes.at(-1);
+      // draw end generation history
+      if (shape?.type === 'eraser') {
+        dispatch(updateShape({ id: shape.id, shape: { ...shape } }));
+      }
       dispatch(toggleIsDrawing(false));
     },
   };
@@ -218,7 +231,7 @@ const Artboard: FC = () => {
                   {...shape}
                   onDragEnd={(e) => {
                     const { x, y } = e.target.getPosition();
-                    dispatch(toggleShape({ id: shape.id, shape: { ...shape, x, y } }));
+                    dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
                   }}
                 />
               );
@@ -232,7 +245,12 @@ const Artboard: FC = () => {
                   onAnchorDragMove={(point, i) => {
                     const points = [...shape.points];
                     points.splice(i * 2, 2, ...point);
-                    dispatch(toggleShape({ id: shape.id, shape: { ...shape, points } }));
+                    dispatch(INCOGNITO_updateShape({ id: shape.id, shape: { ...shape, points } }));
+                  }}
+                  onAnchorDragEnd={(point, i) => {
+                    const points = [...shape.points];
+                    points.splice(i * 2, 2, ...point);
+                    dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
                   }}
                 />
               );
@@ -246,7 +264,12 @@ const Artboard: FC = () => {
                   onAnchorDragMove={(point, i) => {
                     const points = [...shape.points];
                     points.splice(i * 2, 2, ...point);
-                    dispatch(toggleShape({ id: shape.id, shape: { ...shape, points } }));
+                    dispatch(INCOGNITO_updateShape({ id: shape.id, shape: { ...shape, points } }));
+                  }}
+                  onAnchorDragEnd={(point, i) => {
+                    const points = [...shape.points];
+                    points.splice(i * 2, 2, ...point);
+                    dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
                   }}
                 />
               );
@@ -260,7 +283,12 @@ const Artboard: FC = () => {
                   onAnchorDragMove={(point, i) => {
                     const points = [...shape.points];
                     points.splice(i * 2, 2, ...point);
-                    dispatch(toggleShape({ id: shape.id, shape: { ...shape, points } }));
+                    dispatch(INCOGNITO_updateShape({ id: shape.id, shape: { ...shape, points } }));
+                  }}
+                  onAnchorDragEnd={(point, i) => {
+                    const points = [...shape.points];
+                    points.splice(i * 2, 2, ...point);
+                    dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
                   }}
                 />
               );

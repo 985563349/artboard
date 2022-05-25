@@ -4,10 +4,11 @@ import { chunk } from 'lodash';
 
 export type RulerProps = ComponentProps<typeof Line> & {
   onAnchorDragMove?: (point: number[], index: number) => void;
+  onAnchorDragEnd?: (point: number[], index: number) => void;
 };
 
 const Ruler: FC<RulerProps> = (props) => {
-  const { points, strokeWidth, onAnchorDragMove } = props;
+  const { points, strokeWidth, onAnchorDragMove, onAnchorDragEnd } = props;
   const anchors = chunk(points, 2);
 
   return (
@@ -26,6 +27,10 @@ const Ruler: FC<RulerProps> = (props) => {
           onDragMove={(e) => {
             const { x, y } = e.target.getPosition();
             onAnchorDragMove?.([x, y], i);
+          }}
+          onDragEnd={(e) => {
+            const { x, y } = e.target.getPosition();
+            onAnchorDragEnd?.([x, y], i);
           }}
         />
       ))}
