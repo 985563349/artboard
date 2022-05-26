@@ -17,6 +17,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-konva": "^18.1.0",
+    "react-konva-utils": "^0.3.0",
     "react-redux": "^8.0.1",
     "react-use": "^17.3.2",
     "redux-undo": "^1.0.1",

@@ -15,6 +15,7 @@ specifiers:
   react: ^18.0.0
   react-dom: ^18.0.0
   react-konva: ^18.1.0
+  react-konva-utils: ^0.3.0
   react-redux: ^8.0.1
   react-use: ^17.3.2
   redux-undo: ^1.0.1
@@ -32,6 +33,7 @@ dependencies:
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
   react-konva: 18.1.0_nllsg7g5bwqjvkgvjookhlda5y
+  react-konva-utils: 0.3.0_nllsg7g5bwqjvkgvjookhlda5y
   react-redux: 8.0.1_wgqxz3kjpz4ixw4iz4mbg2tk4i
   react-use: 17.3.2_ef5jwxihqo6n7gxfmzogljlgcm
   redux-undo: 1.0.1
@@ -626,7 +628,6 @@ packages:
     resolution: {integrity: sha512-1RRW9kst+67gveJRYPxGmVy8eVJ05O43hg77G2j5m76/RFJtMbcfAs2viQ2UNsvvDg8F7OfQZx8qQcl6ymygaQ==}
     dependencies:
       '@types/react': 18.0.9
-    dev: true
 
   /@types/react/18.0.9:
     resolution: {integrity: sha512-9bjbg1hJHUm4De19L1cHiW0Jvx3geel6Qczhjd0qY5VKVE2X5+x77YxAepuCwVh4vrgZJdgEJw48zrhRIeF4Nw==}
@@ -1182,6 +1183,20 @@ packages:
     resolution: {integrity: sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==}
     dev: false
 
+  /react-konva-utils/0.3.0_nllsg7g5bwqjvkgvjookhlda5y:
+    resolution: {integrity: sha512-yH5FVpDGQ8gHeClyHY533M4oSLjEfYuvn+Z29zXm9osjhuulhtJrh5k+wtyY6QSC0MG0ioqE0cjiudGl1WGB9A==}
+    peerDependencies:
+      konva: ^8.3.5
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      konva: 8.3.8
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      react-konva: 18.1.0_nllsg7g5bwqjvkgvjookhlda5y
+      use-image: 1.0.12_ef5jwxihqo6n7gxfmzogljlgcm
+    dev: false
+
   /react-konva/18.1.0_nllsg7g5bwqjvkgvjookhlda5y:
     resolution: {integrity: sha512-Nhp82+EusN5Qrj2r+LmbKMA+OzdBVwIU34qLBM3Lei6svkVHEMiKYY2NxB0YkYWecV60P7rqfLu9ZaSMp7+Dpg==}
     peerDependencies:
@@ -1494,6 +1509,16 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
       react: 18.1.0
+    dev: false
+
+  /use-image/1.0.12_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-h6tCbHSvZOyrAKGkj4LTAyOUcMtL6NFyQdmP1M2spuClZrmyPe6nfB/NaFu135a2KKUt+7oGeUdvCiHcMdJerw==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
     dev: false
 
   /use-isomorphic-layout-effect/1.1.2_7cpxmzzodpxnolj5zcc5cr63ji:
