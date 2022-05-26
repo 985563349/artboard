@@ -1,5 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAction, isAnyOf } from '@reduxjs/toolkit';
 import { RootState } from '../configureStore';
 
 export type ShapeState =
@@ -16,26 +15,25 @@ const initialState: ShapeState[] = [];
 export const shapeSlice = createSlice({
   name: 'shape',
   initialState,
-  reducers: {
-    addShape: (state, action: PayloadAction<ShapeState>) => {
-      state.push(action.payload);
-    },
-    INCOGNITO_addShape(state, action: PayloadAction<ShapeState>) {
-      state.push(action.payload);
-    },
-    updateShape: (state, action: PayloadAction<{ id: string; shape: ShapeState }>) => {
-      const { id, shape } = action.payload;
-      state.splice(state.findIndex((item) => item.id === id) >>> 0, 1, shape);
-    },
-    INCOGNITO_updateShape: (state, action: PayloadAction<{ id: string; shape: ShapeState }>) => {
-      const { id, shape } = action.payload;
-      state.splice(state.findIndex((item) => item.id === id) >>> 0, 1, shape);
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(isAnyOf(addShape, INCOGNITO_addShape), (state, action) => {
+        state.push(action.payload);
+      })
+      .addMatcher(isAnyOf(updateShape, INCOGNITO_updateShape), (state, action) => {
+        const { id, shape } = action.payload;
+        state.splice(state.findIndex((item) => item.id === id) >>> 0, 1, shape);
+      });
   },
 });
 
-export const { addShape, INCOGNITO_addShape, updateShape, INCOGNITO_updateShape } =
-  shapeSlice.actions;
+export const addShape = createAction<ShapeState>('addShape');
+export const INCOGNITO_addShape = createAction<ShapeState>('INCOGNITO_addShape');
+export const updateShape = createAction<{ id: string; shape: ShapeState }>('updateShape');
+export const INCOGNITO_updateShape = createAction<{ id: string; shape: ShapeState }>(
+  'INCOGNITO_updateShape'
+);
 
 export const selectShapes = (state: RootState) => state.shape.present;
 
