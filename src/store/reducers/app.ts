@@ -10,7 +10,7 @@ export interface AppState {
 }
 
 const initialState: AppState = {
-  actionType: ActionTypes.line,
+  actionType: ActionTypes.pick,
   lock: false,
   isDrawing: false,
 };

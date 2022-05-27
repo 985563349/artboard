@@ -12,8 +12,9 @@ export {
 
 export {
   addShape,
-  INCOGNITO_addShape,
   updateShape,
-  INCOGNITO_updateShape,
+  selectShape,
+  unselectShape,
   selectShapes,
+  selectSelectedShapeKey,
 } from './reducers/shape';

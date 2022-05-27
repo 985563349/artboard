@@ -4,6 +4,7 @@ import { ActionIcon, Card, Divider, Group } from '@mantine/core';
 import {
   ArrowBackUp,
   ArrowForwardUp,
+  Click,
   Crop,
   ColorPicker,
   Eraser,
@@ -17,11 +18,12 @@ import {
 } from 'tabler-icons-react';
 
 import { ActionTypes } from '@/constants/action-types';
-import { toggleActionType } from '@/store';
+import { selectActionType, toggleActionType } from '@/store';
 import type { AppDispatch, RootState } from '@/store';
 import './index.css';
 
 const columns = [
+  { type: ActionTypes.pick, icon: Click },
   { type: ActionTypes.line, icon: Scribble },
   { type: ActionTypes.text, icon: LetterT },
   { type: ActionTypes.simpleLine, icon: Timeline },
@@ -36,7 +38,7 @@ const columns = [
 
 const ActionBar = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const actionType = useSelector((state: RootState) => state.app.actionType);
+  const actionType = useSelector(selectActionType);
   const canUndo = useSelector((state: RootState) => state.shape.past.length > 0);
   const canRedo = useSelector((state: RootState) => state.shape.future.length > 0);
 

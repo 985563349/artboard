@@ -1,7 +1,8 @@
-import { createSlice, createAction, isAnyOf } from '@reduxjs/toolkit';
-import { RootState } from '../configureStore';
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../configureStore';
 
-export type ShapeState =
+export type ShapeType =
   | Shape.Text
   | Shape.Line
   | Shape.SimpleLine
@@ -10,31 +11,39 @@ export type ShapeState =
   | Shape.Rule
   | Shape.Eraser;
 
-const initialState: ShapeState[] = [];
+export type ShapeState = {
+  selectedShapeKey?: string;
+  shapes: ShapeType[];
+};
+
+const initialState: ShapeState = {
+  selectedShapeKey: undefined,
+  shapes: [],
+};
 
 export const shapeSlice = createSlice({
   name: 'shape',
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addMatcher(isAnyOf(addShape, INCOGNITO_addShape), (state, action) => {
-        state.push(action.payload);
-      })
-      .addMatcher(isAnyOf(updateShape, INCOGNITO_updateShape), (state, action) => {
-        const { id, shape } = action.payload;
-        state.splice(state.findIndex((item) => item.id === id) >>> 0, 1, shape);
-      });
+  reducers: {
+    addShape: (state, action: PayloadAction<ShapeType>) => {
+      state.shapes.push(action.payload);
+    },
+    updateShape: (state, action: PayloadAction<{ id: string; shape: ShapeType }>) => {
+      const { id, shape } = action.payload;
+      state.shapes.splice(state.shapes.findIndex((item) => item.id === id) >>> 0, 1, shape);
+    },
+    selectShape: (state, action: PayloadAction<string>) => {
+      state.selectedShapeKey = action.payload;
+    },
+    unselectShape: (state) => {
+      state.selectedShapeKey = undefined;
+    },
   },
 });
 
-export const addShape = createAction<ShapeState>('addShape');
-export const INCOGNITO_addShape = createAction<ShapeState>('INCOGNITO_addShape');
-export const updateShape = createAction<{ id: string; shape: ShapeState }>('updateShape');
-export const INCOGNITO_updateShape = createAction<{ id: string; shape: ShapeState }>(
-  'INCOGNITO_updateShape'
-);
+export const { addShape, updateShape, selectShape, unselectShape } = shapeSlice.actions;
 
-export const selectShapes = (state: RootState) => state.shape.present;
+export const selectShapes = (state: RootState) => state.shape.present.shapes;
+export const selectSelectedShapeKey = (state: RootState) => state.shape.present.selectedShapeKey;
 
 export default shapeSlice.reducer;

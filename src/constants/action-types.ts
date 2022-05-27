@@ -1,4 +1,5 @@
 export enum ActionTypes {
+  pick = 'pick',
   line = 'line',
   text = 'text',
   simpleLine = 'simple-line',

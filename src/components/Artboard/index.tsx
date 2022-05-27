@@ -11,11 +11,11 @@ import {
   selectIsDrawing,
   selectActionType,
   selectShapes,
+  selectSelectedShapeKey,
   toggleIsDrawing,
   addShape,
-  INCOGNITO_addShape,
   updateShape,
-  INCOGNITO_updateShape,
+  selectShape,
 } from '@/store';
 import {
   createLineShape,
@@ -35,6 +35,7 @@ const Artboard: FC = () => {
   const isDrawing = useSelector(selectIsDrawing);
   const actionType = useSelector(selectActionType);
   const shapes = useSelector(selectShapes);
+  const selectedShapeKey = useSelector(selectSelectedShapeKey);
 
   const clickExecuteCommands: Partial<
     Record<ActionTypes, (e: KonvaEventObject<MouseEvent>) => void>
@@ -101,7 +102,7 @@ const Artboard: FC = () => {
       if (point) {
         const { x, y } = point;
         dispatch(toggleIsDrawing(true));
-        dispatch(INCOGNITO_addShape(createLineShape([x, y])));
+        dispatch(addShape(createLineShape([x, y])));
       }
     },
     [ActionTypes.eraser]: (e) => {
@@ -109,7 +110,7 @@ const Artboard: FC = () => {
       if (point) {
         const { x, y } = point;
         dispatch(toggleIsDrawing(true));
-        dispatch(INCOGNITO_addShape(createEraserShape([x, y])));
+        dispatch(addShape(createEraserShape([x, y])));
       }
     },
   };
@@ -124,7 +125,7 @@ const Artboard: FC = () => {
         let shape = shapes.at(-1);
         if (shape?.type === 'line') {
           dispatch(
-            INCOGNITO_updateShape({
+            updateShape({
               id: shape.id,
               shape: { ...shape, points: shape.points.concat([point.x, point.y]) },
             })
@@ -139,7 +140,7 @@ const Artboard: FC = () => {
         let shape = shapes.at(-1);
         if (shape?.type === 'eraser') {
           dispatch(
-            INCOGNITO_updateShape({
+            updateShape({
               id: shape.id,
               shape: { ...shape, points: shape.points.concat([point.x, point.y]) },
             })
@@ -220,82 +221,105 @@ const Artboard: FC = () => {
         {/* draw layer */}
         <Layer name="draw-layer">
           {shapes.map((shape) => {
-            if (shape.type === 'line') {
-              return <Line key={shape.id} {...shape} />;
-            }
+            switch (shape.type) {
+              case 'line':
+                return <Line key={shape.id} {...shape} />;
 
-            if (shape.type === 'text') {
-              return (
-                <Text
-                  key={shape.id}
-                  {...shape}
-                  onDragEnd={(e) => {
-                    const { x, y } = e.target.getPosition();
-                    dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
-                  }}
-                />
-              );
-            }
+              case 'text':
+                return (
+                  <Text
+                    {...shape}
+                    key={shape.id}
+                    selected={selectedShapeKey === shape.id}
+                    onClick={() => {
+                      if (actionType === ActionTypes.pick) {
+                        dispatch(selectShape(shape.id));
+                      }
+                    }}
+                    onDragEnd={(e) => {
+                      const { x, y } = e.target.getPosition();
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
+                    }}
+                  />
+                );
 
-            if (shape.type === 'simpleLine') {
-              return (
-                <SimpleLine
-                  key={shape.id}
-                  {...shape}
-                  onAnchorDragMove={(point, i) => {
-                    const points = [...shape.points];
-                    points.splice(i * 2, 2, ...point);
-                    dispatch(INCOGNITO_updateShape({ id: shape.id, shape: { ...shape, points } }));
-                  }}
-                  onAnchorDragEnd={(point, i) => {
-                    const points = [...shape.points];
-                    points.splice(i * 2, 2, ...point);
-                    dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
-                  }}
-                />
-              );
-            }
+              case 'simpleLine':
+                return (
+                  <SimpleLine
+                    {...shape}
+                    key={shape.id}
+                    selected={selectedShapeKey === shape.id}
+                    onClick={() => {
+                      if (actionType === ActionTypes.pick) {
+                        dispatch(selectShape(shape.id));
+                      }
+                    }}
+                    onAnchorDragMove={(point, i) => {
+                      const points = [...shape.points];
+                      points.splice(i * 2, 2, ...point);
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    }}
+                    onAnchorDragEnd={(point, i) => {
+                      const points = [...shape.points];
+                      points.splice(i * 2, 2, ...point);
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    }}
+                  />
+                );
 
-            if (shape.type === 'area') {
-              return (
-                <Area
-                  key={shape.id}
-                  {...shape}
-                  onAnchorDragMove={(point, i) => {
-                    const points = [...shape.points];
-                    points.splice(i * 2, 2, ...point);
-                    dispatch(INCOGNITO_updateShape({ id: shape.id, shape: { ...shape, points } }));
-                  }}
-                  onAnchorDragEnd={(point, i) => {
-                    const points = [...shape.points];
-                    points.splice(i * 2, 2, ...point);
-                    dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
-                  }}
-                />
-              );
-            }
+              case 'area':
+                return (
+                  <Area
+                    {...shape}
+                    key={shape.id}
+                    selected={selectedShapeKey === shape.id}
+                    onClick={() => {
+                      if (actionType === ActionTypes.pick) {
+                        dispatch(selectShape(shape.id));
+                      }
+                    }}
+                    onAnchorDragMove={(point, i) => {
+                      const points = [...shape.points];
+                      points.splice(i * 2, 2, ...point);
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    }}
+                    onAnchorDragEnd={(point, i) => {
+                      const points = [...shape.points];
+                      points.splice(i * 2, 2, ...point);
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    }}
+                  />
+                );
 
-            if (shape.type === 'ruler') {
-              return (
-                <Ruler
-                  key={shape.id}
-                  {...shape}
-                  onAnchorDragMove={(point, i) => {
-                    const points = [...shape.points];
-                    points.splice(i * 2, 2, ...point);
-                    dispatch(INCOGNITO_updateShape({ id: shape.id, shape: { ...shape, points } }));
-                  }}
-                  onAnchorDragEnd={(point, i) => {
-                    const points = [...shape.points];
-                    points.splice(i * 2, 2, ...point);
-                    dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
-                  }}
-                />
-              );
-            }
+              case 'ruler':
+                return (
+                  <Ruler
+                    {...shape}
+                    key={shape.id}
+                    selected={selectedShapeKey === shape.id}
+                    onClick={() => {
+                      if (actionType === ActionTypes.pick) {
+                        dispatch(selectShape(shape.id));
+                      }
+                    }}
+                    onAnchorDragMove={(point, i) => {
+                      const points = [...shape.points];
+                      points.splice(i * 2, 2, ...point);
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    }}
+                    onAnchorDragEnd={(point, i) => {
+                      const points = [...shape.points];
+                      points.splice(i * 2, 2, ...point);
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    }}
+                  />
+                );
 
-            if (shape.type === 'eraser') {
-              return <Eraser key={shape.id} {...shape} />;
+              case 'eraser':
+                return <Eraser key={shape.id} {...shape} />;
+
+              default:
+                return null;
             }
           })}
         </Layer>
