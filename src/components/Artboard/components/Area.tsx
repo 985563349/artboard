@@ -27,7 +27,7 @@ const Area: FC<AreaProps> = (props) => {
   }, [selected]);
 
   return (
-    <Group draggable={selected}>
+    <Group draggable>
       <Line {...props} ref={shapeRef} closed />
 
       {anchors.map(([x, y], i) => (

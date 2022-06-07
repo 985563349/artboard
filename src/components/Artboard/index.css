@@ -1,3 +1,4 @@
 .artboard {
   outline: none;
+  overflow: hidden;
 }

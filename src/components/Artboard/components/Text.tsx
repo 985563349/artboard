@@ -25,7 +25,7 @@ const Text: FC<TextProps> = (props: TextProps) => {
   }, [selected]);
 
   return (
-    <Group draggable={selected}>
+    <Group draggable>
       <KonvaText {...props} ref={shapeRef} />
 
       {selected && (

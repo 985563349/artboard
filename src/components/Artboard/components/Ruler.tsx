@@ -27,7 +27,7 @@ const Ruler: FC<RulerProps> = (props) => {
   }, [selected]);
 
   return (
-    <Group draggable={selected}>
+    <Group draggable>
       <Line {...props} ref={shapeRef} />
 
       {anchors.map(([x, y], i) => (
