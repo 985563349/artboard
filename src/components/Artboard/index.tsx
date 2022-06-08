@@ -15,6 +15,7 @@ import {
   toggleIsDrawing,
   addShape,
   updateShape,
+  selectDraggable,
 } from '@/store';
 import {
   createLineShape,
@@ -30,9 +31,10 @@ const Artboard: FC = () => {
   const { width, height } = useWindowSize();
 
   const dispatch = useDispatch();
-  const lock = useSelector(selectLock);
-  const isDrawing = useSelector(selectIsDrawing);
   const actionType = useSelector(selectActionType);
+  const lock = useSelector(selectLock);
+  const draggable = useSelector(selectDraggable);
+  const isDrawing = useSelector(selectIsDrawing);
   const shapes = useSelector(selectShapes);
 
   const clickExecuteCommands: Partial<
@@ -189,7 +191,7 @@ const Artboard: FC = () => {
         }
       }}
     >
-      <Draggable disabled={actionType !== ActionTypes.move}>
+      <Draggable disabled={!draggable}>
         <div>
           <Stage
             width={width}

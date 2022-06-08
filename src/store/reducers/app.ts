@@ -4,14 +4,16 @@ import { ActionTypes } from '@/constants/action-types';
 import type { RootState } from '../configureStore';
 
 export interface AppState {
-  actionType?: ActionTypes;
+  actionType: ActionTypes | null;
   lock: boolean;
+  draggable: boolean;
   isDrawing: boolean;
 }
 
 const initialState: AppState = {
-  actionType: ActionTypes.pick,
+  actionType: null,
   lock: false,
+  draggable: false,
   isDrawing: false,
 };
 
@@ -25,15 +27,19 @@ export const appSlice = createSlice({
     toggleIsDrawing: (state, action: PayloadAction<boolean>) => {
       state.isDrawing = action.payload;
     },
-    toggleActionType: (state, action: PayloadAction<ActionTypes | undefined>) => {
+    toggleDraggable: (state, action: PayloadAction<boolean>) => {
+      state.draggable = action.payload;
+    },
+    toggleActionType: (state, action: PayloadAction<ActionTypes | null>) => {
       state.actionType = action.payload;
     },
   },
 });
 
-export const { toggleLock, toggleIsDrawing, toggleActionType } = appSlice.actions;
+export const { toggleLock, toggleDraggable, toggleIsDrawing, toggleActionType } = appSlice.actions;
 
 export const selectActionType = (state: RootState) => state.app.actionType;
+export const selectDraggable = (state: RootState) => state.app.draggable;
 export const selectLock = (state: RootState) => state.app.lock;
 export const selectIsDrawing = (state: RootState) => state.app.isDrawing;
 

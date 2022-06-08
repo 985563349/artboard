@@ -4,8 +4,10 @@ export type { RootState, AppDispatch } from './configureStore';
 export {
   toggleActionType,
   toggleLock,
+  toggleDraggable,
   toggleIsDrawing,
   selectActionType,
+  selectDraggable,
   selectLock,
   selectIsDrawing,
 } from './reducers/app';

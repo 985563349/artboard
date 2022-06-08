@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
-import { ActionIcon, Card, Divider, Group } from '@mantine/core';
+import { ActionIcon, Card, Divider, Group, useMantineTheme } from '@mantine/core';
 import {
   ArrowBackUp,
   ArrowForwardUp,
@@ -33,10 +33,11 @@ const columns = [
   { type: ActionTypes.ruler, icon: Ruler2 },
   { type: ActionTypes.eraser, icon: Eraser },
   { type: ActionTypes.colorPicker, icon: ColorPicker },
-  { type: ActionTypes.move, icon: HandMove },
 ];
 
 const ActionBar = () => {
+  const theme = useMantineTheme();
+
   const dispatch = useDispatch<AppDispatch>();
   const actionType = useSelector(selectActionType);
   const canUndo = useSelector((state: RootState) => state.shape.past.length > 0);
@@ -47,17 +48,17 @@ const ActionBar = () => {
       // TODO: open image
       console.log('open image');
     } else {
-      dispatch(toggleActionType(type !== actionType ? type : undefined));
+      dispatch(toggleActionType(type !== actionType ? type : null));
     }
   };
 
   return (
     <div className="action-bar">
-      <Card shadow="sm" p="lg" radius="lg" style={{ display: 'flex' }}>
+      <Card style={{ display: 'flex' }} shadow="sm" p="lg" radius="lg" withBorder>
         <Group>
           {columns.map(({ type, icon: Icon }) => (
             <ActionIcon key={type} onClick={() => handleClick(type)}>
-              <Icon color={actionType === type ? '#f40' : '#495057'} />
+              <Icon color={actionType === type ? theme.colors.red[7] : theme.colors.gray[7]} />
             </ActionIcon>
           ))}
         </Group>
@@ -68,9 +69,7 @@ const ActionBar = () => {
           <ActionIcon
             variant="hover"
             disabled={!canUndo}
-            onClick={() => {
-              dispatch(ActionCreators.undo());
-            }}
+            onClick={() => dispatch(ActionCreators.undo())}
           >
             <ArrowBackUp size={24} />
           </ActionIcon>
@@ -78,9 +77,7 @@ const ActionBar = () => {
           <ActionIcon
             variant="hover"
             disabled={!canRedo}
-            onClick={() => {
-              dispatch(ActionCreators.redo());
-            }}
+            onClick={() => dispatch(ActionCreators.redo())}
           >
             <ArrowForwardUp size={24} />
           </ActionIcon>
