@@ -55,7 +55,7 @@ const ActionBar = () => {
   return (
     <div className="action-bar">
       <Card style={{ display: 'flex' }} shadow="sm" p="lg" radius="lg" withBorder>
-        <Group>
+        <Group noWrap>
           {columns.map(({ type, icon: Icon }) => (
             <ActionIcon key={type} onClick={() => handleClick(type)}>
               <Icon color={actionType === type ? theme.colors.red[7] : theme.colors.gray[7]} />
@@ -65,7 +65,7 @@ const ActionBar = () => {
 
         <Divider style={{ margin: '0 16px', borderRadius: 10 }} size={2} orientation="vertical" />
 
-        <Group>
+        <Group noWrap>
           <ActionIcon
             variant="hover"
             disabled={!canUndo}
