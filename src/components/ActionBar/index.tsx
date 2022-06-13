@@ -23,7 +23,6 @@ import type { AppDispatch, RootState } from '@/store';
 import './index.css';
 
 const columns = [
-  { type: ActionTypes.pick, icon: Click },
   { type: ActionTypes.line, icon: Scribble },
   { type: ActionTypes.text, icon: LetterT },
   { type: ActionTypes.simpleLine, icon: Timeline },
