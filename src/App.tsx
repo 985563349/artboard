@@ -1,6 +1,6 @@
-import ToolBar from '@/components/ToolBar';
-import ActionBar from '@/components/ActionBar';
-import Artboard from '@/components/Artboard';
+import ToolBar from '@/layout/ToolBar';
+import ActionBar from '@/layout/ActionBar';
+import Artboard from '@/layout/Artboard';
 import './App.css';
 
 function App() {
