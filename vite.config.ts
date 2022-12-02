@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+
 import { join } from 'path';
 import react from '@vitejs/plugin-react';
 

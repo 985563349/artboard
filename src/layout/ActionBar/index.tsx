@@ -65,19 +65,11 @@ const ActionBar = () => {
         <Divider style={{ margin: '0 16px', borderRadius: 10 }} size={2} orientation="vertical" />
 
         <Group noWrap>
-          <ActionIcon
-            variant="hover"
-            disabled={!canUndo}
-            onClick={() => dispatch(ActionCreators.undo())}
-          >
+          <ActionIcon disabled={!canUndo} onClick={() => dispatch(ActionCreators.undo())}>
             <ArrowBackUp size={24} />
           </ActionIcon>
 
-          <ActionIcon
-            variant="hover"
-            disabled={!canRedo}
-            onClick={() => dispatch(ActionCreators.redo())}
-          >
+          <ActionIcon disabled={!canRedo} onClick={() => dispatch(ActionCreators.redo())}>
             <ArrowForwardUp size={24} />
           </ActionIcon>
         </Group>
