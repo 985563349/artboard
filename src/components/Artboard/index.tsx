@@ -25,7 +25,7 @@ import {
   createRulerShape,
   createEraserShape,
 } from './helpers';
-import { Line, Text, SimpleLine, Area, Ruler, Eraser } from '@/components';
+import { Line, Text, SimpleLine, Area, Ruler, Eraser } from '@/components/Artboard/shapes';
 
 const Artboard: FC = () => {
   const { width, height } = useWindowSize();
