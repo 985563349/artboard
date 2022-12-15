@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+
 import { ActionTypes } from '@/constants/action-types';
 import type { RootState } from '../configureStore';
 

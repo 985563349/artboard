@@ -1,4 +1,4 @@
-import { ActionIcon, Card, Flex, Group, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Card, Flex, useMantineTheme } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { Capture, HandMove, Lock, LockOpen, Settings } from 'tabler-icons-react';
 

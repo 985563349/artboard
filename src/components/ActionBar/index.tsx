@@ -4,11 +4,9 @@ import { ActionIcon, Card, Divider, Group, useMantineTheme } from '@mantine/core
 import {
   ArrowBackUp,
   ArrowForwardUp,
-  Click,
   Crop,
   ColorPicker,
   Eraser,
-  HandMove,
   LetterT,
   Photo,
   Ruler2,
@@ -17,12 +15,13 @@ import {
   Timeline,
 } from 'tabler-icons-react';
 
-import { ActionTypes } from '@/constants/action-types';
 import { selectActionType, toggleActionType } from '@/store';
 import type { AppDispatch, RootState } from '@/store';
+import { ActionTypes } from '@/constants/action-types';
+
 import './index.css';
 
-const columns = [
+const options = [
   { type: ActionTypes.line, icon: Scribble },
   { type: ActionTypes.text, icon: LetterT },
   { type: ActionTypes.simpleLine, icon: Timeline },
@@ -55,9 +54,9 @@ const ActionBar = () => {
     <div className="action-bar">
       <Card style={{ display: 'flex' }} shadow="sm" p="lg" radius="lg" withBorder>
         <Group noWrap>
-          {columns.map(({ type, icon: Icon }) => (
+          {options.map(({ type, icon: Icon }) => (
             <ActionIcon key={type} onClick={() => handleClick(type)}>
-              <Icon color={actionType === type ? theme.colors.red[7] : theme.colors.gray[7]} />
+              <Icon color={actionType === type ? theme.colors.red[7] : undefined} />
             </ActionIcon>
           ))}
         </Group>
