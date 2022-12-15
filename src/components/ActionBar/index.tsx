@@ -8,6 +8,7 @@ import {
   ColorPicker,
   Eraser,
   LetterT,
+  Location,
   Photo,
   Ruler2,
   Scribble,
@@ -22,6 +23,7 @@ import { ActionTypes } from '@/constants/action-types';
 import './index.css';
 
 const options = [
+  { type: ActionTypes.selection, icon: Location },
   { type: ActionTypes.line, icon: Scribble },
   { type: ActionTypes.text, icon: LetterT },
   { type: ActionTypes.simpleLine, icon: Timeline },
