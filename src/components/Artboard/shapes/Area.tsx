@@ -1,34 +1,18 @@
-import { useRef, useEffect } from 'react';
-import type { ComponentProps, FC } from 'react';
-import { Circle, Group, Line, Transformer } from 'react-konva';
-import { Line as LineType } from 'konva/lib/shapes/Line';
-import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
-import { Portal } from 'react-konva-utils';
+import { Circle, Group, Line } from 'react-konva';
 import { chunk } from 'lodash';
 
-export type AreaProps = ComponentProps<typeof Line> & {
-  selected?: boolean;
+export type AreaProps = React.ComponentProps<typeof Line> & {
   onAnchorDragMove?: (point: number[], index: number) => void;
   onAnchorDragEnd?: (point: number[], index: number) => void;
 };
 
-const Area: FC<AreaProps> = (props) => {
-  const { points, strokeWidth, selected, onAnchorDragMove, onAnchorDragEnd } = props;
+const Area: React.FC<AreaProps> = (props) => {
+  const { points, strokeWidth, onAnchorDragMove, onAnchorDragEnd } = props;
   const anchors = chunk(points, 2);
-
-  const shapeRef = useRef<LineType>(null);
-  const trRef = useRef<TransformerType>(null);
-
-  useEffect(() => {
-    if (selected && shapeRef.current) {
-      trRef.current?.nodes([shapeRef.current]);
-      trRef.current?.getLayer()?.batchDraw();
-    }
-  }, [selected]);
 
   return (
     <Group draggable>
-      <Line {...props} ref={shapeRef} closed />
+      <Line {...props} closed />
 
       {anchors.map(([x, y], i) => (
         <Circle
@@ -50,12 +34,6 @@ const Area: FC<AreaProps> = (props) => {
           }}
         />
       ))}
-
-      {selected && (
-        <Portal selector=".transformer-layer" enabled={selected}>
-          <Transformer ref={trRef} />
-        </Portal>
-      )}
     </Group>
   );
 };

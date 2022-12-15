@@ -1,9 +1,8 @@
-import type { ComponentProps, FC } from 'react';
 import { Line } from 'react-konva';
 
-export type EraserProps = ComponentProps<typeof Line>;
+export type EraserProps = React.ComponentProps<typeof Line>;
 
-const Eraser: FC<EraserProps> = (props) => {
+const Eraser: React.FC<EraserProps> = (props) => {
   return <Line {...props} />;
 };
 

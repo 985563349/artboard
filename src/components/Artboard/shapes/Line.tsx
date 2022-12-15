@@ -1,9 +1,8 @@
-import type { ComponentProps, FC } from 'react';
 import { Line as KonvaLine } from 'react-konva';
 
-export type LineProps = ComponentProps<typeof KonvaLine>;
+export type LineProps = React.ComponentProps<typeof KonvaLine>;
 
-const Line: FC<LineProps> = (props) => {
+const Line: React.FC<LineProps> = (props) => {
   return <KonvaLine {...props} />;
 };
 
