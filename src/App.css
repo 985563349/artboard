@@ -4,3 +4,17 @@
   height: 100vh;
   background-color: #e5e5ea;
 }
+
+.action-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.toolbar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 20px;
+}

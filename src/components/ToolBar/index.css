@@ -1,8 +1,4 @@
 .toolbar {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 20px;
   display: flex;
   align-items: center;
 }
