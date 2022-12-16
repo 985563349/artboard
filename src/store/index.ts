@@ -4,12 +4,12 @@ export type { RootState, AppDispatch } from './configureStore';
 export {
   toggleActionType,
   toggleLock,
-  toggleDraggable,
   toggleIsDrawing,
+  updateDrag,
   selectActionType,
-  selectDraggable,
   selectLock,
   selectIsDrawing,
+  selectDrag,
 } from './reducers/app';
 
 export { addShape, updateShape, selectShapes } from './reducers/shape';

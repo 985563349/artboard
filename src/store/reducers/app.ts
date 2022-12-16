@@ -7,15 +7,23 @@ import type { RootState } from '../configureStore';
 export interface AppState {
   actionType: ActionTypes | null;
   lock: boolean;
-  draggable: boolean;
   isDrawing: boolean;
+  drag: {
+    draggable: boolean;
+    x: number;
+    y: number;
+  };
 }
 
 const initialState: AppState = {
   actionType: null,
   lock: false,
-  draggable: false,
   isDrawing: false,
+  drag: {
+    draggable: false,
+    x: 0,
+    y: 0,
+  },
 };
 
 export const appSlice = createSlice({
@@ -28,20 +36,20 @@ export const appSlice = createSlice({
     toggleIsDrawing: (state, action: PayloadAction<boolean>) => {
       state.isDrawing = action.payload;
     },
-    toggleDraggable: (state, action: PayloadAction<boolean>) => {
-      state.draggable = action.payload;
-    },
     toggleActionType: (state, action: PayloadAction<ActionTypes | null>) => {
       state.actionType = action.payload;
+    },
+    updateDrag: (state, action: PayloadAction<AppState['drag']>) => {
+      state.drag = action.payload;
     },
   },
 });
 
-export const { toggleLock, toggleDraggable, toggleIsDrawing, toggleActionType } = appSlice.actions;
+export const { toggleLock, toggleIsDrawing, toggleActionType, updateDrag } = appSlice.actions;
 
 export const selectActionType = (state: RootState) => state.app.actionType;
-export const selectDraggable = (state: RootState) => state.app.draggable;
 export const selectLock = (state: RootState) => state.app.lock;
 export const selectIsDrawing = (state: RootState) => state.app.isDrawing;
+export const selectDrag = (state: RootState) => state.app.drag;
 
 export default appSlice.reducer;
