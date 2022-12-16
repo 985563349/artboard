@@ -6,7 +6,7 @@ function useShapeEvents(
   }
 ) {
   function trigger(this: any, e: { type: string }) {
-    if (config?.lock === false) {
+    if (config?.lock == false) {
       listeners[e.type]?.apply(this, [e].concat(config?.providers ?? []));
     }
   }

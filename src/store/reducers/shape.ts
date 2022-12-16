@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import type { RootState } from '../configureStore';
 
-export type ShapeType =
+export type ShapeState =
   | Shape.Text
   | Shape.Line
   | Shape.SimpleLine
@@ -12,18 +12,16 @@ export type ShapeType =
   | Shape.Rule
   | Shape.Eraser;
 
-export type ShapeState = ShapeType[];
-
-const initialState: ShapeState = [];
+const initialState: ShapeState[] = [];
 
 export const shapeSlice = createSlice({
   name: 'shape',
   initialState,
   reducers: {
-    addShape: (state, action: PayloadAction<ShapeType>) => {
+    addShape: (state, action: PayloadAction<ShapeState>) => {
       state.push(action.payload);
     },
-    updateShape: (state, action: PayloadAction<{ id: string; shape: ShapeType }>) => {
+    updateShape: (state, action: PayloadAction<{ id: string; shape: ShapeState }>) => {
       const { id, shape } = action.payload;
       state.splice(state.findIndex((item) => item.id === id) >>> 0, 1, shape);
     },
