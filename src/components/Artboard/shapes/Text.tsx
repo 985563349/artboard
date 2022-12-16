@@ -1,16 +1,9 @@
-import { Group, Text as KonvaText } from 'react-konva';
+import { Text as KonvaText } from 'react-konva';
 
-export type TextProps = React.ComponentProps<typeof KonvaText> & {
-  editor?: boolean;
-  onTextChange?: (text: string) => void;
-};
+export type TextProps = React.ComponentProps<typeof KonvaText>;
 
 const Text: React.FC<TextProps> = (props: TextProps) => {
-  return (
-    <Group draggable>
-      <KonvaText {...props} />
-    </Group>
-  );
+  return <KonvaText {...props} />;
 };
 
 export default Text;

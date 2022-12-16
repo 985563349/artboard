@@ -31,8 +31,8 @@ const Artboard: React.FC = () => {
         onMouseMove={trigger}
         onMouseUp={trigger}
       >
-        {/* draw layer */}
-        <Layer name="draw-layer">
+        {/* shapes layer */}
+        <Layer name="shapes-layer">
           {shapes.map((shape) => {
             switch (shape.type) {
               case 'line':
