@@ -22,6 +22,8 @@ declare namespace Shape {
   export type SimpleLine = {
     id: string;
     type: 'simpleLine';
+    x: number;
+    y: number;
     points: number[];
     stroke: string;
     strokeWidth: number;
@@ -32,6 +34,8 @@ declare namespace Shape {
   export type Area = {
     id: string;
     type: 'area';
+    x: number;
+    y: number;
     points: number[];
     fill: string;
     stroke: string;
@@ -47,6 +51,8 @@ declare namespace Shape {
   export type Rule = {
     id: string;
     type: 'ruler';
+    x: number;
+    y: number;
     points: number[];
     stroke: string;
     strokeWidth: number;

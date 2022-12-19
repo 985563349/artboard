@@ -43,6 +43,7 @@ const Artboard: React.FC = () => {
                   <Text
                     {...shape}
                     key={shape.id}
+                    draggable
                     onDragEnd={(e) => {
                       const { x, y } = e.target.getPosition();
                       dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
@@ -55,14 +56,12 @@ const Artboard: React.FC = () => {
                   <SimpleLine
                     {...shape}
                     key={shape.id}
-                    onAnchorDragMove={(point, i) => {
-                      const points = [...shape.points];
-                      points.splice(i * 2, 2, ...point);
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    draggable
+                    onDragEnd={(e) => {
+                      const { x, y } = e.target.getPosition();
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
                     }}
-                    onAnchorDragEnd={(point, i) => {
-                      const points = [...shape.points];
-                      points.splice(i * 2, 2, ...point);
+                    onAnchorDragEnd={(points) => {
                       dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
                     }}
                   />
@@ -73,14 +72,12 @@ const Artboard: React.FC = () => {
                   <Area
                     {...shape}
                     key={shape.id}
-                    onAnchorDragMove={(point, i) => {
-                      const points = [...shape.points];
-                      points.splice(i * 2, 2, ...point);
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    draggable
+                    onDragEnd={(e) => {
+                      const { x, y } = e.target.getPosition();
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
                     }}
-                    onAnchorDragEnd={(point, i) => {
-                      const points = [...shape.points];
-                      points.splice(i * 2, 2, ...point);
+                    onAnchorDragEnd={(points) => {
                       dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
                     }}
                   />
@@ -91,14 +88,12 @@ const Artboard: React.FC = () => {
                   <Ruler
                     {...shape}
                     key={shape.id}
-                    onAnchorDragMove={(point, i) => {
-                      const points = [...shape.points];
-                      points.splice(i * 2, 2, ...point);
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                    draggable
+                    onDragEnd={(e) => {
+                      const { x, y } = e.target.getPosition();
+                      dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
                     }}
-                    onAnchorDragEnd={(point, i) => {
-                      const points = [...shape.points];
-                      points.splice(i * 2, 2, ...point);
+                    onAnchorDragEnd={(points) => {
                       dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
                     }}
                   />

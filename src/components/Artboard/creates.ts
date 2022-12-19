@@ -23,6 +23,8 @@ export const createTextShape = (x: number, y: number): Shape.Text => ({
 export const createSimpleLineShape = (points: number[]): Shape.SimpleLine => ({
   id: uuidv4(),
   type: 'simpleLine',
+  x: 0,
+  y: 0,
   points,
   stroke: '#f40',
   strokeWidth: 10,
@@ -33,6 +35,8 @@ export const createSimpleLineShape = (points: number[]): Shape.SimpleLine => ({
 export const createAreaShape = (points: number[]): Shape.Area => ({
   id: uuidv4(),
   type: 'area',
+  x: 0,
+  y: 0,
   points,
   fill: '#00D2FF',
   stroke: 'black',
@@ -43,6 +47,8 @@ export const createAreaShape = (points: number[]): Shape.Area => ({
 export const createRulerShape = (points: number[]): Shape.Rule => ({
   id: uuidv4(),
   type: 'ruler',
+  x: 0,
+  y: 0,
   points,
   stroke: '#f40',
   strokeWidth: 10,

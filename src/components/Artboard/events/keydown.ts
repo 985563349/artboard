@@ -14,7 +14,7 @@ const keydown = (
 
   const commands: Partial<Record<ActionTypes, VoidFunction>> = {
     [ActionTypes.simpleLine]: () => {
-      if (['Enter', 'Escape'].includes(e.key)) {
+      if (['Escape'].includes(e.key)) {
         dispatch(toggleIsDrawing(false));
       }
     },

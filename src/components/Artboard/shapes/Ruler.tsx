@@ -1,19 +1,38 @@
+import { useEffect, useState } from 'react';
 import { Circle, Group, Line } from 'react-konva';
-import { chunk } from 'lodash';
+import { chunk, clone } from 'lodash';
 
 export type RulerProps = React.ComponentProps<typeof Line> & {
-  selected?: boolean;
-  onAnchorDragMove?: (point: number[], index: number) => void;
-  onAnchorDragEnd?: (point: number[], index: number) => void;
+  points?: number[];
+  onAnchorDragMove?: (points: number[]) => void;
+  onAnchorDragEnd?: (points: number[]) => void;
 };
 
-const Ruler: React.FC<RulerProps> = (props) => {
-  const { points, strokeWidth, onAnchorDragMove, onAnchorDragEnd } = props;
+const Ruler: React.FC<RulerProps> = ({
+  id,
+  name,
+  draggable,
+  x,
+  y,
+  strokeWidth,
+  onDragEnd,
+  onAnchorDragMove,
+  onAnchorDragEnd,
+  ...shapeProps
+}) => {
+  const [points, setPoints] = useState(shapeProps.points);
+
+  useEffect(() => {
+    if ('points' in shapeProps) {
+      setPoints(shapeProps.points);
+    }
+  }, [shapeProps.points]);
+
   const anchors = chunk(points, 2);
 
   return (
-    <Group draggable>
-      <Line {...props} />
+    <Group id={id} name={name} draggable={draggable} x={x} y={y} onDragEnd={onDragEnd}>
+      <Line {...shapeProps} points={points} strokeWidth={strokeWidth} />
 
       {anchors.map(([x, y], i) => (
         <Circle
@@ -26,12 +45,18 @@ const Ruler: React.FC<RulerProps> = (props) => {
           strokeWidth={2}
           draggable
           onDragMove={(e) => {
+            e.cancelBubble = true;
+
             const { x, y } = e.target.getPosition();
-            onAnchorDragMove?.([x, y], i);
+            const newPoints = clone(points!);
+
+            newPoints.splice(i * 2, 2, x, y);
+            setPoints(newPoints);
+            onAnchorDragMove?.(newPoints);
           }}
           onDragEnd={(e) => {
-            const { x, y } = e.target.getPosition();
-            onAnchorDragEnd?.([x, y], i);
+            e.cancelBubble = true;
+            onAnchorDragEnd?.(points!);
           }}
         />
       ))}
