@@ -1,7 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
-
 export const createLineShape = (points: number[]): Shape.Line => ({
-  id: uuidv4(),
+  id: crypto.randomUUID(),
   type: 'line',
   points,
   stroke: '#f40',
@@ -11,7 +9,7 @@ export const createLineShape = (points: number[]): Shape.Line => ({
 });
 
 export const createTextShape = (x: number, y: number): Shape.Text => ({
-  id: uuidv4(),
+  id: crypto.randomUUID(),
   type: 'text',
   text: 'Text',
   x,
@@ -21,7 +19,7 @@ export const createTextShape = (x: number, y: number): Shape.Text => ({
 });
 
 export const createSimpleLineShape = (points: number[]): Shape.SimpleLine => ({
-  id: uuidv4(),
+  id: crypto.randomUUID(),
   type: 'simpleLine',
   x: 0,
   y: 0,
@@ -33,7 +31,7 @@ export const createSimpleLineShape = (points: number[]): Shape.SimpleLine => ({
 });
 
 export const createAreaShape = (points: number[]): Shape.Area => ({
-  id: uuidv4(),
+  id: crypto.randomUUID(),
   type: 'area',
   x: 0,
   y: 0,
@@ -45,7 +43,7 @@ export const createAreaShape = (points: number[]): Shape.Area => ({
 });
 
 export const createRulerShape = (points: number[]): Shape.Rule => ({
-  id: uuidv4(),
+  id: crypto.randomUUID(),
   type: 'ruler',
   x: 0,
   y: 0,
@@ -57,7 +55,7 @@ export const createRulerShape = (points: number[]): Shape.Rule => ({
 });
 
 export const createEraserShape = (points: number[]): Shape.Eraser => ({
-  id: uuidv4(),
+  id: crypto.randomUUID(),
   type: 'eraser',
   points,
   stroke: '#df4b26',
