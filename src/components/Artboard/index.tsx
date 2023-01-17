@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Stage, Layer } from 'react-konva';
 import { useWindowSize } from 'react-use';
+import { Stage, Layer } from 'react-konva';
 
 import { updateShape, RootState } from '@/store';
 import * as events from './events';
 import useShapeEvents from './hooks/useShapeEvents';
+import { ActionTypes } from '@/constants/action-types';
 
-import { Line, Text, SimpleLine, Area, Ruler, Eraser } from '@/components/Artboard/shapes';
+import { Line, Text, SimpleLine, SelectionRect, Area, Ruler, Eraser } from './shapes';
 
 import './index.css';
 
@@ -15,7 +16,7 @@ const Artboard: React.FC = () => {
 
   const dispatch = useDispatch();
   const rootState = useSelector((state: RootState) => state);
-  const lock = rootState.app.lock;
+  const { actionType, lock } = rootState.app;
   const shapes = rootState.shape.present;
 
   const trigger = useShapeEvents(events, { lock, providers: [rootState, dispatch] });
@@ -106,10 +107,11 @@ const Artboard: React.FC = () => {
                 return null;
             }
           })}
-        </Layer>
 
-        {/* Transformer layer */}
-        <Layer name="transformer-layer" />
+          {actionType === ActionTypes.selection && (
+            <SelectionRect onChange={(elements) => console.log(elements)} />
+          )}
+        </Layer>
       </Stage>
     </div>
   );

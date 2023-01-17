@@ -4,6 +4,7 @@ import { chunk, clone } from 'lodash';
 
 export type AreaProps = React.ComponentProps<typeof Line> & {
   points?: number[];
+  selection?: boolean;
   onAnchorDragMove?: (points: number[]) => void;
   onAnchorDragEnd?: (points: number[]) => void;
 };
@@ -12,6 +13,7 @@ const Area: React.FC<AreaProps> = ({
   id,
   name,
   draggable,
+  selection,
   x,
   y,
   strokeWidth,
@@ -31,7 +33,15 @@ const Area: React.FC<AreaProps> = ({
   const anchors = chunk(points, 2);
 
   return (
-    <Group id={id} name={name} draggable={draggable} x={x} y={y} onDragEnd={onDragEnd}>
+    <Group
+      id={id}
+      name={name}
+      draggable={draggable}
+      selection={selection}
+      x={x}
+      y={y}
+      onDragEnd={onDragEnd}
+    >
       <Line {...shapeProps} points={points} strokeWidth={strokeWidth} closed />
 
       {anchors.map(([x, y], i) => (

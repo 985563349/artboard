@@ -17,6 +17,7 @@ declare namespace Shape {
     y: number;
     fill: string;
     fontSize: number;
+    selection: boolean;
   };
 
   export type SimpleLine = {
@@ -29,6 +30,7 @@ declare namespace Shape {
     strokeWidth: number;
     lineCap: 'butt' | 'round' | 'square';
     lineJoin: 'round' | 'bevel' | 'miter';
+    selection: boolean;
   };
 
   export type Area = {
@@ -41,6 +43,7 @@ declare namespace Shape {
     stroke: string;
     strokeWidth: number;
     closed: boolean;
+    selection: boolean;
   };
 
   export type Image = {
@@ -58,6 +61,7 @@ declare namespace Shape {
     strokeWidth: number;
     lineCap: 'butt' | 'round' | 'square';
     lineJoin: 'round' | 'bevel' | 'miter';
+    selection: boolean;
   };
 
   export type Eraser = {

@@ -16,6 +16,7 @@ export const createTextShape = (x: number, y: number): Shape.Text => ({
   y,
   fill: '#f40',
   fontSize: 32,
+  selection: true,
 });
 
 export const createSimpleLineShape = (points: number[]): Shape.SimpleLine => ({
@@ -28,6 +29,7 @@ export const createSimpleLineShape = (points: number[]): Shape.SimpleLine => ({
   strokeWidth: 10,
   lineCap: 'round',
   lineJoin: 'round',
+  selection: true,
 });
 
 export const createAreaShape = (points: number[]): Shape.Area => ({
@@ -40,6 +42,7 @@ export const createAreaShape = (points: number[]): Shape.Area => ({
   stroke: 'black',
   strokeWidth: 10,
   closed: true,
+  selection: true,
 });
 
 export const createRulerShape = (points: number[]): Shape.Rule => ({
@@ -52,6 +55,7 @@ export const createRulerShape = (points: number[]): Shape.Rule => ({
   strokeWidth: 10,
   lineCap: 'round',
   lineJoin: 'round',
+  selection: true,
 });
 
 export const createEraserShape = (points: number[]): Shape.Eraser => ({

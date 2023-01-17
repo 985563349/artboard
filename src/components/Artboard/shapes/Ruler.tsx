@@ -4,6 +4,7 @@ import { chunk, clone } from 'lodash';
 
 export type RulerProps = React.ComponentProps<typeof Line> & {
   points?: number[];
+  selection?: boolean;
   onAnchorDragMove?: (points: number[]) => void;
   onAnchorDragEnd?: (points: number[]) => void;
 };
@@ -12,6 +13,7 @@ const Ruler: React.FC<RulerProps> = ({
   id,
   name,
   draggable,
+  selection,
   x,
   y,
   strokeWidth,
@@ -31,7 +33,15 @@ const Ruler: React.FC<RulerProps> = ({
   const anchors = chunk(points, 2);
 
   return (
-    <Group id={id} name={name} draggable={draggable} x={x} y={y} onDragEnd={onDragEnd}>
+    <Group
+      id={id}
+      name={name}
+      draggable={draggable}
+      selection={selection}
+      x={x}
+      y={y}
+      onDragEnd={onDragEnd}
+    >
       <Line {...shapeProps} points={points} strokeWidth={strokeWidth} />
 
       {anchors.map(([x, y], i) => (
