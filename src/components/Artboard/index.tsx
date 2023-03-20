@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useWindowSize } from 'react-use';
 import { Stage, Layer } from 'react-konva';
+import { camelCase } from 'lodash';
 
-import { updateShape, RootState } from '@/store';
-import * as events from './events';
-import useShapeEvents from './hooks/useShapeEvents';
 import { ActionTypes } from '@/constants/action-types';
+import { updateShape, RootState } from '@/store';
 
+import * as commands from './commands';
+import useMachine from './hooks/useMachine';
 import { Line, Text, SimpleLine, SelectionRect, Area, Ruler, Eraser } from './shapes';
 
 import './index.css';
@@ -16,10 +17,15 @@ const Artboard: React.FC = () => {
 
   const dispatch = useDispatch();
   const rootState = useSelector((state: RootState) => state);
+
   const { actionType, lock } = rootState.app;
   const shapes = rootState.shape.present;
 
-  const trigger = useShapeEvents(events, { lock, providers: [rootState, dispatch] });
+  const state = camelCase(actionType as string);
+  const trigger = useMachine(state, commands, {
+    lock,
+    providers: [rootState, dispatch],
+  });
 
   return (
     <div className="artboard" tabIndex={1} onKeyDown={trigger}>
