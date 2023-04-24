@@ -14,75 +14,72 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange }) => {
   const trRef = useRef<Konva.Transformer>(null);
   const globalKonva = (window as any).Konva;
 
-  useEffect(() => {
-    const stage = selectionRectRef.current?.getStage();
-    stage?.on('mousedown', onMouseDown);
-    stage?.on('mousemove', onMouseMove);
-    stage?.on('mouseup', onMouseUp);
-
-    return () => {
-      stage?.off('mousedown', onMouseDown);
-      stage?.on('mousemove', onMouseMove);
-      stage?.on('mouseup', onMouseUp);
-    };
-  }, []);
-
-  const updateSelectionRect = () => {
-    const node = selectionRectRef.current;
-    node?.setAttrs({
-      visible: selection.current.visible,
-      x: Math.min(selection.current.x1, selection.current.x2),
-      y: Math.min(selection.current.y1, selection.current.y2),
-      width: Math.abs(selection.current.x1 - selection.current.x2),
-      height: Math.abs(selection.current.y1 - selection.current.y2),
-      fill: 'rgba(0, 161, 255, 0.3)',
-    });
-    node?.getLayer()?.batchDraw();
-  };
-
   const onMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
-    const isElement = e.target.findAncestor('.elements-container');
-    const isTransformer = e.target.findAncestor('Transformer');
-    if (isElement || isTransformer) {
+    // do nothing if we mousedown on any shape
+    const stage = e.target?.getStage();
+
+    if (e.target !== stage) {
       return;
     }
-    const pos = e.target?.getStage()?.getPointerPosition()!;
+    e.evt.preventDefault();
+
+    const pos = stage.getPointerPosition()!;
+
     selection.current.visible = true;
     selection.current.x1 = pos.x;
     selection.current.y1 = pos.y;
     selection.current.x2 = pos.x;
     selection.current.y2 = pos.y;
-    updateSelectionRect();
+
+    selectionRectRef.current?.visible(true);
+    selectionRectRef.current?.width(0);
+    selectionRectRef.current?.height(0);
   };
 
   const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
-    if (!selection.current.visible) {
+    // do nothing if we didn't start selection
+    if (!selectionRectRef.current?.visible()) {
       return;
     }
-    const pos = e.target?.getStage()?.getPointerPosition()!;
+    e.evt.preventDefault();
+
+    const stage = e.target.getStage()!;
+    const pos = stage.getPointerPosition()!;
     selection.current.x2 = pos.x;
     selection.current.y2 = pos.y;
-    updateSelectionRect();
+
+    const node = selectionRectRef.current;
+
+    node.setAttrs({
+      visible: selection.current.visible,
+      x: Math.min(selection.current.x1, selection.current.x2),
+      y: Math.min(selection.current.y1, selection.current.y2),
+      width: Math.abs(selection.current.x1 - selection.current.x2),
+      height: Math.abs(selection.current.y1 - selection.current.y2),
+    });
   };
 
-  const onMouseUp = () => {
-    if (!selection.current.visible) {
+  const onMouseUp = (e: Konva.KonvaEventObject<MouseEvent>) => {
+    // do nothing if we didn't start selection
+    if (!selectionRectRef.current?.visible()) {
       return;
     }
-    const layer = selectionRectRef.current?.getLayer();
+    e.evt.preventDefault();
+    // update visibility in timeout, so we can check it in click event
+    setTimeout(() => {
+      selectionRectRef.current?.visible(false);
+    });
+
+    const stage = e.target?.getStage()!;
     const selBox = selectionRectRef.current?.getClientRect();
     const elements: Konva.Node[] = [];
 
-    layer?.find((elementNode: Konva.Node) => {
+    stage?.find((elementNode: Konva.Node) => {
       const elBox = elementNode.getClientRect();
       if (elementNode.getAttr('selection') && globalKonva.Util.haveIntersection(selBox, elBox)) {
         elements.push(elementNode);
       }
     });
-
-    selection.current.visible = false;
-    // disable click event
-    globalKonva.listenClickTap = false;
 
     // shallow comparison of data before and after selection
     const trNodes = trRef.current?.getNodes();
@@ -90,8 +87,59 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange }) => {
       trRef.current?.nodes(elements);
       onChange?.(elements);
     }
-    updateSelectionRect();
   };
+
+  const onClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
+    if (selectionRectRef.current?.visible()) {
+      return;
+    }
+
+    const stage = e.target?.getStage();
+
+    if (e.target === stage) {
+      trRef.current?.nodes([]);
+      return;
+    }
+
+    if (!e.target.getAttr('selection')) {
+      return;
+    }
+
+    const metaPressed = e.evt.shiftKey || e.evt.ctrlKey || e.evt.metaKey;
+    const isSelected = trRef.current?.nodes().includes(e.target);
+
+    if (!metaPressed && !isSelected) {
+      // if no key pressed and the node is not selected
+      // select just one
+      trRef.current?.nodes([e.target]);
+    } else if (metaPressed && isSelected) {
+      // if we pressed keys and node was selected
+      // we need to remove it from selection:
+      const nodes = trRef.current?.nodes().slice()!; // use slice to have new copy of array
+      // remove node from array
+      nodes?.splice(nodes.indexOf(e.target), 1);
+      trRef.current?.nodes(nodes);
+    } else if (metaPressed && !isSelected) {
+      // add the node into selection
+      const nodes = trRef.current?.nodes().concat([e.target])!;
+      trRef.current?.nodes(nodes);
+    }
+  };
+
+  useEffect(() => {
+    const stage = selectionRectRef.current?.getStage();
+    stage?.on('mousedown', onMouseDown);
+    stage?.on('mousemove', onMouseMove);
+    stage?.on('mouseup', onMouseUp);
+    stage?.on('click', onClick);
+
+    return () => {
+      stage?.off('mousedown', onMouseDown);
+      stage?.on('mousemove', onMouseMove);
+      stage?.on('mouseup', onMouseUp);
+      stage?.on('click', onClick);
+    };
+  }, [onMouseDown, onMouseMove, onMouseUp, onClick]);
 
   return (
     <>
