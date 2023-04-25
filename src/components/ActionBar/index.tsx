@@ -21,18 +21,19 @@ import type { AppDispatch, RootState } from '@/store';
 import { ActionTypes } from '@/constants/action-types';
 
 import './index.css';
+import { useEffect } from 'react';
 
 const options = [
-  { type: ActionTypes.selection, icon: Location },
-  { type: ActionTypes.line, icon: Scribble },
-  { type: ActionTypes.text, icon: LetterT },
-  { type: ActionTypes.simpleLine, icon: Timeline },
-  { type: ActionTypes.area, icon: Shape },
-  { type: ActionTypes.image, icon: Photo },
-  { type: ActionTypes.capture, icon: Crop },
-  { type: ActionTypes.ruler, icon: Ruler2 },
-  { type: ActionTypes.eraser, icon: Eraser },
+  { type: ActionTypes.selection, icon: Location, keyCode: 1 },
+  { type: ActionTypes.line, icon: Scribble, keyCode: 2 },
+  { type: ActionTypes.text, icon: LetterT, keyCode: 3 },
+  { type: ActionTypes.simpleLine, icon: Timeline, keyCode: 4 },
+  { type: ActionTypes.area, icon: Shape, keyCode: 5 },
+  { type: ActionTypes.capture, icon: Crop, keyCode: 6 },
+  { type: ActionTypes.ruler, icon: Ruler2, keyCode: 7 },
+  { type: ActionTypes.eraser, icon: Eraser, keyCode: 8 },
   { type: ActionTypes.colorPicker, icon: ColorPicker },
+  { type: ActionTypes.image, icon: Photo },
 ];
 
 const ActionBar = () => {
@@ -51,6 +52,23 @@ const ActionBar = () => {
       dispatch(toggleActionType(type !== actionType ? type : null));
     }
   };
+
+  const onKeydown = (e: KeyboardEvent) => {
+    if ((e.target as Element)?.nodeName === 'INPUT') {
+      return;
+    }
+    const type = options.find(({ keyCode }) => keyCode?.toString() === e.key)?.type;
+    if (type) {
+      dispatch(toggleActionType(type !== actionType ? type : null));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', onKeydown);
+    return () => {
+      document.removeEventListener('keydown', onKeydown);
+    };
+  }, [onKeydown]);
 
   return (
     <div className="action-bar">
