@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type Konva from 'konva';
-import { Rect, Transformer } from 'react-konva';
+import { Group, Rect, Transformer } from 'react-konva';
 
 import { shallowEqual } from '@/utils';
 
@@ -142,7 +142,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange }) => {
   }, [onMouseDown, onMouseMove, onMouseUp, onClick]);
 
   return (
-    <>
+    <Group>
       <Rect fill="rgba(0,0,255,0.5)" ref={selectionRectRef} />
 
       <Transformer
@@ -155,7 +155,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange }) => {
           return newBox;
         }}
       />
-    </>
+    </Group>
   );
 };
 

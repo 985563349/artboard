@@ -6,9 +6,11 @@ import { camelCase } from 'lodash';
 import { ActionTypes } from '@/constants/action-types';
 import { updateShape, RootState } from '@/store';
 
-import * as commands from './commands';
 import useMachine from './hooks/useMachine';
-import { Line, Text, SimpleLine, SelectionRect, Area, Ruler, Eraser } from './shapes';
+import * as commands from './commands';
+
+import { Line, Text, SimpleLine, Area, Ruler, Eraser } from './shapes';
+import { SelectionRect } from './extensions';
 
 import './index.css';
 
