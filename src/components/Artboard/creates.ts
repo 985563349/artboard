@@ -8,10 +8,10 @@ export const createLineShape = (points: number[]): Shape.Line => ({
   lineCap: 'round',
 });
 
-export const createTextShape = (x: number, y: number): Shape.Text => ({
+export const createTextShape = (x: number, y: number, text: string): Shape.Text => ({
   id: crypto.randomUUID(),
   type: 'text',
-  text: 'Text',
+  text,
   x,
   y,
   fill: '#f40',
