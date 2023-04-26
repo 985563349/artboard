@@ -10,13 +10,13 @@ specifiers:
   '@types/react': ^18.0.26
   '@types/react-dom': ^18.0.9
   '@vitejs/plugin-react-swc': ^3.0.0
-  konva: ^8.3.14
+  konva: ^9.0.1
   lodash: ^4.17.21
   react: ^18.2.0
   react-dom: ^18.2.0
   react-draggable: ^4.4.5
-  react-konva: ^18.2.3
-  react-konva-utils: ^0.3.0
+  react-konva: ^18.2.7
+  react-konva-utils: ^1.0.4
   react-redux: ^8.0.5
   react-use: ^17.4.0
   redux-undo: ^1.0.1
@@ -29,13 +29,13 @@ dependencies:
   '@mantine/core': 5.9.0_57dfaobsal6lqsc6czlk3ejmge
   '@mantine/hooks': 5.9.0_react@18.2.0
   '@reduxjs/toolkit': 1.9.1_k4ae6lp43ej6mezo3ztvx6pykq
-  konva: 8.3.14
+  konva: 9.0.1
   lodash: 4.17.21
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-draggable: 4.4.5_biqbaboplfbrettd7655fr4n2y
-  react-konva: 18.2.3_b37p36zhls44rqmxgh4mahumjq
-  react-konva-utils: 0.3.0_b37p36zhls44rqmxgh4mahumjq
+  react-konva: 18.2.7_uqe3zrqiwmgwvxxbpngihu5cam
+  react-konva-utils: 1.0.4_uqe3zrqiwmgwvxxbpngihu5cam
   react-redux: 8.0.5_yqqa5ithnjtlkxisuaub7c4kpa
   react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
   redux-undo: 1.0.1
@@ -763,8 +763,8 @@ packages:
     dependencies:
       '@types/react': 18.0.26
 
-  /@types/react-reconciler/0.28.0:
-    resolution: {integrity: sha512-5cjk9ottZAj7eaTsqzPUIlrVbh3hBAO2YaEL1rkjHKB3xNAId7oU8GhzvAX+gfmlfoxTwJnBjPxEHyxkEA1Ffg==}
+  /@types/react-reconciler/0.28.2:
+    resolution: {integrity: sha512-8tu6lHzEgYPlfDf/J6GOQdIc+gs+S2yAqlby3zTsB3SP2svlqTYe5fwZNtZyfactP74ShooP2vvi1BOp9ZemWw==}
     dependencies:
       '@types/react': 18.0.26
     dev: false
@@ -1040,7 +1040,7 @@ packages:
     peerDependencies:
       react: '>=18.0'
     dependencies:
-      '@types/react-reconciler': 0.28.0
+      '@types/react-reconciler': 0.28.2
       react: 18.2.0
     dev: false
 
@@ -1056,8 +1056,8 @@ packages:
     resolution: {integrity: sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==}
     dev: false
 
-  /konva/8.3.14:
-    resolution: {integrity: sha512-6I/TZppgY3Frs//AvZ87YVQLFxLywitb8wLS3qMM+Ih9e4QcB5Yy8br6eq7DdUzxPdbsYTz1FQBHzNxs08M1Tw==}
+  /konva/9.0.1:
+    resolution: {integrity: sha512-wzpkprJ8idE42TDF9Lu9RNjVVYNXrj0apvTK3pujdHQhX1iNV+MUquSxYN8HqjYSG95QQ51jhFzRLWhnhf44Mw==}
     dev: false
 
   /lines-and-columns/1.2.4:
@@ -1184,29 +1184,30 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: false
 
-  /react-konva-utils/0.3.0_b37p36zhls44rqmxgh4mahumjq:
-    resolution: {integrity: sha512-yH5FVpDGQ8gHeClyHY533M4oSLjEfYuvn+Z29zXm9osjhuulhtJrh5k+wtyY6QSC0MG0ioqE0cjiudGl1WGB9A==}
+  /react-konva-utils/1.0.4_uqe3zrqiwmgwvxxbpngihu5cam:
+    resolution: {integrity: sha512-K1J1K9MoVNGFrUxYt+dn7TUVqpppW3Y0fRcf42Ws1wzTQ2Od4qicCom9jnGxLiwh8zyhYaHAUn3hztgfTyYF7g==}
     peerDependencies:
-      konva: ^8.3.5
-      react: ^18.0.0
-      react-dom: ^18.0.0
+      konva: ^8.3.5 || ^9.0.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
     dependencies:
-      konva: 8.3.14
+      konva: 9.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      react-konva: 18.2.3_b37p36zhls44rqmxgh4mahumjq
+      react-konva: 18.2.7_uqe3zrqiwmgwvxxbpngihu5cam
       use-image: 1.1.0_biqbaboplfbrettd7655fr4n2y
     dev: false
 
-  /react-konva/18.2.3_b37p36zhls44rqmxgh4mahumjq:
-    resolution: {integrity: sha512-OPxjBTgaEGU9pt/VJSVM7QNXYHEZ5CkulX+4fTTvbaH+Wh+vMLbXmH3yjWw4kT/5Qi6t0UQKHPPmirCv8/9sdg==}
+  /react-konva/18.2.7_uqe3zrqiwmgwvxxbpngihu5cam:
+    resolution: {integrity: sha512-Q52ghaIR+2g3x14V5aIyt7VWNqPnWRotILo0Nj4YWVbNQisozrTJJ3/w68qb5Ar2fsYo7yXb4T6Nt4yZcGd2yg==}
     peerDependencies:
-      konva: ^8.0.1 || ^7.2.5
+      konva: ^8.0.1 || ^7.2.5 || ^9.0.0
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
     dependencies:
+      '@types/react-reconciler': 0.28.2
       its-fine: 1.0.6_react@18.2.0
-      konva: 8.3.14
+      konva: 9.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-reconciler: 0.29.0_react@18.2.0
