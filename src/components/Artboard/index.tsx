@@ -23,7 +23,7 @@ const Artboard: React.FC = () => {
   const { actionType, lock } = rootState.app;
   const shapes = rootState.shape.present;
 
-  const state = camelCase(actionType as string);
+  const state = camelCase(actionType);
   const trigger = useMachine(state, commands, {
     lock,
     providers: [rootState, dispatch],

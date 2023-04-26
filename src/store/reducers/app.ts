@@ -5,7 +5,7 @@ import { ActionTypes } from '@/constants/action-types';
 import type { RootState } from '../configureStore';
 
 export interface AppState {
-  actionType: ActionTypes | null;
+  actionType: ActionTypes;
   lock: boolean;
   isDrawing: boolean;
   drag: {
@@ -16,7 +16,7 @@ export interface AppState {
 }
 
 const initialState: AppState = {
-  actionType: null,
+  actionType: ActionTypes.selection,
   lock: false,
   isDrawing: false,
   drag: {
@@ -30,7 +30,7 @@ export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    toggleActionType: (state, action: PayloadAction<ActionTypes | null>) => {
+    toggleActionType: (state, action: PayloadAction<ActionTypes>) => {
       state.actionType = action.payload;
     },
     toggleLock: (state, action: PayloadAction<boolean>) => {

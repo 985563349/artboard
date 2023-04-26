@@ -45,22 +45,30 @@ const ActionBar = () => {
   const canRedo = useSelector((state: RootState) => state.shape.future.length > 0);
 
   const handleClick = (type: ActionTypes) => {
+    if (type === actionType) {
+      return;
+    }
+
     if (type === ActionTypes.image) {
       // TODO: open image
       console.log('open image');
-    } else {
-      dispatch(toggleActionType(type !== actionType ? type : null));
     }
+
+    dispatch(toggleActionType(type));
   };
 
   const onKeydown = (e: KeyboardEvent) => {
     if ((e.target as Element)?.nodeName === 'INPUT') {
       return;
     }
+
     const type = options.find(({ keyCode }) => keyCode?.toString() === e.key)?.type;
-    if (type) {
-      dispatch(toggleActionType(type !== actionType ? type : null));
+
+    if (type == null || type === actionType) {
+      return;
     }
+
+    dispatch(toggleActionType(type!));
   };
 
   useEffect(() => {
