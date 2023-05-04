@@ -1,7 +1,7 @@
 import type { Dispatch, AnyAction } from '@reduxjs/toolkit';
 import type { KonvaEventObject } from 'konva/lib/Node';
 
-import { addShape, toggleIsDrawing } from '@/store';
+import { addShape, toggleIsDrawing, updateShape } from '@/store';
 import type { RootState } from '@/store';
 
 import { createTextShape } from '../creates';
@@ -12,14 +12,15 @@ export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
   return {
     click: (e: KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();
-      const point = e.target.getStage()?.getPointerPosition();
+      const clickedOnText = e.target.getAttrs().type === 'text';
+      const point = clickedOnText ? e.target.getAttrs() : e.target.getStage()?.getPointerPosition();
 
       if (isDrawing) {
         dispatch(toggleIsDrawing(false));
         return;
       }
 
-      if (clickedOnEmpty && point) {
+      if ((clickedOnEmpty || clickedOnText) && point) {
         dispatch(toggleIsDrawing(true));
 
         const { x, y } = point;
@@ -38,17 +39,28 @@ export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
           background: none;
         `;
 
-        input.onkeydown = (e) => {
-          if (e.key === 'Escape') {
+        // if the current click is text, it is considered an editing operation
+        if (clickedOnText) {
+          input.value = e.target.getAttr('text');
+          e.target.visible(false);
+        }
+
+        input.onkeydown = ({ key }) => {
+          if (key === 'Escape') {
             input.blur();
           }
         };
 
-        input.onblur = (e) => {
-          const text = (e.target as HTMLInputElement).value;
-          if (text.trim().length) {
+        input.onblur = ({ target }) => {
+          const text = (target as HTMLInputElement).value;
+
+          if (clickedOnText) {
+            e.target.visible(true);
+            dispatch(updateShape({ id: e.target.getAttr('id'), attrs: { text } }));
+          } else if (text.trim().length) {
             dispatch(addShape(createTextShape(x, y, text)));
           }
+
           input.remove();
         };
 
