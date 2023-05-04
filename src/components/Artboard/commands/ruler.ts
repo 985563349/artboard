@@ -3,7 +3,6 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 
 import { addShape } from '@/store';
 import type { RootState } from '@/store';
-
 import { createRulerShape } from '../creates';
 
 export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {

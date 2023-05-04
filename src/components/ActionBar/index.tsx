@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
 import { ActionIcon, Card, Divider, Group, useMantineTheme } from '@mantine/core';
@@ -21,7 +22,6 @@ import type { AppDispatch, RootState } from '@/store';
 import { ActionTypes } from '@/constants/action-types';
 
 import './index.css';
-import { useEffect } from 'react';
 
 const options = [
   { type: ActionTypes.selection, icon: Location, keyCode: 1 },

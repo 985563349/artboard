@@ -3,7 +3,6 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 
 import { addShape, toggleIsDrawing, updateShape } from '@/store';
 import type { RootState } from '@/store';
-
 import { createTextShape } from '../creates';
 
 export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {

@@ -3,7 +3,6 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 
 import { toggleIsDrawing, addShape, updateShape } from '@/store';
 import type { RootState } from '@/store';
-
 import { createAreaShape } from '../creates';
 
 export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
