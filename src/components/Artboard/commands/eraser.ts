@@ -32,7 +32,7 @@ export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
           dispatch(
             updateShape({
               id: shape.id,
-              shape: { ...shape, points: shape.points.concat([point.x, point.y]) },
+              attrs: { points: shape.points.concat([point.x, point.y]) },
             })
           );
         }
@@ -43,7 +43,7 @@ export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
       let shape = shapes.at(-1);
       // draw end generation history
       if (shape?.type === 'eraser') {
-        dispatch(updateShape({ id: shape.id, shape: { ...shape } }));
+        dispatch(updateShape({ id: shape.id, attrs: { ...shape } }));
       }
       dispatch(toggleIsDrawing(false));
     },

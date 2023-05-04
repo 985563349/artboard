@@ -55,7 +55,7 @@ const Artboard: React.FC = () => {
                     draggable
                     onDragEnd={(e) => {
                       const { x, y } = e.target.getPosition();
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
+                      dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
                     }}
                   />
                 );
@@ -68,10 +68,10 @@ const Artboard: React.FC = () => {
                     draggable
                     onDragEnd={(e) => {
                       const { x, y } = e.target.getPosition();
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
+                      dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
                     }}
                     onAnchorDragEnd={(points) => {
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                      dispatch(updateShape({ id: shape.id, attrs: { points } }));
                     }}
                   />
                 );
@@ -84,10 +84,10 @@ const Artboard: React.FC = () => {
                     draggable
                     onDragEnd={(e) => {
                       const { x, y } = e.target.getPosition();
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
+                      dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
                     }}
                     onAnchorDragEnd={(points) => {
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                      dispatch(updateShape({ id: shape.id, attrs: { points } }));
                     }}
                   />
                 );
@@ -100,10 +100,10 @@ const Artboard: React.FC = () => {
                     draggable
                     onDragEnd={(e) => {
                       const { x, y } = e.target.getPosition();
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, x, y } }));
+                      dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
                     }}
                     onAnchorDragEnd={(points) => {
-                      dispatch(updateShape({ id: shape.id, shape: { ...shape, points } }));
+                      dispatch(updateShape({ id: shape.id, attrs: { points } }));
                     }}
                   />
                 );

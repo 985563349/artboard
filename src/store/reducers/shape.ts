@@ -21,9 +21,12 @@ export const shapeSlice = createSlice({
     addShape: (state, action: PayloadAction<ShapeState>) => {
       state.push(action.payload);
     },
-    updateShape: (state, action: PayloadAction<{ id: string; shape: ShapeState }>) => {
-      const { id, shape } = action.payload;
-      state.splice(state.findIndex((item) => item.id === id) >>> 0, 1, shape);
+    updateShape: (state, action: PayloadAction<{ id: string; attrs: Partial<ShapeState> }>) => {
+      const { id, attrs } = action.payload;
+      const index = state.findIndex((item) => item.id === id);
+      if (index !== -1) {
+        state.splice(index, 1, { ...state[index], ...attrs } as ShapeState);
+      }
     },
   },
 });

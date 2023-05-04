@@ -27,7 +27,7 @@ export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
           dispatch(
             updateShape({
               id: shape.id,
-              shape: { ...shape, points: shape.points.concat([x, y]) },
+              attrs: { points: shape.points.concat([x, y]) },
             })
           );
         }
