@@ -20,12 +20,12 @@ const Artboard: React.FC = () => {
   const dispatch = useDispatch();
   const rootState = useSelector((state: RootState) => state);
 
-  const { actionType, lock } = rootState.app;
+  const { actionType, lock, drag } = rootState.app;
   const shapes = rootState.shape.present;
 
   const state = camelCase(actionType);
   const trigger = useMachine(state, commands, {
-    lock,
+    lock: lock || drag.draggable,
     providers: [rootState, dispatch],
   });
 
