@@ -6,7 +6,6 @@ import {
   ArrowBackUp,
   ArrowForwardUp,
   Crop,
-  ColorPicker,
   Eraser,
   LetterT,
   Location,
@@ -32,7 +31,6 @@ const options = [
   { type: ActionTypes.capture, icon: Crop, keyCode: 6 },
   { type: ActionTypes.ruler, icon: Ruler2, keyCode: 7 },
   { type: ActionTypes.eraser, icon: Eraser, keyCode: 8 },
-  { type: ActionTypes.colorPicker, icon: ColorPicker },
   { type: ActionTypes.image, icon: Photo },
 ];
 

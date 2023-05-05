@@ -8,5 +8,4 @@ export enum ActionTypes {
   capture = 'capture',
   ruler = 'ruler',
   eraser = 'eraser',
-  colorPicker = 'color-picker',
 }
