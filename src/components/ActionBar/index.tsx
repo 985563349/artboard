@@ -34,7 +34,7 @@ const options = [
   { type: ActionTypes.image, icon: Photo },
 ];
 
-const ActionBar = () => {
+const ActionBar: React.FC = () => {
   const theme = useMantineTheme();
 
   const dispatch = useDispatch<AppDispatch>();

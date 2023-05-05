@@ -9,10 +9,10 @@ export type DraggableProps = {
 };
 
 const Draggable: React.FC<DraggableProps> = ({ children }) => {
-  const nodeRef = useRef<HTMLDivElement | null>(null);
-
   const dispatch = useDispatch();
   const drag = useSelector(selectDrag);
+  const nodeRef = useRef<HTMLDivElement | null>(null);
+
   const { draggable, ...position } = drag;
 
   return (

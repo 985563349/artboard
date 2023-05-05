@@ -13,6 +13,13 @@ export interface AppState {
     x: number;
     y: number;
   };
+  panel: {
+    stroke: string;
+    background: string;
+    opacity: number;
+    strokeWidth: number;
+    fontSize: number;
+  };
 }
 
 const initialState: AppState = {
@@ -23,6 +30,13 @@ const initialState: AppState = {
     draggable: false,
     x: 0,
     y: 0,
+  },
+  panel: {
+    stroke: '#ff4400',
+    background: '#ff4400',
+    opacity: 1,
+    strokeWidth: 1,
+    fontSize: 32,
   },
 };
 
@@ -42,14 +56,19 @@ export const appSlice = createSlice({
     updateDrag: (state, action: PayloadAction<AppState['drag']>) => {
       state.drag = action.payload;
     },
+    updatePanel: (state, action: PayloadAction<AppState['panel']>) => {
+      state.panel = action.payload;
+    },
   },
 });
 
-export const { toggleActionType, toggleLock, toggleIsDrawing, updateDrag } = appSlice.actions;
+export const { toggleActionType, toggleLock, toggleIsDrawing, updateDrag, updatePanel } =
+  appSlice.actions;
 
 export const selectActionType = (state: RootState) => state.app.actionType;
 export const selectLock = (state: RootState) => state.app.lock;
 export const selectIsDrawing = (state: RootState) => state.app.isDrawing;
 export const selectDrag = (state: RootState) => state.app.drag;
+export const selectPanel = (state: RootState) => state.app.panel;
 
 export default appSlice.reducer;

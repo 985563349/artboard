@@ -8,16 +8,13 @@ export const createLineShape = (points: number[]): Shape.Line => ({
   lineCap: 'round',
 });
 
-export const createTextShape = (x: number, y: number, text: string): Shape.Text => ({
-  id: crypto.randomUUID(),
-  type: 'text',
-  text,
-  x,
-  y,
-  fill: '#f40',
-  fontSize: 32,
-  selection: true,
-});
+export const createTextShape = (attrs: Omit<Shape.Text, 'id' | 'type' | 'selection'>): Shape.Text =>
+  ({
+    id: crypto.randomUUID(),
+    type: 'text',
+    selection: true,
+    ...attrs,
+  } as any);
 
 export const createSimpleLineShape = (points: number[]): Shape.SimpleLine => ({
   id: crypto.randomUUID(),

@@ -4,16 +4,19 @@ import ToolBar from '@/components/ToolBar';
 import Draggable from './components/Draggable';
 
 import './App.css';
+import Panel from './components/Panel';
 
 function App() {
   return (
     <div className="App">
+      <ToolBar />
+
       <Draggable>
         <Artboard />
       </Draggable>
 
-      <ToolBar />
       <ActionBar />
+      <Panel />
     </div>
   );
 }

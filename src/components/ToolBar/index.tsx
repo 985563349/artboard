@@ -7,7 +7,7 @@ import type { AppDispatch } from '@/store';
 
 import './index.css';
 
-const ToolBar = () => {
+const ToolBar: React.FC = () => {
   const theme = useMantineTheme();
   const dispatch = useDispatch<AppDispatch>();
 

@@ -5,16 +5,24 @@
   background-color: #e5e5ea;
 }
 
-.action-bar {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .toolbar {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   left: 20px;
+  z-index: 1;
+}
+
+.action-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.panel {
+  position: absolute;
+  top: 80px;
+  right: 20px;
 }

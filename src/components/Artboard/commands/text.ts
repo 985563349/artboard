@@ -6,7 +6,7 @@ import type { RootState } from '@/store';
 import { createTextShape } from '../creates';
 
 export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
-  const { isDrawing } = rootState.app;
+  const { isDrawing, panel } = rootState.app;
 
   return {
     click: (e: KonvaEventObject<MouseEvent>) => {
@@ -29,11 +29,11 @@ export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
           position: absolute;
           left: ${x}px;
           top: ${y}px;
-          font-size: ${32}px;
+          font-size: ${panel.fontSize}px;
           margin: 0;
           padding: 0;
           outline: none;
-          color: #f40;
+          color: ${panel.stroke};
           border: none;
           background: none;
         `;
@@ -57,7 +57,11 @@ export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
             e.target.visible(true);
             dispatch(updateShape({ id: e.target.getAttr('id'), attrs: { text } }));
           } else if (text.trim().length) {
-            dispatch(addShape(createTextShape(x, y, text)));
+            dispatch(
+              addShape(
+                createTextShape({ x, y, text, fill: panel.stroke, fontSize: panel.fontSize })
+              )
+            );
           }
 
           input.remove();
@@ -65,6 +69,7 @@ export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
 
         document.body.appendChild(input);
         input.focus();
+        input.setSelectionRange(0, input.value.length);
       }
     },
   };
