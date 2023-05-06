@@ -4,13 +4,14 @@ import { Stage, Layer } from 'react-konva';
 import { camelCase } from 'lodash';
 
 import { ActionTypes } from '@/constants/action-types';
-import { updateShape, RootState } from '@/store';
+import { updateShape, updateSelectedShapes } from '@/store';
+import type { RootState } from '@/store';
 
 import useMachine from './hooks/useMachine';
 import * as commands from './commands';
+import { SelectionRect } from './extensions';
 
 import { Line, Text, SimpleLine, Area, Ruler, Eraser } from './shapes';
-import { SelectionRect } from './extensions';
 
 import './index.css';
 
@@ -54,8 +55,8 @@ const Artboard: React.FC = () => {
                     key={shape.id}
                     draggable
                     onDragEnd={(e) => {
-                      // const { x, y } = e.target.getPosition();
-                      // dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
+                      const { x, y } = e.target.getPosition();
+                      dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
                     }}
                   />
                 );
@@ -118,7 +119,10 @@ const Artboard: React.FC = () => {
 
           {actionType === ActionTypes.selection && (
             <SelectionRect
-              onChange={(elements) => console.log(elements)}
+              onChange={(nodes) => {
+                const selectedShapes = nodes.map((node) => node.getAttrs());
+                dispatch(updateSelectedShapes(selectedShapes));
+              }}
               onDragEnd={(e) => console.log(e)}
             />
           )}

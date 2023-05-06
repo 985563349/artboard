@@ -20,6 +20,7 @@ export interface AppState {
     strokeWidth: number;
     fontSize: number;
   };
+  selectedShapes: Array<Shape.Text>;
 }
 
 const initialState: AppState = {
@@ -38,6 +39,7 @@ const initialState: AppState = {
     strokeWidth: 1,
     fontSize: 32,
   },
+  selectedShapes: [],
 };
 
 export const appSlice = createSlice({
@@ -56,19 +58,29 @@ export const appSlice = createSlice({
     updateDrag: (state, action: PayloadAction<AppState['drag']>) => {
       state.drag = action.payload;
     },
-    updatePanel: (state, action: PayloadAction<AppState['panel']>) => {
-      state.panel = action.payload;
+    updatePanel: (state, action: PayloadAction<Partial<AppState['panel']>>) => {
+      state.panel = { ...state.panel, ...action.payload };
+    },
+    updateSelectedShapes: (state, action: PayloadAction<Array<Shape.Text>>) => {
+      state.selectedShapes = action.payload;
     },
   },
 });
 
-export const { toggleActionType, toggleLock, toggleIsDrawing, updateDrag, updatePanel } =
-  appSlice.actions;
+export const {
+  toggleActionType,
+  toggleLock,
+  toggleIsDrawing,
+  updateDrag,
+  updatePanel,
+  updateSelectedShapes,
+} = appSlice.actions;
 
 export const selectActionType = (state: RootState) => state.app.actionType;
 export const selectLock = (state: RootState) => state.app.lock;
 export const selectIsDrawing = (state: RootState) => state.app.isDrawing;
 export const selectDrag = (state: RootState) => state.app.drag;
 export const selectPanel = (state: RootState) => state.app.panel;
+export const selectSelectedShapes = (state: RootState) => state.app.selectedShapes;
 
 export default appSlice.reducer;
