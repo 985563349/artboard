@@ -4,11 +4,11 @@ import { Group, Rect, Transformer } from 'react-konva';
 
 import { shallowEqual } from '@/utils';
 
-export type SelectionReactProps = {
+export type SelectionReactProps = React.ComponentProps<typeof Transformer> & {
   onChange?: (elements: Konva.Node[]) => void;
 };
 
-const SelectionRect: React.FC<SelectionReactProps> = ({ onChange }) => {
+const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformerProps }) => {
   const selectionRectRef = useRef<Konva.Rect>(null);
   const selection = useRef({ visible: false, x1: 0, y1: 0, x2: 0, y2: 0 });
   const trRef = useRef<Konva.Transformer>(null);
@@ -154,6 +154,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange }) => {
           }
           return newBox;
         }}
+        {...transformerProps}
       />
     </Group>
   );

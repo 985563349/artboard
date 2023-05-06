@@ -54,8 +54,8 @@ const Artboard: React.FC = () => {
                     key={shape.id}
                     draggable
                     onDragEnd={(e) => {
-                      const { x, y } = e.target.getPosition();
-                      dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
+                      // const { x, y } = e.target.getPosition();
+                      // dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
                     }}
                   />
                 );
@@ -117,7 +117,10 @@ const Artboard: React.FC = () => {
           })}
 
           {actionType === ActionTypes.selection && (
-            <SelectionRect onChange={(elements) => console.log(elements)} />
+            <SelectionRect
+              onChange={(elements) => console.log(elements)}
+              onDragEnd={(e) => console.log(e)}
+            />
           )}
         </Layer>
       </Stage>
