@@ -1,55 +1,65 @@
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Card, ColorInput, Input, Slider } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useDebouncedValue } from '@mantine/hooks';
-import { useUpdateEffect } from 'react-use';
 
-import { selectActionType, selectPanel, updatePanel } from '@/store';
+import { useUpdateRef } from '@/hooks';
+import { selectPanel, updatePanel } from '@/store';
 import type { AppDispatch } from '@/store';
-import { ActionTypes } from '@/constants/action-types';
 
-const excludeActionTypes = [
-  ActionTypes.selection,
-  ActionTypes.capture,
-  ActionTypes.ruler,
-  ActionTypes.image,
-];
+type PanelFormDataType = {
+  stroke: string;
+  background: string;
+  opacity: number;
+  strokeWidth: number;
+  fontSize: number;
+};
 
 const Panel: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const panel = useSelector(selectPanel);
-  const actionType = useSelector(selectActionType);
 
-  const form = useForm({ initialValues: { ...panel } });
-  const [debouncedFormValues] = useDebouncedValue(form.values, 200);
+  const form = useForm<PanelFormDataType>();
+  const formValues = useUpdateRef(form.values);
 
-  useUpdateEffect(() => {
-    dispatch(updatePanel({ ...debouncedFormValues }));
-  }, [debouncedFormValues]);
+  // sync form values from store
+  useEffect(() => {
+    form.setValues({ ...panel });
+  }, [panel]);
 
-  if (excludeActionTypes.includes(actionType)) {
-    return null;
-  }
+  const getInputProps = (path: keyof PanelFormDataType) => {
+    // hack: form.onValuesChange
+    const inputProps = form.getInputProps(path);
+    return {
+      ...inputProps,
+      onChangeEnd: () => {
+        // sync form values to store
+        setTimeout(() => {
+          dispatch(updatePanel(formValues.current));
+        });
+      },
+    };
+  };
 
   return (
     <div className="panel">
       <Card shadow="sm" p="lg" radius="lg" withBorder>
         <Box maw={320} mx="auto">
           <form>
-            <ColorInput label="Stroke" {...form.getInputProps('stroke')} />
+            <ColorInput label="Stroke" {...getInputProps('stroke')} />
 
-            <ColorInput label="Background" mt="md" {...form.getInputProps('background')} />
+            <ColorInput label="Background" mt="md" {...getInputProps('background')} />
 
             <Input.Wrapper label="Opacity" mt="md">
-              <Slider {...form.getInputProps('opacity')} />
+              <Slider {...getInputProps('opacity')} />
             </Input.Wrapper>
 
             <Input.Wrapper label="Stroke Width" mt="md">
-              <Slider {...form.getInputProps('strokeWidth')} />
+              <Slider {...getInputProps('strokeWidth')} />
             </Input.Wrapper>
 
             <Input.Wrapper label="Font Size" mt="md">
-              <Slider {...form.getInputProps('fontSize')} />
+              <Slider {...getInputProps('fontSize')} />
             </Input.Wrapper>
           </form>
         </Box>
