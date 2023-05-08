@@ -120,7 +120,7 @@ const Artboard: React.FC = () => {
           {actionType === ActionTypes.selection && (
             <SelectionRect
               onChange={(nodes) => {
-                const selectedShapes = nodes.map((node) => node.getAttrs());
+                const selectedShapes = nodes.map((node) => ({ ...node.getAttrs() }));
                 dispatch(updateSelectedShapes(selectedShapes));
               }}
               onDragEnd={(e) => console.log(e)}

@@ -42,7 +42,15 @@ const Panel: React.FC = () => {
   };
 
   return (
-    <div className="panel">
+    <div
+      className="panel"
+      onMouseEnter={() => {
+        window.dispatchEvent(new Event('panel:enter'));
+      }}
+      onMouseLeave={() => {
+        window.dispatchEvent(new Event('panel:leave'));
+      }}
+    >
       <Card shadow="sm" p="lg" radius="lg" withBorder>
         <Box maw={320} mx="auto">
           <form>
