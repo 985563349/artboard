@@ -1,11 +1,13 @@
-import type { Dispatch, AnyAction } from '@reduxjs/toolkit';
 import type { KonvaEventObject } from 'konva/lib/Node';
 
 import { addShape } from '@/store';
-import type { RootState } from '@/store';
+import type { AppStore } from '@/store';
+
 import { createRulerShape } from '../creates';
 
-export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
+export default (store: AppStore) => {
+  const dispatch = store.dispatch;
+
   return {
     click: (e: KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();

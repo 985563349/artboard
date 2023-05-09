@@ -4,8 +4,15 @@ import { Stage, Layer } from 'react-konva';
 import { camelCase } from 'lodash';
 
 import { ActionTypes } from '@/constants/action-types';
-import { updateShape, updateSelectedShapes } from '@/store';
-import type { RootState } from '@/store';
+import {
+  updateShape,
+  updateSelectedShapes,
+  selectActionType,
+  selectLock,
+  selectDrag,
+  selectShapes,
+} from '@/store';
+import { store } from '@/store';
 
 import useMachine from './hooks/useMachine';
 import * as commands from './commands';
@@ -19,15 +26,16 @@ const Artboard: React.FC = () => {
   const { width, height } = useWindowSize();
 
   const dispatch = useDispatch();
-  const rootState = useSelector((state: RootState) => state);
 
-  const { actionType, lock, drag } = rootState.app;
-  const shapes = rootState.shape.present;
+  const actionType = useSelector(selectActionType);
+  const lock = useSelector(selectLock);
+  const drag = useSelector(selectDrag);
+  const shapes = useSelector(selectShapes);
 
   const state = camelCase(actionType);
   const trigger = useMachine(state, commands, {
     lock: lock || drag.draggable,
-    providers: [rootState, dispatch],
+    providers: [store],
   });
 
   return (

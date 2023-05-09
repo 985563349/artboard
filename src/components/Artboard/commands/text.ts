@@ -1,12 +1,13 @@
-import type { Dispatch, AnyAction } from '@reduxjs/toolkit';
 import type { KonvaEventObject } from 'konva/lib/Node';
 
 import { addShape, toggleIsDrawing, updatePanel, updateShape } from '@/store';
-import type { RootState } from '@/store';
+import type { AppStore } from '@/store';
+
 import { createTextShape } from '../creates';
 
-export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
-  const { isDrawing, drag, panel } = rootState.app;
+export default (store: AppStore) => {
+  const dispatch = store.dispatch;
+  const { isDrawing, drag, panel } = store.getState().app;
 
   return {
     click: (e: KonvaEventObject<MouseEvent>) => {

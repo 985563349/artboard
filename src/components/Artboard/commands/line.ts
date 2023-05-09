@@ -1,12 +1,14 @@
-import type { Dispatch, AnyAction } from '@reduxjs/toolkit';
 import type { KonvaEventObject } from 'konva/lib/Node';
 
 import { toggleIsDrawing, addShape, updateShape } from '@/store';
-import type { RootState } from '@/store';
+import type { AppStore } from '@/store';
+
 import { createLineShape } from '../creates';
 
-export default (rootState: RootState, dispatch: Dispatch<AnyAction>) => {
-  const { app, shape } = rootState;
+export default (store: AppStore) => {
+  const dispatch = store.dispatch;
+
+  const { app, shape } = store.getState();
   const { isDrawing } = app;
   const shapes = shape.present;
 

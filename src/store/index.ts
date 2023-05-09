@@ -1,5 +1,5 @@
 export { store } from './configureStore';
-export type { RootState, AppDispatch } from './configureStore';
+export type { AppStore, AppDispatch, RootState } from './configureStore';
 
 export {
   toggleActionType,
