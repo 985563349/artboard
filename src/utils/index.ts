@@ -25,3 +25,12 @@ export function shallowEqual(value: any, other: any): boolean {
 
   return true;
 }
+
+export function rgbToHex(rgb: string) {
+  const matchArray = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)/) ?? [];
+  if (!matchArray.length) {
+    return null;
+  }
+  const [, r, g, b] = matchArray;
+  return '#' + ((1 << 24) + (+r << 16) + (+g << 8) + +b).toString(16).slice(1);
+}

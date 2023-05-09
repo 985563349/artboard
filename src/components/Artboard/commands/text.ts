@@ -2,6 +2,7 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 
 import { addShape, toggleIsDrawing, updatePanel, updateShape } from '@/store';
 import type { AppStore } from '@/store';
+import { rgbToHex } from '@/utils';
 
 import { createTextShape } from '../creates';
 
@@ -23,12 +24,15 @@ export default (store: AppStore) => {
         return;
       }
 
-      if ((clickedOnEmpty || clickedOnText) && targetAttrs) {
-        dispatch(toggleIsDrawing(true));
+      if ((clickedOnEmpty === false && clickedOnText === false) || targetAttrs == null) {
+        return;
+      }
 
-        const input = document.createElement('input');
+      // start drawing
+      dispatch(toggleIsDrawing(true));
 
-        input.style.cssText = `
+      const input = document.createElement('input');
+      input.style.cssText = `
           position: absolute;
           left: ${targetAttrs.x + drag.x}px;
           top: ${targetAttrs.y + drag.y}px;
@@ -41,70 +45,76 @@ export default (store: AppStore) => {
           background: none;
         `;
 
-        // if the current click is text, it is considered an editing operation
+      // if the current click is text, it is considered an editing operation
+      if (clickedOnText) {
+        input.value = targetAttrs.text;
+        dispatch(updatePanel({ fontSize: targetAttrs.fontSize, stroke: targetAttrs.fill }));
+        e.target.visible(false);
+      }
+
+      const handleBlur = ({ target }: FocusEvent) => {
+        const { value: text, style } = target as HTMLInputElement;
+        const fill = rgbToHex(style.color)!;
+        const fontSize = parseFloat(style.fontSize);
+
         if (clickedOnText) {
-          input.value = targetAttrs.text;
-          dispatch(updatePanel({ fontSize: targetAttrs.fontSize, stroke: targetAttrs.fill }));
-          e.target.visible(false);
+          e.target.visible(true);
+          dispatch(updateShape({ id: targetAttrs.id, attrs: { text, fill, fontSize } }));
+        } else if (text.trim().length) {
+          const textShape = createTextShape({
+            x: targetAttrs.x,
+            y: targetAttrs.y,
+            text,
+            fill,
+            fontSize,
+          });
+          dispatch(addShape(textShape));
         }
 
-        const handleBlur = ({ target }: FocusEvent) => {
-          const text = (target as HTMLInputElement).value;
+        window.removeEventListener('panel:enter', handlePanelEnter);
+        window.removeEventListener('panel:leave', handlePanelLeave);
+        window.removeEventListener('panel:changed', handlePanelChanged as EventListener);
 
-          if (clickedOnText) {
-            e.target.visible(true);
-            dispatch(updateShape({ id: targetAttrs.id, attrs: { text } }));
-          } else if (text.trim().length) {
-            dispatch(
-              addShape(
-                createTextShape({
-                  x: targetAttrs.x,
-                  y: targetAttrs.y,
-                  text,
-                  fill: panel.stroke,
-                  fontSize: panel.fontSize,
-                })
-              )
-            );
-          }
+        input.remove();
+      };
 
-          window.removeEventListener('panel:enter', handlePanelEnter);
-          window.removeEventListener('panel:leave', handlePanelLeave);
+      const handlePanelEnter = () => {
+        // panel operation caused out of focus, unbind the blur event.
+        input.onblur = null;
+      };
 
-          input.remove();
-        };
-
-        const handlePanelEnter = () => {
-          // panel operation caused out of focus, reselected the text.
-          input.onblur = () => {
-            if (clickedOnText) {
-              input.select();
-            }
-          };
-        };
-
-        const handlePanelLeave = () => {
-          // panel operation caused out of focus, refocus.
-          input.onblur = handleBlur;
-          input.focus();
-        };
-
-        input.onkeydown = ({ key }) => {
-          if (key === 'Escape') {
-            input.blur();
-            dispatch(toggleIsDrawing(false));
-          }
-        };
-
+      const handlePanelLeave = () => {
+        // panel operation caused out of focus, refocus.
         input.onblur = handleBlur;
-        window.addEventListener('panel:enter', handlePanelEnter);
-        window.addEventListener('panel:leave', handlePanelLeave);
-
-        document.body.appendChild(input);
-
         input.focus();
-        input.select();
-      }
+      };
+
+      const handlePanelChanged = ({ detail }: CustomEvent) => {
+        // listen panel operation, update input style.
+        const { fontSize, stroke } = detail;
+        input.style.cssText += `
+            font-size: ${fontSize}px;
+            color: ${stroke};
+          `;
+        input.focus();
+      };
+
+      input.onkeydown = ({ key }) => {
+        if (key === 'Escape') {
+          input.blur();
+          dispatch(toggleIsDrawing(false));
+        }
+      };
+
+      input.onblur = handleBlur;
+      window.addEventListener('panel:enter', handlePanelEnter);
+      window.addEventListener('panel:leave', handlePanelLeave);
+      window.addEventListener('panel:changed', handlePanelChanged as EventListener);
+
+      document.body.appendChild(input);
+
+      input.focus();
+      input.select();
     },
   };
 };

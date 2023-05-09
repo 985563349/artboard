@@ -11,8 +11,8 @@ import {
   selectLock,
   selectDrag,
   selectShapes,
+  store,
 } from '@/store';
-import { store } from '@/store';
 
 import useMachine from './hooks/useMachine';
 import * as commands from './commands';

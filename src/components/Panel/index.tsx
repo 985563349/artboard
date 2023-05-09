@@ -7,6 +7,22 @@ import { useUpdateRef } from '@/hooks';
 import { selectPanel, updatePanel } from '@/store';
 import type { AppDispatch } from '@/store';
 
+const swatches = [
+  '#25262b',
+  '#868e96',
+  '#ff4400',
+  '#e64980',
+  '#be4bdb',
+  '#7950f2',
+  '#4c6ef5',
+  '#228be6',
+  '#15aabf',
+  '#12b886',
+  '#40c057',
+  '#82c91e',
+  '#fab005',
+];
+
 type PanelFormDataType = {
   stroke: string;
   background: string;
@@ -33,9 +49,11 @@ const Panel: React.FC = () => {
     return {
       ...inputProps,
       onChangeEnd: () => {
-        // sync form values to store
         setTimeout(() => {
+          // sync form values to store
           dispatch(updatePanel(formValues.current));
+          // notification panel updates
+          window.dispatchEvent(new CustomEvent('panel:changed', { detail: formValues.current }));
         });
       },
     };
@@ -54,9 +72,14 @@ const Panel: React.FC = () => {
       <Card shadow="sm" p="lg" radius="lg" withBorder>
         <Box maw={320} mx="auto">
           <form>
-            <ColorInput label="Stroke" {...getInputProps('stroke')} />
+            <ColorInput label="Stroke" swatches={swatches} {...getInputProps('stroke')} />
 
-            <ColorInput label="Background" mt="md" {...getInputProps('background')} />
+            <ColorInput
+              label="Background"
+              mt="md"
+              swatches={swatches}
+              {...getInputProps('background')}
+            />
 
             <Input.Wrapper label="Opacity" mt="md">
               <Slider {...getInputProps('opacity')} />
