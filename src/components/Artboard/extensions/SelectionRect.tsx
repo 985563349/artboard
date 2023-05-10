@@ -14,6 +14,11 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
   const trRef = useRef<Konva.Transformer>(null);
   const globalKonva = (window as any).Konva;
 
+  const setTransformerNodes = (nodes: Konva.Node[]) => {
+    trRef.current?.nodes(nodes);
+    onChange?.(nodes);
+  };
+
   const onMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
     // do nothing if we mousedown on any shape
     const stage = e.target?.getStage();
@@ -84,8 +89,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
     // shallow comparison of data before and after selection
     const trNodes = trRef.current?.getNodes();
     if (shallowEqual(trNodes, elements) === false) {
-      trRef.current?.nodes(elements);
-      onChange?.(elements);
+      setTransformerNodes(elements);
     }
   };
 
@@ -96,8 +100,8 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
 
     const stage = e.target?.getStage();
 
-    if (e.target === stage) {
-      trRef.current?.nodes([]);
+    if (e.target === stage && trRef.current?.nodes().length) {
+      setTransformerNodes([]);
       return;
     }
 
@@ -111,18 +115,18 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
     if (!metaPressed && !isSelected) {
       // if no key pressed and the node is not selected
       // select just one
-      trRef.current?.nodes([e.target]);
+      setTransformerNodes([e.target]);
     } else if (metaPressed && isSelected) {
       // if we pressed keys and node was selected
       // we need to remove it from selection:
       const nodes = trRef.current?.nodes().slice()!; // use slice to have new copy of array
       // remove node from array
       nodes?.splice(nodes.indexOf(e.target), 1);
-      trRef.current?.nodes(nodes);
+      setTransformerNodes(nodes);
     } else if (metaPressed && !isSelected) {
       // add the node into selection
       const nodes = trRef.current?.nodes().concat([e.target])!;
-      trRef.current?.nodes(nodes);
+      setTransformerNodes(nodes);
     }
   };
 
@@ -135,9 +139,9 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
 
     return () => {
       stage?.off('mousedown', onMouseDown);
-      stage?.on('mousemove', onMouseMove);
-      stage?.on('mouseup', onMouseUp);
-      stage?.on('click', onClick);
+      stage?.off('mousemove', onMouseMove);
+      stage?.off('mouseup', onMouseUp);
+      stage?.off('click', onClick);
     };
   }, [onMouseDown, onMouseMove, onMouseUp, onClick]);
 
