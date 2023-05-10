@@ -1,4 +1,4 @@
-import type { KonvaEventObject } from 'konva/lib/Node';
+import type Konva from 'konva';
 
 import { toggleIsDrawing, addShape, updateShape } from '@/store';
 import type { AppStore } from '@/store';
@@ -13,7 +13,7 @@ export default (store: AppStore) => {
   const shapes = shape.present;
 
   return {
-    click: (e: KonvaEventObject<MouseEvent>) => {
+    click: (e: Konva.KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();
       const point = e.target.getStage()?.getPointerPosition();
 

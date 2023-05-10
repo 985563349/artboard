@@ -1,4 +1,4 @@
-import type { KonvaEventObject } from 'konva/lib/Node';
+import type Konva from 'konva';
 
 import { toggleIsDrawing, addShape, updateShape } from '@/store';
 import type { AppStore } from '@/store';
@@ -13,7 +13,7 @@ export default (store: AppStore) => {
   const shapes = shape.present;
 
   return {
-    mousedown: (e: KonvaEventObject<MouseEvent>) => {
+    mousedown: (e: Konva.KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();
       const point = e.target?.getStage()?.getPointerPosition();
 
@@ -24,7 +24,7 @@ export default (store: AppStore) => {
       }
     },
 
-    mousemove: (e: KonvaEventObject<MouseEvent>) => {
+    mousemove: (e: Konva.KonvaEventObject<MouseEvent>) => {
       if (isDrawing === false) return;
       const point = e.target.getStage()?.getPointerPosition();
 
@@ -41,7 +41,7 @@ export default (store: AppStore) => {
       }
     },
 
-    mouseup: (e: KonvaEventObject<MouseEvent>) => {
+    mouseup: (e: Konva.KonvaEventObject<MouseEvent>) => {
       let shape = shapes.at(-1);
       // draw end generation history
       if (shape?.type === 'eraser') {

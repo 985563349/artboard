@@ -1,4 +1,4 @@
-import type { KonvaEventObject } from 'konva/lib/Node';
+import type Konva from 'konva';
 
 import { addShape, toggleIsDrawing, updatePanel, updateShape } from '@/store';
 import type { AppStore } from '@/store';
@@ -11,7 +11,7 @@ export default (store: AppStore) => {
   const { isDrawing, drag, panel } = store.getState().app;
 
   return {
-    click: (e: KonvaEventObject<MouseEvent>) => {
+    click: (e: Konva.KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();
       const clickedOnText = e.target.getAttrs().type === 'text';
 
