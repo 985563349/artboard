@@ -7,13 +7,11 @@ export {
   toggleIsDrawing,
   updateDrag,
   updatePanel,
-  updateSelectedShapes,
   selectActionType,
   selectLock,
   selectIsDrawing,
   selectDrag,
   selectPanel,
-  selectSelectedShapes,
 } from './reducers/app';
 
 export { addShape, updateShape, selectShapes } from './reducers/shape';

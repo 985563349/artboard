@@ -1,3 +1,8 @@
+export type StateEvent = {
+  type: string;
+  [key: string]: any;
+};
+
 function useMachine(
   state: string,
   commands: Record<string, (...args: any[]) => Record<string, Function>>,
@@ -8,7 +13,7 @@ function useMachine(
 ) {
   const { lock, providers } = config ?? {};
 
-  function trigger(this: any, e: { type: string }) {
+  function trigger(this: any, e: StateEvent) {
     if (lock == false && state) {
       const command = commands[state]?.apply(null, providers ?? []);
       command?.[e.type]?.call(this, e);

@@ -73,7 +73,7 @@ export default (store: AppStore) => {
 
         window.removeEventListener('panel:enter', handlePanelEnter);
         window.removeEventListener('panel:leave', handlePanelLeave);
-        window.removeEventListener('panel:changed', handlePanelChanged as EventListener);
+        window.removeEventListener('panel:change', handlePanelChanged as EventListener);
 
         input.remove();
       };
@@ -109,7 +109,7 @@ export default (store: AppStore) => {
       input.onblur = handleBlur;
       window.addEventListener('panel:enter', handlePanelEnter);
       window.addEventListener('panel:leave', handlePanelLeave);
-      window.addEventListener('panel:changed', handlePanelChanged as EventListener);
+      window.addEventListener('panel:change', handlePanelChanged as EventListener);
 
       document.body.appendChild(input);
 

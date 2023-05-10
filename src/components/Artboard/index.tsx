@@ -6,7 +6,6 @@ import { camelCase } from 'lodash';
 import { ActionTypes } from '@/constants/action-types';
 import {
   updateShape,
-  updateSelectedShapes,
   selectActionType,
   selectLock,
   selectDrag,
@@ -126,13 +125,7 @@ const Artboard: React.FC = () => {
           })}
 
           {actionType === ActionTypes.selection && (
-            <SelectionRect
-              onChange={(nodes) => {
-                const selectedShapes = nodes.map((node) => ({ ...node.getAttrs() }));
-                dispatch(updateSelectedShapes(selectedShapes));
-              }}
-              onDragEnd={(e) => console.log(e)}
-            />
+            <SelectionRect onChange={trigger} onDragEnd={trigger} />
           )}
         </Layer>
       </Stage>

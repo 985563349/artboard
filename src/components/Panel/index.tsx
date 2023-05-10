@@ -53,7 +53,7 @@ const Panel: React.FC = () => {
           // sync form values to store
           dispatch(updatePanel(formValues.current));
           // notification panel updates
-          window.dispatchEvent(new CustomEvent('panel:changed', { detail: formValues.current }));
+          window.dispatchEvent(new CustomEvent('panel:change', { detail: formValues.current }));
         });
       },
     };

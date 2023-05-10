@@ -5,7 +5,7 @@ import { Group, Rect, Transformer } from 'react-konva';
 import { shallowEqual } from '@/utils';
 
 export type SelectionReactProps = React.ComponentProps<typeof Transformer> & {
-  onChange?: (elements: Konva.Node[]) => void;
+  onChange?: (event: { type: string; target: Konva.Transformer }) => void;
 };
 
 const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformerProps }) => {
@@ -15,8 +15,11 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
   const globalKonva = (window as any).Konva;
 
   const setTransformerNodes = (nodes: Konva.Node[]) => {
-    trRef.current?.nodes(nodes);
-    onChange?.(nodes);
+    if (trRef.current) {
+      trRef.current.nodes(nodes);
+      // mock event object
+      onChange?.({ type: 'change', target: trRef.current });
+    }
   };
 
   const onMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
