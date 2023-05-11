@@ -9,7 +9,7 @@ export default (store: AppStore) => {
   const dispatch = store.dispatch;
 
   return {
-    click: (e: Konva.KonvaEventObject<MouseEvent>) => {
+    pointerdown: (e: Konva.KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();
       const point = e.target.getStage()?.getPointerPosition();
 

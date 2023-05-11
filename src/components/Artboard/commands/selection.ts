@@ -8,25 +8,25 @@ export default (store: AppStore) => {
       const stage = e.target.getStage();
       const nodes = e.target.nodes();
 
+      if (nodes.length <= 0) {
+        return;
+      }
+
       const handlePanelChange = () => {
         nodes.forEach((node) => {
           console.log(node.getAttr('text'));
         });
       };
 
-      if (nodes.length <= 0) {
-        return;
-      }
-
       window.addEventListener('panel:change', handlePanelChange);
 
-      // unbind the last event
-      stage?.on('mousedown.selection.change', (e) => {
+      // unbind last event
+      stage?.on('pointerdown.selection.change', (e) => {
         if (e.target !== stage && !e.target.getAttr('selection')) {
           return;
         }
         window.removeEventListener('panel:change', handlePanelChange);
-        stage.off('mousedown.selection.change');
+        stage.off('pointerdown.selection.change');
       });
     },
   };

@@ -42,7 +42,7 @@ const ActionBar: React.FC = () => {
   const canUndo = useSelector((state: RootState) => state.shape.past.length > 0);
   const canRedo = useSelector((state: RootState) => state.shape.future.length > 0);
 
-  const handleClick = (type: ActionTypes) => {
+  const handlePointerDown = (type: ActionTypes) => {
     if (type === actionType) {
       return;
     }
@@ -81,7 +81,7 @@ const ActionBar: React.FC = () => {
       <Card style={{ display: 'flex' }} shadow="sm" p="lg" radius="lg" withBorder>
         <Group noWrap>
           {options.map(({ type, icon: Icon }) => (
-            <ActionIcon key={type} onClick={() => handleClick(type)}>
+            <ActionIcon key={type} onPointerDown={() => handlePointerDown(type)}>
               <Icon color={actionType === type ? theme.colors.red[7] : undefined} />
             </ActionIcon>
           ))}
@@ -90,11 +90,11 @@ const ActionBar: React.FC = () => {
         <Divider style={{ margin: '0 16px', borderRadius: 10 }} size={2} orientation="vertical" />
 
         <Group noWrap>
-          <ActionIcon disabled={!canUndo} onClick={() => dispatch(ActionCreators.undo())}>
+          <ActionIcon disabled={!canUndo} onPointerDown={() => dispatch(ActionCreators.undo())}>
             <ArrowBackUp size={24} />
           </ActionIcon>
 
-          <ActionIcon disabled={!canRedo} onClick={() => dispatch(ActionCreators.redo())}>
+          <ActionIcon disabled={!canRedo} onPointerDown={() => dispatch(ActionCreators.redo())}>
             <ArrowForwardUp size={24} />
           </ActionIcon>
         </Group>

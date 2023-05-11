@@ -43,10 +43,9 @@ const Artboard: React.FC = () => {
         width={width}
         height={height}
         style={{ background: '#fff' }}
-        onClick={trigger}
-        onMouseDown={trigger}
-        onMouseMove={trigger}
-        onMouseUp={trigger}
+        onPointerDown={trigger}
+        onPointerMove={trigger}
+        onPointerUp={trigger}
       >
         {/* shapes layer */}
         <Layer name="shapes-layer">

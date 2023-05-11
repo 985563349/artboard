@@ -18,12 +18,15 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
     if (trRef.current) {
       trRef.current.nodes(nodes);
       // mock event object
-      onChange?.({ type: 'change', target: trRef.current });
+      // delay triggering event (waiting for the native event to end)
+      setTimeout(() => {
+        onChange?.({ type: 'change', target: trRef.current! });
+      });
     }
   };
 
-  const onMouseDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
-    // do nothing if we mousedown on any shape
+  const onPointerDown = (e: Konva.KonvaEventObject<MouseEvent>) => {
+    // do nothing if we pointerdown on any shape
     const stage = e.target?.getStage();
 
     if (e.target !== stage) {
@@ -44,7 +47,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
     selectionRectRef.current?.height(0);
   };
 
-  const onMouseMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
+  const onPointerMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
     // do nothing if we didn't start selection
     if (!selectionRectRef.current?.visible()) {
       return;
@@ -67,7 +70,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
     });
   };
 
-  const onMouseUp = (e: Konva.KonvaEventObject<MouseEvent>) => {
+  const onPointerUp = (e: Konva.KonvaEventObject<MouseEvent>) => {
     // do nothing if we didn't start selection
     if (!selectionRectRef.current?.visible()) {
       return;
@@ -96,7 +99,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
     }
   };
 
-  const onClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
+  const onPointerDownClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
     if (selectionRectRef.current?.visible()) {
       return;
     }
@@ -135,18 +138,18 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
 
   useEffect(() => {
     const stage = selectionRectRef.current?.getStage();
-    stage?.on('mousedown', onMouseDown);
-    stage?.on('mousemove', onMouseMove);
-    stage?.on('mouseup', onMouseUp);
-    stage?.on('click', onClick);
+    stage?.on('pointerdown', onPointerDown);
+    stage?.on('pointermove', onPointerMove);
+    stage?.on('pointerup', onPointerUp);
+    stage?.on('pointerdown.click', onPointerDownClick);
 
     return () => {
-      stage?.off('mousedown', onMouseDown);
-      stage?.off('mousemove', onMouseMove);
-      stage?.off('mouseup', onMouseUp);
-      stage?.off('click', onClick);
+      stage?.off('pointerdown', onPointerDown);
+      stage?.off('pointermove', onPointerMove);
+      stage?.off('pointerup', onPointerUp);
+      stage?.off('pointerdown.click', onPointerDownClick);
     };
-  }, [onMouseDown, onMouseMove, onMouseUp, onClick]);
+  }, [onPointerDown, onPointerMove, onPointerUp, onPointerDownClick]);
 
   return (
     <Group>

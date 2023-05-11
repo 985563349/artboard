@@ -11,7 +11,7 @@ export default (store: AppStore) => {
   const { isDrawing, drag, panel } = store.getState().app;
 
   return {
-    click: (e: Konva.KonvaEventObject<MouseEvent>) => {
+    pointerdown: (e: Konva.KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();
       const clickedOnText = e.target.getAttrs().type === 'text';
 
@@ -40,8 +40,8 @@ export default (store: AppStore) => {
           margin: 0;
           padding: 0;
           outline: none;
-          color: ${clickedOnText ? targetAttrs.fill : panel.stroke};
           border: none;
+          color: ${clickedOnText ? targetAttrs.fill : panel.stroke};
           background: none;
         `;
 
@@ -113,8 +113,18 @@ export default (store: AppStore) => {
 
       document.body.appendChild(input);
 
-      input.focus();
-      input.select();
+      /**
+       * delayed focus
+       *
+       * The focus event is usually executed after the pointerdown event,
+       * which causes the input to focus and then lose focus.
+       *
+       * sequence of events: stage pointerdown -> input force -> stage focus -> stage pointerup
+       */
+      setTimeout(() => {
+        input.focus();
+        input.select();
+      });
     },
   };
 };

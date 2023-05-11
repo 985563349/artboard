@@ -62,10 +62,10 @@ const Panel: React.FC = () => {
   return (
     <div
       className="panel"
-      onMouseEnter={() => {
+      onPointerEnter={() => {
         window.dispatchEvent(new Event('panel:enter'));
       }}
-      onMouseLeave={() => {
+      onPointerLeave={() => {
         window.dispatchEvent(new Event('panel:leave'));
       }}
     >

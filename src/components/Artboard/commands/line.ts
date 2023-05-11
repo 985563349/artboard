@@ -13,7 +13,7 @@ export default (store: AppStore) => {
   const shapes = shape.present;
 
   return {
-    mousedown: (e: Konva.KonvaEventObject<MouseEvent>) => {
+    pointerdown: (e: Konva.KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();
       const point = e.target?.getStage()?.getPointerPosition();
 
@@ -24,7 +24,7 @@ export default (store: AppStore) => {
       }
     },
 
-    mousemove: (e: Konva.KonvaEventObject<MouseEvent>) => {
+    pointermove: (e: Konva.KonvaEventObject<MouseEvent>) => {
       if (isDrawing === false) return;
       const point = e.target.getStage()?.getPointerPosition();
 
@@ -41,7 +41,7 @@ export default (store: AppStore) => {
       }
     },
 
-    mouseup: (e: Konva.KonvaEventObject<MouseEvent>) => {
+    pointerup: (e: Konva.KonvaEventObject<MouseEvent>) => {
       let shape = shapes.at(-1);
       // draw end generation history
       if (shape?.type === 'line') {

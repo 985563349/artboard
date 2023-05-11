@@ -13,7 +13,7 @@ export default (store: AppStore) => {
   const shapes = shape.present;
 
   return {
-    click: (e: konva.KonvaEventObject<MouseEvent>) => {
+    pointerdown: (e: konva.KonvaEventObject<MouseEvent>) => {
       const clickedOnEmpty = e.target === e.target.getStage();
       const point = e.target.getStage()?.getPointerPosition();
 
