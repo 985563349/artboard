@@ -21,7 +21,7 @@ export default (store: AppStore) => {
         const { x, y } = point;
         let shape = shapes.at(-1);
 
-        if (isDrawing === false || shape?.type !== 'area') {
+        if (!isDrawing || shape?.type !== 'area') {
           dispatch(toggleIsDrawing(true));
           dispatch(addShape(createAreaShape([x, y])));
         } else {

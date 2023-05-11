@@ -21,7 +21,7 @@ export default (store: AppStore) => {
         const { x, y } = point;
         let shape = shapes.at(-1);
 
-        if (isDrawing === false || shape?.type !== 'simpleLine') {
+        if (!isDrawing || shape?.type !== 'simpleLine') {
           dispatch(toggleIsDrawing(true));
           dispatch(addShape(createSimpleLineShape([x, y])));
         } else {

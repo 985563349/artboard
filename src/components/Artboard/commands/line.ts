@@ -25,7 +25,7 @@ export default (store: AppStore) => {
     },
 
     pointermove: (e: Konva.KonvaEventObject<MouseEvent>) => {
-      if (isDrawing === false) return;
+      if (!isDrawing) return;
       const point = e.target.getStage()?.getPointerPosition();
 
       if (point) {

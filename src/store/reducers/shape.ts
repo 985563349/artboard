@@ -21,12 +21,17 @@ export const shapeSlice = createSlice({
     addShape: (state, action: PayloadAction<ShapeState>) => {
       state.push(action.payload);
     },
-    updateShape: (state, action: PayloadAction<{ id: string; attrs: Partial<ShapeState> }>) => {
-      const { id, attrs } = action.payload;
-      const index = state.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        state.splice(index, 1, { ...state[index], ...attrs } as ShapeState);
-      }
+    updateShape: (
+      state,
+      action: PayloadAction<ArrayOrSingle<{ id: string; attrs: Partial<ShapeState> }>>
+    ) => {
+      const payload = Array.isArray(action.payload) ? action.payload : [action.payload];
+      payload.forEach(({ id, attrs }) => {
+        const index = state.findIndex((item) => item.id === id);
+        if (index !== -1) {
+          state[index] = { ...state[index], ...attrs } as ShapeState;
+        }
+      });
     },
   },
 });

@@ -24,7 +24,7 @@ export default (store: AppStore) => {
         return;
       }
 
-      if ((clickedOnEmpty === false && clickedOnText === false) || targetAttrs == null) {
+      if ((!clickedOnEmpty && !clickedOnText) || targetAttrs == null) {
         return;
       }
 

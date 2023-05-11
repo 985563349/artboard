@@ -94,7 +94,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
 
     // shallow comparison of data before and after selection
     const trNodes = trRef.current?.getNodes();
-    if (shallowEqual(trNodes, elements) === false) {
+    if (!shallowEqual(trNodes, elements)) {
       setTransformerNodes(elements);
     }
   };
