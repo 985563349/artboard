@@ -25,6 +25,7 @@ export default (store: AppStore) => {
             if (attrs.type === 'text') {
               return { id: attrs.id, attrs: { fontSize, fill: stroke } };
             }
+            // TODO: more type
           })
           .filter((node) => node != null);
 
@@ -56,9 +57,10 @@ export default (store: AppStore) => {
           return;
         }
 
+        // selected nodes have been removed
         if (nodes.some((node) => shapes.every((shape) => node.attrs.id !== shape.id))) {
+          e.target.nodes([]);
           cleanup();
-          e.target.setNodes([]);
         }
       };
 
@@ -71,6 +73,22 @@ export default (store: AppStore) => {
       const unsubscribe = store.subscribe(handleStateChange);
       window.addEventListener('panel:change', handlePanelChange as EventListener);
       stage?.on('pointerdown.selection.change', handlePointerDown);
+    },
+
+    dragend: (e: { target: Konva.Transformer }) => {
+      const nodes = e.target.nodes();
+
+      const payload = nodes
+        .map((node) => {
+          const attrs = node.getAttrs();
+          if (attrs.type === 'text') {
+            return { id: attrs.id, attrs: { x: attrs.x, y: attrs.y } };
+          }
+          // TODO: more type
+        })
+        .filter((node) => node != null);
+
+      dispatch(updateShape(payload as any));
     },
   };
 };

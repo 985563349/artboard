@@ -60,10 +60,10 @@ const Artboard: React.FC = () => {
                     {...shape}
                     key={shape.id}
                     draggable
-                    onDragEnd={(e) => {
-                      const { x, y } = e.target.getPosition();
-                      dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
-                    }}
+                    // onDragEnd={(e) => {
+                    //   const { x, y } = e.target.getPosition();
+                    //   dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
+                    // }}
                   />
                 );
 
