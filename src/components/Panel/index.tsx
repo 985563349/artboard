@@ -3,9 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Card, ColorInput, Input, Slider } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
+import { ActionTypes } from '@/constants/action-types';
 import { useUpdateRef } from '@/hooks';
-import { selectPanel, updatePanel } from '@/store';
+import { selectActionType, selectPanel, updatePanel } from '@/store';
 import type { AppDispatch } from '@/store';
+
+const invalidActionType = [
+  ActionTypes.capture,
+  ActionTypes.ruler,
+  ActionTypes.eraser,
+  ActionTypes.image,
+];
 
 const swatches = [
   '#25262b',
@@ -23,7 +31,7 @@ const swatches = [
   '#fab005',
 ];
 
-type PanelFormDataType = {
+export type PanelFormDataType = {
   stroke: string;
   background: string;
   opacity: number;
@@ -33,6 +41,7 @@ type PanelFormDataType = {
 
 const Panel: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const actionType = useSelector(selectActionType);
   const panel = useSelector(selectPanel);
 
   const form = useForm<PanelFormDataType>();
@@ -59,6 +68,10 @@ const Panel: React.FC = () => {
     };
   };
 
+  if (invalidActionType.includes(actionType)) {
+    return null;
+  }
+
   return (
     <div
       className="panel"
@@ -74,12 +87,14 @@ const Panel: React.FC = () => {
           <form>
             <ColorInput label="Stroke" swatches={swatches} {...getInputProps('stroke')} />
 
-            <ColorInput
-              label="Background"
-              mt="md"
-              swatches={swatches}
-              {...getInputProps('background')}
-            />
+            {actionType === ActionTypes.area && (
+              <ColorInput
+                label="Background"
+                mt="md"
+                swatches={swatches}
+                {...getInputProps('background')}
+              />
+            )}
 
             <Input.Wrapper label="Opacity" mt="md">
               <Slider {...getInputProps('opacity')} />
@@ -89,9 +104,11 @@ const Panel: React.FC = () => {
               <Slider {...getInputProps('strokeWidth')} />
             </Input.Wrapper>
 
-            <Input.Wrapper label="Font Size" mt="md">
-              <Slider {...getInputProps('fontSize')} />
-            </Input.Wrapper>
+            {actionType === ActionTypes.text && (
+              <Input.Wrapper label="Font Size" mt="md">
+                <Slider {...getInputProps('fontSize')} />
+              </Input.Wrapper>
+            )}
           </form>
         </Box>
       </Card>
