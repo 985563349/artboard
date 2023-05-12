@@ -71,7 +71,7 @@ const Artboard: React.FC = () => {
                 return <Line key={shape.id} {...shape} />;
 
               case 'text':
-                return <Text {...shape} key={shape.id} draggable />;
+                return <Text {...shape} key={shape.id} />;
 
               case 'simpleLine':
                 return (

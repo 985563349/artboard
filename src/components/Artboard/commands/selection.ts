@@ -20,7 +20,6 @@ export default (store: AppStore) => {
         const state = store.getState();
         const { actionType } = state.app;
         const shapes = state.shape.present;
-        console.log('state change');
 
         if (actionType !== ActionTypes.selection) {
           cleanup();

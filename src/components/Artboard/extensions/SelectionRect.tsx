@@ -16,7 +16,12 @@ const SelectionRect: React.FC<SelectionReactProps> = (props) => {
 
   const setTransformerNodes = (nodes: Konva.Node[]) => {
     if (trRef.current) {
+      const previousNodes = trRef.current.nodes();
+      previousNodes.forEach((node) => node.draggable(false));
+
+      nodes.forEach((node) => node.draggable(true));
       trRef.current.nodes(nodes);
+
       // delay triggering event (waiting for the native event to end)
       setTimeout(() => {
         trRef.current?.fire('change');
