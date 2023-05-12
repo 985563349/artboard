@@ -10,7 +10,7 @@ export type SelectionReactProps = React.ComponentProps<typeof Transformer> & {
 
 const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformerProps }) => {
   const selectionRectRef = useRef<Konva.Rect>(null);
-  const selection = useRef({ visible: false, x1: 0, y1: 0, x2: 0, y2: 0 });
+  const selection = useRef({ x1: 0, y1: 0, x2: 0, y2: 0 });
   const trRef = useRef<Konva.Transformer>(null);
   const globalKonva = (window as any).Konva;
 
@@ -36,7 +36,6 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
 
     const pos = stage.getPointerPosition()!;
 
-    selection.current.visible = true;
     selection.current.x1 = pos.x;
     selection.current.y1 = pos.y;
     selection.current.x2 = pos.x;
@@ -62,7 +61,6 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
     const node = selectionRectRef.current;
 
     node.setAttrs({
-      visible: selection.current.visible,
       x: Math.min(selection.current.x1, selection.current.x2),
       y: Math.min(selection.current.y1, selection.current.y2),
       width: Math.abs(selection.current.x1 - selection.current.x2),
@@ -76,10 +74,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
       return;
     }
     e.evt.preventDefault();
-    // update visibility in timeout, so we can check it in click event
-    setTimeout(() => {
-      selectionRectRef.current?.visible(false);
-    });
+    selectionRectRef.current?.visible(false);
 
     const stage = e.target?.getStage()!;
     const selBox = selectionRectRef.current?.getClientRect();
@@ -153,7 +148,7 @@ const SelectionRect: React.FC<SelectionReactProps> = ({ onChange, ...transformer
 
   return (
     <Group>
-      <Rect fill="rgba(0,0,255,0.5)" ref={selectionRectRef} />
+      <Rect visible={false} fill="rgba(0,0,255,0.5)" ref={selectionRectRef} />
 
       <Transformer
         ref={trRef}
