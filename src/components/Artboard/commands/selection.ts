@@ -1,7 +1,8 @@
 import type Konva from 'konva';
 
 import { ActionTypes } from '@/constants/action-types';
-import { AppStore, updateShape } from '@/store';
+import { updateShape } from '@/store';
+import type { AppStore } from '@/store';
 
 export default (store: AppStore) => {
   const dispatch = store.dispatch;
@@ -14,38 +15,6 @@ export default (store: AppStore) => {
       if (!nodes.length) {
         return;
       }
-
-      const handlePanelChange = ({ detail }: CustomEvent) => {
-        // listen panel operation, update shape.
-        const { fontSize, stroke } = detail;
-
-        const payload = nodes
-          .map((node) => {
-            const attrs = node.getAttrs();
-            if (attrs.type === 'text') {
-              return { id: attrs.id, attrs: { fontSize, fill: stroke } };
-            }
-            // TODO: more type
-          })
-          .filter((node) => node != null);
-
-        dispatch(updateShape(payload as any));
-      };
-
-      const handlePointerDown = ({ evt, target }: any) => {
-        const metaPressed = evt.shiftKey || evt.ctrlKey || evt.metaKey;
-        const isSelected = nodes.includes(target);
-
-        if (isSelected && !metaPressed) {
-          return;
-        }
-
-        if (target !== stage && !target.getAttr('selection')) {
-          return;
-        }
-
-        cleanup();
-      };
 
       const handleStateChange = () => {
         const state = store.getState();
@@ -62,6 +31,42 @@ export default (store: AppStore) => {
           e.target.nodes([]);
           cleanup();
         }
+      };
+
+      // listen panel operation, update shape.
+      const handlePanelChange = ({ detail }: CustomEvent) => {
+        const { fontSize, stroke } = detail;
+
+        const payload = nodes
+          .map((node) => {
+            const attrs = node.getAttrs();
+            if (attrs.type === 'text') {
+              return { id: attrs.id, attrs: { fontSize, fill: stroke } };
+            }
+            // TODO: more type
+          })
+          .filter((node) => node != null);
+
+        dispatch(updateShape(payload as any));
+      };
+
+      /**
+       * This method is executed before the next change event is triggered.
+       * Used to unbind events bound in the last change event.
+       */
+      const handlePointerDown = ({ evt, target }: Konva.KonvaEventObject<PointerEvent>) => {
+        const metaPressed = evt.shiftKey || evt.ctrlKey || evt.metaKey;
+        const isSelected = nodes.includes(target);
+
+        if (isSelected && !metaPressed) {
+          return;
+        }
+
+        if (target !== stage && !target.getAttr('selection')) {
+          return;
+        }
+
+        cleanup();
       };
 
       const cleanup = () => {

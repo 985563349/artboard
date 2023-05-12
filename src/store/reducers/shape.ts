@@ -33,6 +33,12 @@ export const shapeSlice = createSlice({
         }
       });
     },
+    deleteShape: (state, action: PayloadAction<ArrayOrSingle<string>>) => {
+      const payload = Array.isArray(action.payload) ? action.payload : [action.payload];
+      payload.forEach((id) => {
+        state = state.filter((shape) => shape.id !== id);
+      });
+    },
   },
 });
 

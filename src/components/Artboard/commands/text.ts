@@ -1,8 +1,8 @@
 import type Konva from 'konva';
 
+import { rgbToHex } from '@/utils';
 import { addShape, toggleIsDrawing, updatePanel, updateShape } from '@/store';
 import type { AppStore } from '@/store';
-import { rgbToHex } from '@/utils';
 
 import { createTextShape } from '../creates';
 
@@ -78,19 +78,19 @@ export default (store: AppStore) => {
         input.remove();
       };
 
+      // panel operation caused out of focus, unbind the blur event.
       const handlePanelEnter = () => {
-        // panel operation caused out of focus, unbind the blur event.
         input.onblur = null;
       };
 
+      // panel operation caused out of focus, refocus.
       const handlePanelLeave = () => {
-        // panel operation caused out of focus, refocus.
         input.onblur = handleBlur;
         input.focus();
       };
 
+      // listen panel operation, update input style.
       const handlePanelChange = ({ detail }: CustomEvent) => {
-        // listen panel operation, update input style.
         const { fontSize, stroke } = detail;
         input.style.cssText += `
             font-size: ${fontSize}px;

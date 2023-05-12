@@ -55,17 +55,7 @@ const Artboard: React.FC = () => {
                 return <Line key={shape.id} {...shape} />;
 
               case 'text':
-                return (
-                  <Text
-                    {...shape}
-                    key={shape.id}
-                    draggable
-                    // onDragEnd={(e) => {
-                    //   const { x, y } = e.target.getPosition();
-                    //   dispatch(updateShape({ id: shape.id, attrs: { x, y } }));
-                    // }}
-                  />
-                );
+                return <Text {...shape} key={shape.id} draggable />;
 
               case 'simpleLine':
                 return (
