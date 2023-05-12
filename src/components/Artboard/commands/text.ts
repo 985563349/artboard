@@ -73,7 +73,7 @@ export default (store: AppStore) => {
 
         window.removeEventListener('panel:enter', handlePanelEnter);
         window.removeEventListener('panel:leave', handlePanelLeave);
-        window.removeEventListener('panel:change', handlePanelChanged as EventListener);
+        window.removeEventListener('panel:change', handlePanelChange as EventListener);
 
         input.remove();
       };
@@ -89,7 +89,7 @@ export default (store: AppStore) => {
         input.focus();
       };
 
-      const handlePanelChanged = ({ detail }: CustomEvent) => {
+      const handlePanelChange = ({ detail }: CustomEvent) => {
         // listen panel operation, update input style.
         const { fontSize, stroke } = detail;
         input.style.cssText += `
@@ -109,7 +109,7 @@ export default (store: AppStore) => {
       input.onblur = handleBlur;
       window.addEventListener('panel:enter', handlePanelEnter);
       window.addEventListener('panel:leave', handlePanelLeave);
-      window.addEventListener('panel:change', handlePanelChanged as EventListener);
+      window.addEventListener('panel:change', handlePanelChange as EventListener);
 
       document.body.appendChild(input);
 
