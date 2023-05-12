@@ -1,5 +1,7 @@
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWindowSize } from 'react-use';
+import type Konva from 'konva';
 import { Stage, Layer } from 'react-konva';
 import { camelCase } from 'lodash';
 
@@ -37,15 +39,29 @@ const Artboard: React.FC = () => {
     providers: [store],
   });
 
+  const stageRef = useRef<Konva.Stage>(null);
+
   return (
-    <div className="artboard" tabIndex={1} onKeyDown={trigger}>
+    <div
+      className="artboard"
+      tabIndex={1}
+      onKeyUp={(evt) => {
+        stageRef.current?.fire('keyup', { evt });
+      }}
+      onKeyDown={(evt) => {
+        stageRef.current?.fire('keydown', { evt });
+      }}
+    >
       <Stage
+        ref={stageRef}
         width={width}
         height={height}
         style={{ background: '#fff' }}
         onPointerDown={trigger}
         onPointerMove={trigger}
         onPointerUp={trigger}
+        onKeyUp={trigger}
+        onKeyDown={trigger}
       >
         {/* shapes layer */}
         <Layer name="shapes-layer">

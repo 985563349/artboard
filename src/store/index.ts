@@ -14,4 +14,4 @@ export {
   selectPanel,
 } from './reducers/app';
 
-export { addShape, updateShape, selectShapes } from './reducers/shape';
+export { addShape, updateShape, deleteShape, selectShapes } from './reducers/shape';

@@ -35,14 +35,12 @@ export const shapeSlice = createSlice({
     },
     deleteShape: (state, action: PayloadAction<ArrayOrSingle<string>>) => {
       const payload = Array.isArray(action.payload) ? action.payload : [action.payload];
-      payload.forEach((id) => {
-        state = state.filter((shape) => shape.id !== id);
-      });
+      return state.filter((shape) => !payload.includes(shape.id));
     },
   },
 });
 
-export const { addShape, updateShape } = shapeSlice.actions;
+export const { addShape, updateShape, deleteShape } = shapeSlice.actions;
 
 export const selectShapes = (state: RootState) => state.shape.present;
 

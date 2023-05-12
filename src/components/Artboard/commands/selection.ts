@@ -1,7 +1,7 @@
 import type Konva from 'konva';
 
 import { ActionTypes } from '@/constants/action-types';
-import { updateShape } from '@/store';
+import { deleteShape, updateShape } from '@/store';
 import type { AppStore } from '@/store';
 
 export default (store: AppStore) => {
@@ -20,6 +20,7 @@ export default (store: AppStore) => {
         const state = store.getState();
         const { actionType } = state.app;
         const shapes = state.shape.present;
+        console.log('state change');
 
         if (actionType !== ActionTypes.selection) {
           cleanup();
@@ -27,7 +28,7 @@ export default (store: AppStore) => {
         }
 
         // selected nodes have been removed
-        if (nodes.some((node) => shapes.every((shape) => node.attrs.id !== shape.id))) {
+        if (nodes.some((node) => shapes.every((shape) => node.getAttr('id') !== shape.id))) {
           e.target.nodes([]);
           cleanup();
         }
@@ -48,6 +49,17 @@ export default (store: AppStore) => {
           .filter((node) => node != null);
 
         dispatch(updateShape(payload as any));
+      };
+
+      // listen to the Backspace key to delete the selected shapes
+      const handleKeyup = ({ evt }: Konva.KonvaEventObject<any>) => {
+        const { key } = evt as React.KeyboardEvent;
+
+        if (key === 'Backspace') {
+          dispatch(deleteShape(nodes.map((node) => node.getAttr('id'))));
+          e.target.nodes([]);
+          cleanup();
+        }
       };
 
       /**
@@ -72,11 +84,13 @@ export default (store: AppStore) => {
       const cleanup = () => {
         unsubscribe();
         window.removeEventListener('panel:change', handlePanelChange as EventListener);
+        stage?.off('keyup', handleKeyup);
         stage?.off('pointerdown.selection.change');
       };
 
       const unsubscribe = store.subscribe(handleStateChange);
       window.addEventListener('panel:change', handlePanelChange as EventListener);
+      stage?.on('keyup', handleKeyup);
       stage?.on('pointerdown.selection.change', handlePointerDown);
     },
 
