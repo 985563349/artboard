@@ -16,9 +16,9 @@ import {
   Timeline,
 } from 'tabler-icons-react';
 
+import { ActionTypes } from '@/constants/action-types';
 import { selectActionType, toggleActionType } from '@/store';
 import type { AppDispatch, RootState } from '@/store';
-import { ActionTypes } from '@/constants/action-types';
 
 import './index.css';
 

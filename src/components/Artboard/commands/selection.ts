@@ -1,5 +1,6 @@
 import type Konva from 'konva';
 
+import { ActionTypes } from '@/constants/action-types';
 import { AppStore, updateShape } from '@/store';
 
 export default (store: AppStore) => {
@@ -30,10 +31,7 @@ export default (store: AppStore) => {
         dispatch(updateShape(payload as any));
       };
 
-      window.addEventListener('panel:change', handlePanelChange as EventListener);
-
-      // unbind last event
-      stage?.on('pointerdown.selection.change', ({ evt, target }) => {
+      const handlePointerDown = ({ evt, target }: any) => {
         const metaPressed = evt.shiftKey || evt.ctrlKey || evt.metaKey;
         const isSelected = nodes.includes(target);
 
@@ -45,9 +43,34 @@ export default (store: AppStore) => {
           return;
         }
 
+        cleanup();
+      };
+
+      const handleStateChange = () => {
+        const state = store.getState();
+        const { actionType } = state.app;
+        const shapes = state.shape.present;
+
+        if (actionType !== ActionTypes.selection) {
+          cleanup();
+          return;
+        }
+
+        if (nodes.some((node) => shapes.every((shape) => node.attrs.id !== shape.id))) {
+          cleanup();
+          e.target.setNodes([]);
+        }
+      };
+
+      const cleanup = () => {
+        unsubscribe();
         window.removeEventListener('panel:change', handlePanelChange as EventListener);
-        stage.off('pointerdown.selection.change');
-      });
+        stage?.off('pointerdown.selection.change');
+      };
+
+      const unsubscribe = store.subscribe(handleStateChange);
+      window.addEventListener('panel:change', handlePanelChange as EventListener);
+      stage?.on('pointerdown.selection.change', handlePointerDown);
     },
   };
 };
