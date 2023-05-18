@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useWindowSize } from 'react-use';
 import type Konva from 'konva';
 import { Stage, Layer } from 'react-konva';
-import { camelCase } from 'lodash';
 
 import { ActionTypes } from '@/constants/action-types';
 import {
@@ -17,9 +16,9 @@ import {
 
 import useMachine from './hooks/useMachine';
 import * as commands from './commands';
-import { SelectionRect } from './extensions';
 
 import { Line, Text, SimpleLine, Area, Ruler, Eraser } from './shapes';
+import { SelectionRect } from './extensions';
 
 import './index.css';
 
@@ -33,13 +32,12 @@ const Artboard: React.FC = () => {
   const drag = useSelector(selectDrag);
   const shapes = useSelector(selectShapes);
 
-  const state = camelCase(actionType);
-  const trigger = useMachine(state, commands, {
+  const stageRef = useRef<Konva.Stage>(null);
+
+  const trigger = useMachine(actionType, commands, {
     lock: lock || drag.draggable,
     providers: [store],
   });
-
-  const stageRef = useRef<Konva.Stage>(null);
 
   return (
     <div

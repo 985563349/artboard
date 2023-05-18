@@ -71,9 +71,9 @@ export default (store: AppStore) => {
           dispatch(addShape(textShape));
         }
 
-        window.removeEventListener('panel:enter', handlePanelEnter);
-        window.removeEventListener('panel:leave', handlePanelLeave);
-        window.removeEventListener('panel:change', handlePanelChange as EventListener);
+        window.removeEventListener('panelEnter', handlePanelEnter);
+        window.removeEventListener('panelLeave', handlePanelLeave);
+        window.removeEventListener('panelChange', handlePanelChange as EventListener);
 
         input.remove();
       };
@@ -107,9 +107,9 @@ export default (store: AppStore) => {
       };
 
       input.onblur = handleBlur;
-      window.addEventListener('panel:enter', handlePanelEnter);
-      window.addEventListener('panel:leave', handlePanelLeave);
-      window.addEventListener('panel:change', handlePanelChange as EventListener);
+      window.addEventListener('panelEnter', handlePanelEnter);
+      window.addEventListener('panelLeave', handlePanelLeave);
+      window.addEventListener('panelChange', handlePanelChange as EventListener);
 
       document.body.appendChild(input);
 

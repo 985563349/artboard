@@ -62,7 +62,7 @@ const Panel: React.FC = () => {
           // sync form values to store
           dispatch(updatePanel(formValues.current));
           // notification panel updates
-          window.dispatchEvent(new CustomEvent('panel:change', { detail: formValues.current }));
+          window.dispatchEvent(new CustomEvent('panelChange', { detail: formValues.current }));
         });
       },
     };
@@ -76,10 +76,10 @@ const Panel: React.FC = () => {
     <div
       className="panel"
       onPointerEnter={() => {
-        window.dispatchEvent(new Event('panel:enter'));
+        window.dispatchEvent(new Event('panelEnter'));
       }}
       onPointerLeave={() => {
-        window.dispatchEvent(new Event('panel:leave'));
+        window.dispatchEvent(new Event('panelLeave'));
       }}
     >
       <Card shadow="sm" p="lg" radius="lg" withBorder>

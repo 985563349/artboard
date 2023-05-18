@@ -16,7 +16,7 @@ export default (store: AppStore) => {
         return;
       }
 
-      const handleStateChange = () => {
+      const handleStoreStateChange = () => {
         const state = store.getState();
         const { actionType } = state.app;
         const shapes = state.shape.present;
@@ -51,8 +51,8 @@ export default (store: AppStore) => {
       };
 
       // listen to the Backspace key to delete the selected shapes
-      const handleKeyup = ({ evt }: Konva.KonvaEventObject<any>) => {
-        const { key } = evt as React.KeyboardEvent;
+      const handleKeyup = ({ evt }: Konva.KonvaEventObject<KeyboardEvent>) => {
+        const { key } = evt;
 
         if (key === 'Backspace') {
           dispatch(deleteShape(nodes.map((node) => node.getAttr('id'))));
@@ -82,13 +82,13 @@ export default (store: AppStore) => {
 
       const cleanup = () => {
         unsubscribe();
-        window.removeEventListener('panel:change', handlePanelChange as EventListener);
+        window.removeEventListener('panelChange', handlePanelChange as EventListener);
         stage?.off('keyup', handleKeyup);
         stage?.off('pointerdown.selection.change');
       };
 
-      const unsubscribe = store.subscribe(handleStateChange);
-      window.addEventListener('panel:change', handlePanelChange as EventListener);
+      const unsubscribe = store.subscribe(handleStoreStateChange);
+      window.addEventListener('panelChange', handlePanelChange as EventListener);
       stage?.on('keyup', handleKeyup);
       stage?.on('pointerdown.selection.change', handlePointerDown);
     },
