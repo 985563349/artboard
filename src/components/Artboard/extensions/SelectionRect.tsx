@@ -36,7 +36,6 @@ const SelectionRect: React.FC<SelectionReactProps> = (props) => {
     if (e.target !== stage) {
       return;
     }
-    e.evt.preventDefault();
 
     const pos = stage.getPointerPosition()!;
 
@@ -55,7 +54,6 @@ const SelectionRect: React.FC<SelectionReactProps> = (props) => {
     if (!selectionRectRef.current?.visible()) {
       return;
     }
-    e.evt.preventDefault();
 
     const stage = e.target.getStage()!;
     const pos = stage.getPointerPosition()!;
@@ -77,7 +75,6 @@ const SelectionRect: React.FC<SelectionReactProps> = (props) => {
     if (!selectionRectRef.current?.visible()) {
       return;
     }
-    e.evt.preventDefault();
     selectionRectRef.current?.visible(false);
 
     const stage = e.target?.getStage()!;
@@ -152,7 +149,7 @@ const SelectionRect: React.FC<SelectionReactProps> = (props) => {
 
   return (
     <Group>
-      <Rect visible={false} fill="rgba(0,0,255,0.5)" ref={selectionRectRef} />
+      <Rect visible={false} fill="rgba(0,0,255,0.2)" ref={selectionRectRef} />
 
       <Transformer
         ref={trRef}
@@ -163,6 +160,11 @@ const SelectionRect: React.FC<SelectionReactProps> = (props) => {
           }
           return newBox;
         }}
+        borderStroke="#228be6"
+        anchorStroke="#9ca3af"
+        anchorCornerRadius={8}
+        anchorSize={12}
+        shouldOverdrawWholeArea
         {...props}
       />
     </Group>
