@@ -39,6 +39,7 @@ const ActionBar: React.FC = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const actionType = useSelector(selectActionType);
+
   const canUndo = useSelector((state: RootState) => state.shape.past.length > 0);
   const canRedo = useSelector((state: RootState) => state.shape.future.length > 0);
 
@@ -55,26 +56,27 @@ const ActionBar: React.FC = () => {
     dispatch(toggleActionType(type));
   };
 
-  const onKeydown = (e: KeyboardEvent) => {
-    if ((e.target as Element)?.nodeName === 'INPUT') {
-      return;
-    }
-
-    const type = options.find(({ keyCode }) => keyCode?.toString() === e.key)?.type;
-
-    if (type == null || type === actionType) {
-      return;
-    }
-
-    dispatch(toggleActionType(type!));
-  };
-
   useEffect(() => {
+    const onKeydown = (e: KeyboardEvent) => {
+      if ((e.target as Element)?.nodeName === 'INPUT') {
+        return;
+      }
+
+      const type = options.find(({ keyCode }) => keyCode?.toString() === e.key)?.type;
+
+      if (type == null || type === actionType) {
+        return;
+      }
+
+      dispatch(toggleActionType(type!));
+    };
+
     document.addEventListener('keydown', onKeydown);
+
     return () => {
       document.removeEventListener('keydown', onKeydown);
     };
-  }, [onKeydown]);
+  }, [actionType]);
 
   return (
     <div className="action-bar">
