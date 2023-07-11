@@ -39,6 +39,9 @@ const Artboard: React.FC = () => {
     providers: [store],
   });
 
+  const isShowSelection =
+    actionType === ActionTypes.selection && lock === false && drag.draggable === false;
+
   return (
     <div
       className="artboard"
@@ -127,9 +130,7 @@ const Artboard: React.FC = () => {
             }
           })}
 
-          {actionType === ActionTypes.selection && (
-            <SelectionRect onChange={trigger} onDragEnd={trigger} />
-          )}
+          {isShowSelection && <SelectionRect onChange={trigger} onDragEnd={trigger} />}
         </Layer>
       </Stage>
     </div>

@@ -21,9 +21,3 @@
   transform: translateX(-50%);
   z-index: 1;
 }
-
-.panel {
-  position: absolute;
-  top: 80px;
-  right: 20px;
-}

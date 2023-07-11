@@ -18,7 +18,6 @@
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-draggable": "^4.4.5",
     "react-konva": "^18.2.7",
     "react-konva-utils": "^1.0.4",
     "react-redux": "^8.0.5",
