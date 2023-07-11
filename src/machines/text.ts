@@ -7,11 +7,11 @@ import type { AppStore } from '@/store';
 import { createTextShape } from '../creates';
 
 export default (store: AppStore) => {
-  const dispatch = store.dispatch;
-  const { isDrawing, drag, panel } = store.getState().app;
-
   return {
     pointerdown: (e: Konva.KonvaEventObject<MouseEvent>) => {
+      const dispatch = store.dispatch;
+      const { isDrawing, drag, panel } = store.getState().app;
+
       const clickedOnEmpty = e.target === e.target.getStage();
       const clickedOnText = e.target.getAttrs().type === 'text';
 

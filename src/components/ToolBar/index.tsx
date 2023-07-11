@@ -9,8 +9,8 @@ import './index.css';
 
 const ToolBar: React.FC = () => {
   const theme = useMantineTheme();
-  const dispatch = useDispatch<AppDispatch>();
 
+  const dispatch = useDispatch<AppDispatch>();
   const lock = useSelector(selectLock);
   const drag = useSelector(selectDrag);
 

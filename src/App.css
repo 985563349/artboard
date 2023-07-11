@@ -6,6 +6,16 @@
   background-color: #e5e5ea;
 }
 
+.artboard {
+  position: relative;
+  outline: none;
+  overflow: hidden;
+}
+
+.artboard canvas {
+  touch-action: none;
+}
+
 .toolbar {
   position: absolute;
   top: 50%;
@@ -20,4 +30,10 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 1;
+}
+
+.panel {
+  position: absolute;
+  top: 80px;
+  right: 20px;
 }

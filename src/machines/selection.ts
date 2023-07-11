@@ -5,16 +5,14 @@ import { deleteShape, updateShape } from '@/store';
 import type { AppStore } from '@/store';
 
 export default (store: AppStore) => {
-  const dispatch = store.dispatch;
-
   return {
     change: (e: { target: Konva.Transformer }) => {
+      const dispatch = store.dispatch;
+
       const stage = e.target.getStage();
       const nodes = e.target.nodes();
 
-      if (!nodes.length) {
-        return;
-      }
+      if (!nodes.length) return;
 
       const handleStoreStateChange = () => {
         const state = store.getState();
@@ -94,6 +92,8 @@ export default (store: AppStore) => {
     },
 
     dragend: (e: { target: Konva.Transformer }) => {
+      const dispatch = store.dispatch;
+
       const nodes = e.target.nodes();
 
       const payload = nodes

@@ -16,9 +16,11 @@ import {
   Timeline,
 } from 'tabler-icons-react';
 
-import { ActionTypes } from '@/constants/action-types';
 import { selectActionType, toggleActionType } from '@/store';
 import type { AppDispatch, RootState } from '@/store';
+import { useUpdateRef } from '@/hooks';
+
+import { ActionTypes } from '@/constants/action-types';
 
 import './index.css';
 
@@ -39,14 +41,13 @@ const ActionBar: React.FC = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const actionType = useSelector(selectActionType);
+  const actionTypeRef = useUpdateRef(actionType);
 
   const canUndo = useSelector((state: RootState) => state.shape.past.length > 0);
   const canRedo = useSelector((state: RootState) => state.shape.future.length > 0);
 
   const handlePointerDown = (type: ActionTypes) => {
-    if (type === actionType) {
-      return;
-    }
+    if (type === actionType) return;
 
     if (type === ActionTypes.image) {
       // TODO: open image
@@ -58,17 +59,13 @@ const ActionBar: React.FC = () => {
 
   useEffect(() => {
     const onKeydown = (e: KeyboardEvent) => {
-      if ((e.target as Element)?.nodeName === 'INPUT') {
-        return;
-      }
+      if ((e.target as Element)?.nodeName === 'INPUT') return;
 
       const type = options.find(({ keyCode }) => keyCode?.toString() === e.key)?.type;
 
-      if (type == null || type === actionType) {
-        return;
-      }
+      if (type == null || type === actionTypeRef.current) return;
 
-      dispatch(toggleActionType(type!));
+      dispatch(toggleActionType(type));
     };
 
     document.addEventListener('keydown', onKeydown);
@@ -76,7 +73,7 @@ const ActionBar: React.FC = () => {
     return () => {
       document.removeEventListener('keydown', onKeydown);
     };
-  }, [actionType]);
+  }, []);
 
   return (
     <div className="action-bar">

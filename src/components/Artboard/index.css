@@ -1,8 +1,0 @@
-.artboard {
-  outline: none;
-  overflow: hidden;
-}
-
-.artboard canvas {
-  touch-action: none;
-}

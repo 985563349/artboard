@@ -1,15 +1,55 @@
-import Artboard from '@/components/Artboard';
-import ActionBar from '@/components/ActionBar';
-import ToolBar from '@/components/ToolBar';
+import { useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { useWindowSize } from 'react-use';
+import type Konva from 'konva';
+
+import { selectActionType, selectLock, selectDrag, selectShapes, store } from '@/store';
+
+import useMachine from './hooks/useMachine';
+import * as machines from './machines';
+
+import Stage from './components/Stage';
+import ActionBar from './components/ActionBar';
+import ToolBar from './components/ToolBar';
+import Panel from './components/Panel';
 
 import './App.css';
 
 function App() {
+  const { width, height } = useWindowSize();
+
+  const actionType = useSelector(selectActionType);
+  const lock = useSelector(selectLock);
+  const drag = useSelector(selectDrag);
+  const shapes = useSelector(selectShapes);
+
+  const stageRef = useRef<Konva.Stage>(null);
+
+  const trigger = useMachine(actionType, machines, {
+    lock: lock || drag.draggable,
+    providers: [store],
+  });
+
   return (
-    <div className="App">
+    <div className="artboard">
+      <Stage
+        ref={stageRef}
+        width={width}
+        height={height}
+        style={{ background: '#fff' }}
+        shapes={shapes}
+        onPointerDown={trigger}
+        onPointermove={trigger}
+        onPointerup={trigger}
+        onKeyup={trigger}
+        onKeydown={trigger}
+      />
+
       <ToolBar />
-      <Artboard />
+
       <ActionBar />
+
+      <Panel />
     </div>
   );
 }

@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Card, ColorInput, Input, Slider } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
-import { ActionTypes } from '@/constants/action-types';
-import { useUpdateRef } from '@/hooks';
 import { selectActionType, selectPanel, updatePanel } from '@/store';
 import type { AppDispatch } from '@/store';
+import { useUpdateRef } from '@/hooks';
+
+import { ActionTypes } from '@/constants/action-types';
 
 const invalidActionType = [
   ActionTypes.capture,
