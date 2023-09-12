@@ -1,36 +1,40 @@
-import { forwardRef, memo, useImperativeHandle, useRef } from 'react';
-import { Stage as KonvaStage, Layer } from 'react-konva';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import type Konva from 'konva';
+import { Stage as KonvaStage, Layer } from 'react-konva';
 
 import { Line, Text, SimpleLine, Area, Ruler, Eraser } from './shapes';
+import { SelectionRect } from './extensions';
+import type { SelectionRectProps } from './extensions';
 
-export type StageProps = React.ComponentProps<typeof KonvaStage> & {
-  shapes: Array<any>;
-};
+export type StageProps = React.ComponentProps<typeof KonvaStage> &
+  Pick<SelectionRectProps, 'onSelect'> & {
+    shapes?: Array<any>;
+    allowSelect?: boolean;
+  };
 
 const Stage: React.FC<StageProps & { ref: React.ForwardedRef<Konva.Stage> }> = forwardRef(
   (props, ref) => {
-    const { shapes, ...konvaStageProps } = props;
+    const { shapes, allowSelect, onSelect, ...konvaStageProps } = props;
 
-    const internalRef = useRef<Konva.Stage>(null);
+    const stageRef = useRef<Konva.Stage>(null);
 
-    useImperativeHandle<Konva.Stage | null, Konva.Stage | null>(ref, () => internalRef.current);
+    useImperativeHandle<Konva.Stage | null, Konva.Stage | null>(ref, () => stageRef.current);
 
     return (
       <div
         tabIndex={1}
         style={{ outline: 'none' }}
         onKeyUp={(evt) => {
-          internalRef.current?.fire('keyup', { evt });
+          stageRef.current?.fire('keyup', { evt });
         }}
         onKeyDown={(evt) => {
-          internalRef.current?.fire('keydown', { evt });
+          stageRef.current?.fire('keydown', { evt });
         }}
       >
-        <KonvaStage {...konvaStageProps} ref={internalRef}>
+        <KonvaStage {...konvaStageProps} ref={stageRef}>
           {/* shapes layer */}
           <Layer name="shapes-layer">
-            {shapes.map((shape) => {
+            {shapes?.map((shape) => {
               switch (shape.type) {
                 case 'line':
                   return <Line key={shape.id} {...shape} />;
@@ -93,6 +97,8 @@ const Stage: React.FC<StageProps & { ref: React.ForwardedRef<Konva.Stage> }> = f
                   return null;
               }
             })}
+
+            {allowSelect ? <SelectionRect onSelect={onSelect} /> : null}
           </Layer>
         </KonvaStage>
       </div>
@@ -100,4 +106,4 @@ const Stage: React.FC<StageProps & { ref: React.ForwardedRef<Konva.Stage> }> = f
   }
 );
 
-export default memo(Stage);
+export default Stage;

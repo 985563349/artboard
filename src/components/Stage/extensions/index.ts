@@ -1,3 +1,2 @@
-import SelectionRect from './SelectionRect';
-
-export { SelectionRect };
+export { default as SelectionRect } from './SelectionRect';
+export type { SelectionRectProps } from './SelectionRect';

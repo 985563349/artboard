@@ -1,20 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Card, ColorInput, Input, Slider } from '@mantine/core';
 import { useForm } from '@mantine/form';
 
 import { selectActionType, selectPanel, updatePanel } from '@/store';
 import type { AppDispatch } from '@/store';
-import { useUpdateRef } from '@/hooks';
 
 import { ActionTypes } from '@/constants/action-types';
-
-const invalidActionType = [
-  ActionTypes.capture,
-  ActionTypes.ruler,
-  ActionTypes.eraser,
-  ActionTypes.image,
-];
 
 const swatches = [
   '#25262b',
@@ -40,13 +32,18 @@ export type PanelFormDataType = {
   fontSize: number;
 };
 
-const Panel: React.FC = () => {
+export type PanelProps = {
+  className?: string;
+};
+
+const Panel: React.FC<PanelProps> = ({ className }) => {
   const dispatch = useDispatch<AppDispatch>();
   const actionType = useSelector(selectActionType);
   const panel = useSelector(selectPanel);
 
   const form = useForm<PanelFormDataType>();
-  const formValues = useUpdateRef(form.values);
+  const formValuesRef = useRef(form.values);
+  formValuesRef.current = form.values;
 
   // sync form values from store
   useEffect(() => {
@@ -61,21 +58,17 @@ const Panel: React.FC = () => {
       onChangeEnd: () => {
         setTimeout(() => {
           // sync form values to store
-          dispatch(updatePanel(formValues.current));
+          dispatch(updatePanel(formValuesRef.current));
           // notification panel updates
-          window.dispatchEvent(new CustomEvent('panelChange', { detail: formValues.current }));
+          window.dispatchEvent(new CustomEvent('panelChange', { detail: formValuesRef.current }));
         });
       },
     };
   };
 
-  if (invalidActionType.includes(actionType)) {
-    return null;
-  }
-
   return (
     <div
-      className="panel"
+      className={className}
       onPointerEnter={() => {
         window.dispatchEvent(new Event('panelEnter'));
       }}

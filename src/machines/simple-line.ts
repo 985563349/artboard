@@ -3,7 +3,7 @@ import type Konva from 'konva';
 import { toggleIsDrawing, addShape, updateShape } from '@/store';
 import type { AppStore } from '@/store';
 
-import { createSimpleLineShape } from '../creates';
+import { createSimpleLineShape } from '../helpers/shape.helpers';
 
 export default (store: AppStore) => {
   return {

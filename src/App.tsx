@@ -5,13 +5,15 @@ import type Konva from 'konva';
 
 import { selectActionType, selectLock, selectDrag, selectShapes, store } from '@/store';
 
-import useMachine from './hooks/useMachine';
-import * as machines from './machines';
+import Stage from '@/components/Stage';
+import ActionBar from '@/components/ActionBar';
+import Toolbar from '@/components/Toolbar';
+import Panel from '@/components/Panel';
 
-import Stage from './components/Stage';
-import ActionBar from './components/ActionBar';
-import ToolBar from './components/ToolBar';
-import Panel from './components/Panel';
+import useMachine from '@/hooks/useMachine';
+import * as machines from '@/machines';
+
+import { ActionTypes } from '@/constants/action-types';
 
 import './App.css';
 
@@ -37,6 +39,8 @@ function App() {
         width={width}
         height={height}
         style={{ background: '#fff' }}
+        allowSelect={actionType === ActionTypes.selection}
+        onSelect={console.log}
         shapes={shapes}
         onPointerDown={trigger}
         onPointermove={trigger}
@@ -45,11 +49,11 @@ function App() {
         onKeydown={trigger}
       />
 
-      <ToolBar />
+      <Toolbar className="toolbar" />
 
-      <ActionBar />
+      <ActionBar className="action-bar" />
 
-      <Panel />
+      <Panel className="panel" />
     </div>
   );
 }

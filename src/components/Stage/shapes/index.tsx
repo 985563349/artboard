@@ -1,19 +1,17 @@
-import Line from './Line';
+export { default as Line } from './Line';
 export type { LineProps } from './Line';
 
-import Text from './Text';
+export { default as Text } from './Text';
 export type { TextProps } from './Text';
 
-import SimpleLine from './SimpleLine';
+export { default as SimpleLine } from './SimpleLine';
 export type { SimpleLineProps } from './SimpleLine';
 
-import Area from './Area';
+export { default as Area } from './Area';
 export type { AreaProps } from './Area';
 
-import Ruler from './Ruler';
+export { default as Ruler } from './Ruler';
 export type { RulerProps } from './Ruler';
 
-import Eraser from './Eraser';
+export { default as Eraser } from './Eraser';
 export type { EraserProps } from './Eraser';
-
-export { Line, Text, SimpleLine, Area, Ruler, Eraser };

@@ -4,15 +4,17 @@ import { Group, Rect, Transformer } from 'react-konva';
 
 import { shallowEqual } from '@/utils';
 
-export type SelectionReactProps = React.ComponentProps<typeof Transformer> & {
-  onChange?: (evt: Konva.KonvaEventObject<Event>) => void;
+export type SelectionRectProps = React.ComponentProps<typeof Transformer> & {
+  onSelect?: (evt: Konva.KonvaEventObject<Event>) => void;
 };
 
-const SelectionRect: React.FC<SelectionReactProps> = (props) => {
-  const selectionRectRef = useRef<Konva.Rect>(null);
-  const selection = useRef({ x1: 0, y1: 0, x2: 0, y2: 0 });
-  const trRef = useRef<Konva.Transformer>(null);
+const SelectionRect: React.FC<SelectionRectProps> = (props) => {
   const globalKonva = (window as any).Konva;
+
+  const selection = useRef({ x1: 0, y1: 0, x2: 0, y2: 0 });
+  const selectionRectRef = useRef<Konva.Rect>(null);
+
+  const trRef = useRef<Konva.Transformer>(null);
 
   const setTransformerNodes = (nodes: Konva.Node[]) => {
     if (trRef.current) {
@@ -24,7 +26,7 @@ const SelectionRect: React.FC<SelectionReactProps> = (props) => {
 
       // delay triggering event (waiting for the native event to end)
       setTimeout(() => {
-        trRef.current?.fire('change');
+        trRef.current?.fire('select');
       });
     }
   };
@@ -134,6 +136,7 @@ const SelectionRect: React.FC<SelectionReactProps> = (props) => {
 
   useEffect(() => {
     const stage = selectionRectRef.current?.getStage();
+
     stage?.on('pointerdown', onPointerDown);
     stage?.on('pointermove', onPointerMove);
     stage?.on('pointerup', onPointerUp);

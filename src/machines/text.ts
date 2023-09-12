@@ -4,7 +4,7 @@ import { rgbToHex } from '@/utils';
 import { addShape, toggleIsDrawing, updatePanel, updateShape } from '@/store';
 import type { AppStore } from '@/store';
 
-import { createTextShape } from '../creates';
+import { createTextShape } from '../helpers/shape.helpers';
 
 export default (store: AppStore) => {
   return {

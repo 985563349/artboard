@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from 'redux-undo';
-import { ActionIcon, Card, Divider, Group, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Card, Divider, Flex, Group, useMantineTheme } from '@mantine/core';
 import {
   ArrowBackUp,
   ArrowForwardUp,
@@ -18,11 +18,8 @@ import {
 
 import { selectActionType, toggleActionType } from '@/store';
 import type { AppDispatch, RootState } from '@/store';
-import { useUpdateRef } from '@/hooks';
 
 import { ActionTypes } from '@/constants/action-types';
-
-import './index.css';
 
 const options = [
   { type: ActionTypes.selection, icon: Location, keyCode: 1 },
@@ -36,12 +33,18 @@ const options = [
   { type: ActionTypes.image, icon: Photo },
 ];
 
-const ActionBar: React.FC = () => {
+export type ActionBarProps = {
+  className?: string;
+};
+
+const ActionBar: React.FC<ActionBarProps> = ({ className }) => {
   const theme = useMantineTheme();
 
   const dispatch = useDispatch<AppDispatch>();
   const actionType = useSelector(selectActionType);
-  const actionTypeRef = useUpdateRef(actionType);
+
+  const actionTypeRef = useRef(actionType);
+  actionTypeRef.current = actionType;
 
   const canUndo = useSelector((state: RootState) => state.shape.past.length > 0);
   const canRedo = useSelector((state: RootState) => state.shape.future.length > 0);
@@ -76,29 +79,31 @@ const ActionBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="action-bar">
-      <Card style={{ display: 'flex' }} shadow="sm" p="lg" radius="lg" withBorder>
-        <Group noWrap>
-          {options.map(({ type, icon: Icon }) => (
-            <ActionIcon key={type} onPointerDown={() => handlePointerDown(type)}>
-              <Icon color={actionType === type ? theme.colors.red[7] : undefined} />
+    <Flex className={className}>
+      <Card shadow="sm" p="lg" radius="lg" withBorder>
+        <Flex>
+          <Group noWrap>
+            {options.map(({ type, icon: Icon }) => (
+              <ActionIcon key={type} onPointerDown={() => handlePointerDown(type)}>
+                <Icon color={actionType === type ? theme.colors.red[7] : undefined} />
+              </ActionIcon>
+            ))}
+          </Group>
+
+          <Divider style={{ margin: '0 16px', borderRadius: 10 }} size={2} orientation="vertical" />
+
+          <Group noWrap>
+            <ActionIcon disabled={!canUndo} onPointerDown={() => dispatch(ActionCreators.undo())}>
+              <ArrowBackUp size={24} />
             </ActionIcon>
-          ))}
-        </Group>
 
-        <Divider style={{ margin: '0 16px', borderRadius: 10 }} size={2} orientation="vertical" />
-
-        <Group noWrap>
-          <ActionIcon disabled={!canUndo} onPointerDown={() => dispatch(ActionCreators.undo())}>
-            <ArrowBackUp size={24} />
-          </ActionIcon>
-
-          <ActionIcon disabled={!canRedo} onPointerDown={() => dispatch(ActionCreators.redo())}>
-            <ArrowForwardUp size={24} />
-          </ActionIcon>
-        </Group>
+            <ActionIcon disabled={!canRedo} onPointerDown={() => dispatch(ActionCreators.redo())}>
+              <ArrowForwardUp size={24} />
+            </ActionIcon>
+          </Group>
+        </Flex>
       </Card>
-    </div>
+    </Flex>
   );
 };
 

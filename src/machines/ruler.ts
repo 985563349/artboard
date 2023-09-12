@@ -3,7 +3,7 @@ import type Konva from 'konva';
 import { addShape } from '@/store';
 import type { AppStore } from '@/store';
 
-import { createRulerShape } from '../creates';
+import { createRulerShape } from '../helpers/shape.helpers';
 
 export default (store: AppStore) => {
   return {

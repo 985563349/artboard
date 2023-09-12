@@ -5,9 +5,11 @@ import { Capture, HandMove, Lock, LockOpen, Settings } from 'tabler-icons-react'
 import { selectDrag, selectLock, toggleLock, updateDrag } from '@/store';
 import type { AppDispatch } from '@/store';
 
-import './index.css';
+export type ToolbarProps = {
+  className?: string;
+};
 
-const ToolBar: React.FC = () => {
+const Toolbar: React.FC<ToolbarProps> = ({ className }) => {
   const theme = useMantineTheme();
 
   const dispatch = useDispatch<AppDispatch>();
@@ -15,7 +17,7 @@ const ToolBar: React.FC = () => {
   const drag = useSelector(selectDrag);
 
   return (
-    <div className="toolbar">
+    <Flex className={className}>
       <Card shadow="sm" p="lg" radius="lg" withBorder>
         <Flex direction="column" gap="lg">
           <ActionIcon>
@@ -35,8 +37,8 @@ const ToolBar: React.FC = () => {
           </ActionIcon>
         </Flex>
       </Card>
-    </div>
+    </Flex>
   );
 };
 
-export default ToolBar;
+export default Toolbar;
