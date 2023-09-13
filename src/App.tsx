@@ -16,6 +16,7 @@ import * as machines from '@/machines';
 import { ActionTypes } from '@/constants/action-types';
 
 import './App.css';
+import Stats from './components/Stats';
 
 function App() {
   const { width, height } = useWindowSize();
@@ -54,6 +55,8 @@ function App() {
       <ActionBar className="action-bar" />
 
       <Panel className="panel" />
+
+      <Stats />
     </div>
   );
 }
