@@ -35,11 +35,9 @@ const SelectionRect: React.FC<SelectionRectProps> = (props) => {
     // do nothing if we pointerdown on any shape
     const stage = e.target?.getStage();
 
-    if (e.target !== stage) {
-      return;
-    }
+    if (e.target !== stage) return;
 
-    const pos = stage.getPointerPosition()!;
+    const pos = stage.getRelativePointerPosition();
 
     selection.current.x1 = pos.x;
     selection.current.y1 = pos.y;
@@ -53,12 +51,11 @@ const SelectionRect: React.FC<SelectionRectProps> = (props) => {
 
   const onPointerMove = (e: Konva.KonvaEventObject<MouseEvent>) => {
     // do nothing if we didn't start selection
-    if (!selectionRectRef.current?.visible()) {
-      return;
-    }
+    if (!selectionRectRef.current?.visible()) return;
 
     const stage = e.target.getStage()!;
-    const pos = stage.getPointerPosition()!;
+    const pos = stage.getRelativePointerPosition();
+
     selection.current.x2 = pos.x;
     selection.current.y2 = pos.y;
 
@@ -77,6 +74,7 @@ const SelectionRect: React.FC<SelectionRectProps> = (props) => {
     if (!selectionRectRef.current?.visible()) {
       return;
     }
+
     selectionRectRef.current?.visible(false);
 
     const stage = e.target?.getStage()!;
@@ -92,15 +90,14 @@ const SelectionRect: React.FC<SelectionRectProps> = (props) => {
 
     // shallow comparison of data before and after selection
     const trNodes = trRef.current?.getNodes();
+
     if (!shallowEqual(trNodes, elements)) {
       setTransformerNodes(elements);
     }
   };
 
   const onPointerDownClick = (e: Konva.KonvaEventObject<MouseEvent>) => {
-    if (selectionRectRef.current?.visible()) {
-      return;
-    }
+    if (selectionRectRef.current?.visible()) return;
 
     const stage = e.target?.getStage();
 
@@ -109,9 +106,7 @@ const SelectionRect: React.FC<SelectionRectProps> = (props) => {
       return;
     }
 
-    if (!e.target.getAttr('selection')) {
-      return;
-    }
+    if (!e.target.getAttr('selection')) return;
 
     const metaPressed = e.evt.shiftKey || e.evt.ctrlKey || e.evt.metaKey;
     const isSelected = trRef.current?.nodes().includes(e.target);
@@ -148,7 +143,7 @@ const SelectionRect: React.FC<SelectionRectProps> = (props) => {
       stage?.off('pointerup', onPointerUp);
       stage?.off('pointerdown.click', onPointerDownClick);
     };
-  }, [onPointerDown, onPointerMove, onPointerUp, onPointerDownClick]);
+  }, []);
 
   return (
     <Group>

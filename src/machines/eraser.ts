@@ -11,7 +11,7 @@ export default (store: AppStore) => {
       const dispatch = store.dispatch;
 
       const clickedOnEmpty = e.target === e.target.getStage();
-      const point = e.target?.getStage()?.getPointerPosition();
+      const point = e.target?.getStage()?.getRelativePointerPosition();
 
       if (!clickedOnEmpty || !point) return;
 
@@ -26,7 +26,7 @@ export default (store: AppStore) => {
       const shapes = shape.present;
 
       const { isDrawing } = app;
-      const point = e.target.getStage()?.getPointerPosition();
+      const point = e.target.getStage()?.getRelativePointerPosition();
 
       if (!isDrawing || !point) return;
 

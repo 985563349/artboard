@@ -16,7 +16,7 @@ import {
   Timeline,
 } from 'tabler-icons-react';
 
-import { selectActionType, toggleActionType } from '@/store';
+import { selectActionType, toggleActionType, updateDrag } from '@/store';
 import type { AppDispatch, RootState } from '@/store';
 
 import { ActionTypes } from '@/constants/action-types';
@@ -57,6 +57,7 @@ const ActionBar: React.FC<ActionBarProps> = ({ className }) => {
       console.log('open image');
     }
 
+    dispatch(updateDrag({ draggable: false }));
     dispatch(toggleActionType(type));
   };
 

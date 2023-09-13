@@ -53,8 +53,8 @@ export const appSlice = createSlice({
     toggleIsDrawing: (state, action: PayloadAction<boolean>) => {
       state.isDrawing = action.payload;
     },
-    updateDrag: (state, action: PayloadAction<AppState['drag']>) => {
-      state.drag = action.payload;
+    updateDrag: (state, action: PayloadAction<Partial<AppState['drag']>>) => {
+      state.drag = { ...state.drag, ...action.payload };
     },
     updatePanel: (state, action: PayloadAction<Partial<AppState['panel']>>) => {
       state.panel = { ...state.panel, ...action.payload };

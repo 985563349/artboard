@@ -10,21 +10,23 @@ export default (store: AppStore) => {
   return {
     pointerdown: (e: Konva.KonvaEventObject<MouseEvent>) => {
       const dispatch = store.dispatch;
-      const { isDrawing, drag, panel } = store.getState().app;
+      const { isDrawing, panel } = store.getState().app;
 
       const clickedOnEmpty = e.target === e.target.getStage();
       const clickedOnText = e.target.getAttrs().type === 'text';
 
+      const point = e.target.getStage()?.getPointerPosition();
+
       const targetAttrs = clickedOnText
         ? e.target.getAttrs()
-        : e.target.getStage()?.getPointerPosition();
+        : e.target.getStage()?.getRelativePointerPosition();
 
       if (isDrawing) {
         dispatch(toggleIsDrawing(false));
         return;
       }
 
-      if ((!clickedOnEmpty && !clickedOnText) || targetAttrs == null) {
+      if ((!clickedOnEmpty && !clickedOnText) || point == null || targetAttrs == null) {
         return;
       }
 
@@ -34,8 +36,8 @@ export default (store: AppStore) => {
       const input = document.createElement('input');
       input.style.cssText = `
           position: absolute;
-          left: ${targetAttrs.x + drag.x}px;
-          top: ${targetAttrs.y + drag.y}px;
+          left: ${point.x}px;
+          top: ${point.y}px;
           font-size: ${clickedOnText ? targetAttrs.fontSize : panel.fontSize}px;
           margin: 0;
           padding: 0;

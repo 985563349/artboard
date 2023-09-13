@@ -1,9 +1,10 @@
 import { useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useWindowSize } from 'react-use';
 import type Konva from 'konva';
 
-import { selectActionType, selectLock, selectDrag, selectShapes, store } from '@/store';
+import { selectActionType, selectLock, selectDrag, selectShapes, store, updateDrag } from '@/store';
+import type { AppDispatch } from '@/store';
 
 import Stage from '@/components/Stage';
 import ActionBar from '@/components/ActionBar';
@@ -21,6 +22,7 @@ import Stats from './components/Stats';
 function App() {
   const { width, height } = useWindowSize();
 
+  const dispatch = useDispatch<AppDispatch>();
   const actionType = useSelector(selectActionType);
   const lock = useSelector(selectLock);
   const drag = useSelector(selectDrag);
@@ -33,6 +35,8 @@ function App() {
     providers: [store],
   });
 
+  const allowSelect = actionType === ActionTypes.selection && !lock && !drag.draggable;
+
   return (
     <div className="artboard">
       <Stage
@@ -40,9 +44,14 @@ function App() {
         width={width}
         height={height}
         style={{ background: '#fff' }}
-        allowSelect={actionType === ActionTypes.selection}
-        onSelect={console.log}
         shapes={shapes}
+        {...drag}
+        onDragEnd={(e) => {
+          e.cancelBubble = true;
+          dispatch(updateDrag(e.target.getPosition()));
+        }}
+        allowSelect={allowSelect}
+        onSelect={console.log}
         onPointerDown={trigger}
         onPointermove={trigger}
         onPointerup={trigger}
